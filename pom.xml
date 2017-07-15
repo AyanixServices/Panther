@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ayanix</groupId>
+    <artifactId>Panther</artifactId>
+    <version>1.0.0</version>
+    <name>Panther</name>
+
+    <organization>
+        <url>www.ayanix.com</url>
+        <name>Ayanix</name>
+    </organization>
+
+    <developers>
+        <developer>
+            <name>Lewes D. B.</name>
+            <id>L3W3S</id>
+            <timezone>GMT+1</timezone>
+            <email>L3W3S@users.noreply.github.com</email>
+            <roles>
+                <role>Lead Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <description>A Spigot library with multiple features to speed up development.</description>
+
+    <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>All rights reserved</name>
+            <comments>Panther is owned by Lewes D. B. and permission to be used is only given to clients on a
+                per-project basis.
+            </comments>
+        </license>
+    </licenses>
+
+</project>
