@@ -43,7 +43,14 @@ import java.util.HashMap;
 public class DependencyChecks implements IDependencyChecks
 {
 
-	public boolean runChecks(JavaPlugin plugin, HashMap<String, String> dependencies)
+	private JavaPlugin plugin;
+
+	public DependencyChecks(JavaPlugin plugin)
+	{
+		this.plugin = plugin;
+	}
+
+	public boolean runChecks(HashMap<String, String> dependencies)
 	{
 		if (plugin == null)
 		{

@@ -28,8 +28,6 @@
  */
 package com.ayanix.panther.utils;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.HashMap;
 
 /**
@@ -45,11 +43,10 @@ public interface IDependencyChecks
 	 * <p>
 	 * The version checks the starting version, e.g. a parameter of 6 would work with 6.x.x versions.
 	 *
-	 * @param plugin       Plugin to use logger of.
 	 * @param dependencies HashMap of dependencies - key is plugin, value is version.
 	 * @return If all dependencies are enabled.
 	 */
-	boolean runChecks(JavaPlugin plugin, HashMap<String, String> dependencies);
+	boolean runChecks(HashMap<String, String> dependencies);
 
 	/**
 	 * Checks if plugin is enabled and whether the correct version is supplied.

@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
+import org.bukkit.plugin.PluginBase;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -48,7 +49,7 @@ import java.util.HashMap;
  * All rights reserved 2017.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Bukkit.class, JavaPlugin.class})
+@PrepareForTest({Bukkit.class, JavaPlugin.class, PluginBase.class})
 public class DependencyChecksTest
 {
 
@@ -66,19 +67,19 @@ public class DependencyChecksTest
 	}
 
 	@Test
-	public void testDependencies()
+	public void testDependencyCheck()
 	{
 		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
 		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
 		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
 
-		DependencyChecks checks = PowerMockito.mock(DependencyChecks.class);
+		DependencyChecks checks = PowerMockito.spy(new DependencyChecks(plugin));
 
-		HashMap<String, String> dependencies = new HashMap<String, String>();
+		HashMap<String, String> dependencies = new HashMap<>();
 
 		dependencies.put("Factions", "6.0.0");
 
-		boolean allEnabled = checks.runChecks(plugin, dependencies);
+		boolean allEnabled = checks.runChecks(dependencies);
 
 		Assert.assertFalse("Dependencies must come back false if one is missing.", allEnabled);
 	}
