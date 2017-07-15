@@ -44,7 +44,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import java.util.HashMap;
 
 /**
- * Panther - Developed by Boomclaw.
+ * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
 @RunWith(PowerMockRunner.class)

@@ -33,7 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 
 /**
- * Panther - Developed by Boomclaw.
+ * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
 public interface IDependencyChecks
