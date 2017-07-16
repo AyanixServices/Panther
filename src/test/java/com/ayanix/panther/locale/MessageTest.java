@@ -57,7 +57,7 @@ public class MessageTest
 		Message message = PowerMockito.spy(new Message("test", Collections.singletonList("Banana")));
 		message.send(player);
 
-		Mockito.verify(player, Mockito.atLeastOnce()).sendMessage(Mockito.anyString());
+		Mockito.verify(player, Mockito.atLeastOnce()).sendMessage("Banana");
 		Mockito.reset(player);
 
 		/* Test if multiple lines are received */
