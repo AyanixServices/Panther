@@ -28,6 +28,7 @@
  */
 package com.ayanix.panther.utils;
 
+import com.ayanix.panther.impl.utils.DependencyChecks;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginBase;
