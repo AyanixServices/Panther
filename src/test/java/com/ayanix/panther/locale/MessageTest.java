@@ -26,62 +26,55 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.utils;
+package com.ayanix.panther.locale;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
-import org.bukkit.plugin.PluginBase;
-import org.bukkit.plugin.PluginLogger;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.ayanix.panther.impl.locale.Message;
+import org.bukkit.entity.Player;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Bukkit.class, JavaPlugin.class, PluginBase.class})
-public class DependencyChecksTest
+public class MessageTest
 {
-
-	/**
-	 * Setup Bukkit and plugin manager before hand.
-	 */
-	@Before
-	public void setupTest()
-	{
-		PowerMockito.mockStatic(Bukkit.class);
-		PowerMockito.when(Bukkit.getServer()).thenReturn(PowerMockito.mock(Server.class));
-
-		PluginManager pluginManager = PowerMockito.mock(PluginManager.class);
-		PowerMockito.when(Bukkit.getPluginManager()).thenReturn(pluginManager);
-	}
 
 	@Test
 	public void testDependencyCheck()
 	{
-		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
-		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
-		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
+		Player player = PowerMockito.mock(Player.class);
 
-		DependencyChecks checks = PowerMockito.spy(new DependencyChecks(plugin));
+		/* Test a single line is received when formatted */
+		Message message = PowerMockito.spy(new Message("test", Collections.singletonList("Banana")));
+		message.send(player);
 
-		HashMap<String, String> dependencies = new HashMap<>();
+		Mockito.verify(player, Mockito.atLeastOnce()).sendMessage(Mockito.anyString());
+		Mockito.reset(player);
 
-		dependencies.put("Factions", "6.0.0");
+		/* Test if multiple lines are received */
+		message = PowerMockito.spy(new Message("test", Arrays.asList("Banana", "Apple")));
+		message.send(player);
 
-		boolean allEnabled = checks.runChecks(dependencies);
+		Mockito.verify(player, Mockito.times(2)).sendMessage(Mockito.anyString());
+		Mockito.reset(player);
 
-		Assert.assertFalse("Dependencies must come back false if one is missing.", allEnabled);
+		/* Test if formatted lines are different from unformatted,
+		 * multiple lines in a single string contains new line code and
+		 * amount of lines is equal to amount of message lines */
+		message = PowerMockito.spy(new Message("test", Arrays.asList("&dBanana", "&1Apple")));
+
+		Assert.assertFalse("Formatted message cannot contain colour codes", message.get().contains("&d"));
+		Assert.assertTrue("Multiple lines in a single string must contain \\n", message.get().contains("\n"));
+		Assert.assertTrue("Message as a list must contain same amount of lines", message.getList().size() == 2);
 	}
 
 }

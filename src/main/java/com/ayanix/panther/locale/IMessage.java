@@ -26,89 +26,82 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.utils;
+package com.ayanix.panther.locale;
 
-import com.ayanix.panther.utils.IDependencyChecks;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.command.CommandSender;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.HashMap;
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class DependencyChecks implements IDependencyChecks
+public interface IMessage
 {
 
-	private JavaPlugin plugin;
+	/**
+	 * Get the key identifying the message.
+	 *
+	 * @return Key.
+	 */
+	String getKey();
 
-	public DependencyChecks(JavaPlugin plugin)
-	{
-		if (plugin == null)
-		{
-			throw new IllegalArgumentException("Plugin cannot be null");
-		}
+	/**
+	 * Replace {key} in the message with the value given.
+	 *
+	 * @param key   Substring to replace, excluding { and }.
+	 * @param value Substring to replace with.
+	 */
+	IMessage replace(@NonNull String key, @Nullable String value);
 
-		this.plugin = plugin;
-	}
+	/**
+	 * Get the formatted message in a String format.
+	 * #toString() returns the same however unformatted.
+	 * <p>
+	 * If the message is a list, \n is appended to each line.
+	 *
+	 * @return String version of message.
+	 */
+	String get();
 
-	public boolean runChecks(HashMap<String, String> dependencies)
-	{
-		if (dependencies == null)
-		{
-			throw new IllegalArgumentException("Dependencies cannot be null");
-		}
+	/**
+	 * Get the message in a String format.
+	 * #toString() returns the same however unformatted.
+	 * <p>
+	 * If the message is a list, \n is appended to each line.
+	 *
+	 * @param formatted If true, colours are formatted.
+	 * @return String version of message.
+	 */
+	String get(boolean formatted);
 
-		boolean allEnabled = true;
+	/**
+	 * Get the formatted message in a List format.
+	 *
+	 * @return List of string messages.
+	 */
+	List<String> getList();
 
-		for (String pluginName : dependencies.keySet())
-		{
-			String version = dependencies.get(pluginName);
+	/**
+	 * Get the message in a List format.
+	 *
+	 * @param formatted If true, colours are formatted.
+	 * @return List of string messages.
+	 */
+	List<String> getList(boolean formatted);
 
-			if (!isEnabled(pluginName, version))
-			{
-				allEnabled = false;
+	/**
+	 * Send the formatted message to given player or console.
+	 *
+	 * @param sender Message to be sent to.
+	 */
+	void send(@NonNull CommandSender sender);
 
-				String error = "✘ Missing " + pluginName;
-
-				if (!version.isEmpty())
-				{
-					error += " (v" + version + ")";
-				}
-
-				plugin.getLogger().severe(error);
-
-				continue;
-			}
-
-			plugin.getLogger().info("✔ " + pluginName + " detected");
-		}
-
-		return allEnabled;
-	}
-
-	public boolean isEnabled(String plugin, String version)
-	{
-		Plugin dependency = Bukkit.getPluginManager().getPlugin(plugin);
-
-		if (dependency == null)
-		{
-			return false;
-		}
-
-		if (!dependency.getDescription().getVersion().startsWith(version))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	public boolean isEnabled(String plugin)
-	{
-		return Bukkit.getPluginManager().isPluginEnabled(plugin);
-	}
+	/**
+	 * Broadcast the formatted message to all players online and console.
+	 */
+	void broadcast();
 
 }
