@@ -33,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 /**
@@ -47,19 +46,19 @@ public class DependencyChecks implements IDependencyChecks
 
 	public DependencyChecks(JavaPlugin plugin)
 	{
+		if (plugin == null)
+		{
+			throw new IllegalArgumentException("Plugin cannot be null");
+		}
+
 		this.plugin = plugin;
 	}
 
 	public boolean runChecks(HashMap<String, String> dependencies)
 	{
-		if (plugin == null)
-		{
-			throw new InvalidParameterException("Plugin cannot be null");
-		}
-
 		if (dependencies == null)
 		{
-			throw new InvalidParameterException("Dependencies cannot be null");
+			throw new IllegalArgumentException("Dependencies cannot be null");
 		}
 
 		boolean allEnabled = true;
