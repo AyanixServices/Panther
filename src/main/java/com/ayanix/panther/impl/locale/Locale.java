@@ -82,8 +82,13 @@ public class Locale extends YAMLStorage implements ILocale
 		}
 	}
 
-	private void loadMessage(String key)
+	private void loadMessage(@NonNull String key)
 	{
+		if (key == null)
+		{
+			throw new IllegalArgumentException("Key cannot be null");
+		}
+
 		Message preExisting = get(key);
 
 		if (preExisting != null)
@@ -110,8 +115,13 @@ public class Locale extends YAMLStorage implements ILocale
 	}
 
 	@Override
-	public Message get(String key)
+	public Message get(@NonNull String key)
 	{
+		if (key == null)
+		{
+			throw new IllegalArgumentException("Key cannot be null");
+		}
+
 		for (Message message : messages)
 		{
 			if (message.getKey().equalsIgnoreCase(key))

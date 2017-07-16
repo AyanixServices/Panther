@@ -44,13 +44,15 @@ public class DependencyChecks implements IDependencyChecks
 
 	private JavaPlugin plugin;
 
+	/**
+	 * @param plugin Plugin requesting dependencies.
+	 */
 	public DependencyChecks(JavaPlugin plugin)
 	{
 		if (plugin == null)
 		{
 			throw new IllegalArgumentException("Plugin cannot be null");
 		}
-
 
 		this.plugin = plugin;
 	}

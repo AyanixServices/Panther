@@ -50,6 +50,10 @@ public class Message implements IMessage
 	private String       key;
 	private List<String> values;
 
+	/**
+	 * @param key    Key associated with message.
+	 * @param values Actual messages.
+	 */
 	public Message(String key, List<String> values)
 	{
 		if (key == null)
