@@ -141,6 +141,11 @@ public class Message implements IMessage
 	@Override
 	public void send(@NonNull CommandSender sender)
 	{
+		if (sender == null)
+		{
+			throw new IllegalArgumentException("Sender/player cannot be null");
+		}
+
 		for (String message : getList())
 		{
 			if (sender instanceof ConsoleCommandSender)
