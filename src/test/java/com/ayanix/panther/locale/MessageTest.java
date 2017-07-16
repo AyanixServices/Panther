@@ -49,7 +49,7 @@ public class MessageTest
 {
 
 	@Test
-	public void testDependencyCheck()
+	public void testMessages()
 	{
 		Player player = PowerMockito.mock(Player.class);
 
