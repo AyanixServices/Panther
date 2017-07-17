@@ -94,4 +94,9 @@ public interface IInventoryGUI
 	 */
 	void open();
 
+	/**
+	 * @return Whether or not the inventory is allowed to be closed.
+	 */
+	boolean canClose();
+
 }

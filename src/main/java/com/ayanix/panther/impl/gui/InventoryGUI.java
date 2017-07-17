@@ -93,11 +93,6 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 		}
 	}
 
-	/**
-	 * Used for item initiation.
-	 */
-	protected abstract void init();
-
 	@Override
 	public InventoryType getInventoryType()
 	{
@@ -229,15 +224,21 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	}
 
 	/**
+	 * Used for item initiation.
+	 */
+	protected abstract void init();
+
+	/**
 	 * Run when GUI is closed.
 	 */
-	public abstract void close();
+	protected abstract void close();
 
 	/**
 	 * If false, plugin will re-open GUI 1 tick later.
 	 *
 	 * @return Whether or not GUI can be closed.
 	 */
+	@Override
 	public boolean canClose()
 	{
 		return true;
