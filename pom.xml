@@ -116,6 +116,32 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+
+            <!-- Creating a jar is pretty useless however its nice to have !-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <finalName>${project.name}</finalName>
+                    <outputDirectory>${project.basedir}/out/</outputDirectory>
+                </configuration>
+            </plugin>
+            
+            <!-- Don't need a /target/ folder after installing !-->
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <id>auto-clean</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

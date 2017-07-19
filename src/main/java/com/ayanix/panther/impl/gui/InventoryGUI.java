@@ -72,10 +72,10 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	 * @param slots  Size of GUI in slots (only applicable for CHEST type).
 	 */
 	public InventoryGUI(Plugin plugin,
-	             Player player,
-	             String name,
-	             InventoryType type,
-	             int slots)
+	                    Player player,
+	                    String name,
+	                    InventoryType type,
+	                    int slots)
 	{
 		this.name = name;
 		this.slots = slots;
@@ -179,6 +179,11 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 	}
 
+	/**
+	 * Used for item initiation.
+	 */
+	protected abstract void init();
+
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event)
 	{
@@ -222,11 +227,6 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 			close();
 		}
 	}
-
-	/**
-	 * Used for item initiation.
-	 */
-	protected abstract void init();
 
 	/**
 	 * Run when GUI is closed.
