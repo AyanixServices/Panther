@@ -39,16 +39,6 @@ public interface IPantherCommand
 {
 
 	/**
-	 * Runs when command is executed, before onExecute().
-	 *
-	 * @param sender       Command sender.
-	 * @param commandLabel Label of command used.
-	 * @param args         Arguments passed.
-	 * @return If true, command is accepted.
-	 */
-	boolean execute(CommandSender sender, String commandLabel, String[] args);
-
-	/**
 	 * @return Permission required. Empty if all can use.
 	 */
 	String getPermission();
