@@ -57,7 +57,8 @@ import java.util.List;
 public abstract class PantherEnchantment extends Enchantment implements IPantherEnchantment
 {
 
-	private String name;
+	private final RomanNumerals ROMAN_NUMERALS;
+	private       String        name;
 
 	/**
 	 * @param id   Unique ID of the enchantment.
@@ -68,6 +69,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		super(id);
 
 		this.name = ChatColor.translateAlternateColorCodes('&', name);
+		this.ROMAN_NUMERALS = new RomanNumerals();
 	}
 
 	@Override
@@ -109,10 +111,10 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		{
 			int currentLevel = getLevel(item);
 
-			lore.remove(this.getDisplayName() + " " + new RomanNumerals().toRoman(currentLevel));
+			lore.remove(this.getDisplayName() + " " + ROMAN_NUMERALS.toRoman(currentLevel));
 		}
 
-		lore.add(this.getDisplayName() + " " + new RomanNumerals().toRoman(level));
+		lore.add(this.getDisplayName() + " " + ROMAN_NUMERALS.toRoman(level));
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		item.addUnsafeEnchantment(this, level);
@@ -173,7 +175,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 				message = message.replace(this.getDisplayName() + " ", "");
 				message = ChatColor.stripColor(message);
 
-				int arabic = new RomanNumerals().toInt(message);
+				int arabic = ROMAN_NUMERALS.toInt(message);
 
 				if (arabic != 0)
 				{
