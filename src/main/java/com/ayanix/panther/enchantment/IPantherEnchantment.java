@@ -74,4 +74,16 @@ public interface IPantherEnchantment
 	 */
 	void apply(@NonNull ItemStack item, int level);
 
+	/**
+	 * @param item The item to check.
+	 * @return The level of the enchantment applied to item, can be 0 if no enchantment.
+	 */
+	int getLevel(@Nullable ItemStack item);
+
+	/**
+	 * @param item The item to check.
+	 * @return Whether or not the item has the specific enchantment.
+	 */
+	boolean isEnchanted(@Nullable ItemStack item);
+
 }

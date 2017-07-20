@@ -29,6 +29,7 @@
 package com.ayanix.panther.impl.enchantment;
 
 import com.ayanix.panther.enchantment.IPantherEnchantment;
+import com.ayanix.panther.impl.utils.RomanNumerals;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -66,7 +67,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	{
 		super(id);
 
-		this.name = name;
+		this.name = ChatColor.translateAlternateColorCodes('&', name);
 	}
 
 	@Override
@@ -101,17 +102,17 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 			throw new IllegalArgumentException("Item cannot be null");
 		}
 
-		if (item.hasItemMeta() &&
-				item.getItemMeta().hasLore() &&
-				!item.getItemMeta().getLore().contains(this.getDisplayName()))
-		{
-			return;
-		}
-
 		ItemMeta     itemMeta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 		List<String> lore     = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
 
-		lore.add(ChatColor.translateAlternateColorCodes('&', this.getDisplayName()));
+		if (isEnchanted(item))
+		{
+			int currentLevel = getLevel(item);
+
+			lore.remove(this.getDisplayName() + " " + new RomanNumerals().toRoman(currentLevel));
+		}
+
+		lore.add(this.getDisplayName() + " " + new RomanNumerals().toRoman(level));
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		item.addUnsafeEnchantment(this, level);
@@ -126,12 +127,62 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	@EventHandler(ignoreCancelled = false)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
-		if (event.getPlayer().getItemInHand().hasItemMeta() &&
-				event.getPlayer().getItemInHand().getItemMeta().hasLore() &&
-				event.getPlayer().getItemInHand().getItemMeta().getLore().contains(this.getDisplayName()))
+		if (isEnchanted(event.getPlayer().getItemInHand()))
 		{
 			this.place(event.getPlayer(), event.getBlock());
 		}
+	}
+
+	@Override
+	public boolean isEnchanted(@Nullable ItemStack item)
+	{
+		return getLevel(item) != 0;
+	}
+
+	@Override
+	public int getLevel(@Nullable ItemStack item)
+	{
+		if (item == null)
+		{
+			return 0;
+		}
+
+		if (!item.hasItemMeta())
+		{
+			return 0;
+		}
+
+		ItemMeta meta = item.getItemMeta();
+
+		if (!meta.hasLore())
+		{
+			return 0;
+		}
+
+		// Use Bukkit first
+		if (item.getEnchantmentLevel(this) != 0)
+		{
+			return item.getEnchantmentLevel(this);
+		}
+
+		// Check lore
+		for (String message : meta.getLore())
+		{
+			if (message.startsWith(this.getDisplayName()))
+			{
+				message = message.replace(this.getDisplayName() + " ", "");
+				message = ChatColor.stripColor(message);
+
+				int arabic = new RomanNumerals().toInt(message);
+
+				if (arabic != 0)
+				{
+					return arabic;
+				}
+			}
+		}
+
+		return 0;
 	}
 
 	abstract void place(Player player, Block block);
@@ -139,9 +190,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	@EventHandler(ignoreCancelled = false)
 	public void onBlockDestroy(BlockBreakEvent event)
 	{
-		if (event.getPlayer().getItemInHand().hasItemMeta() &&
-				event.getPlayer().getItemInHand().getItemMeta().hasLore() &&
-				event.getPlayer().getItemInHand().getItemMeta().getLore().contains(this.getDisplayName()))
+		if (isEnchanted(event.getPlayer().getItemInHand()))
 		{
 			this.mine(event.getPlayer(), event.getBlock());
 		}
@@ -162,19 +211,20 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 			damager = (Player) ((Arrow) event.getDamager()).getShooter();
 		}
 
+		if (damager == null)
+		{
+			return;
+		}
+
+		if (!isEnchanted(damager.getItemInHand()))
+		{
+			return;
+		}
+
 		if (event.getEntity() instanceof Player)
 		{
-			if (damager != null &&
-					damager.getItemInHand().hasItemMeta() &&
-					damager.getItemInHand().getItemMeta().hasLore() &&
-					damager.getItemInHand().getItemMeta().getLore().contains(this.getDisplayName()))
-			{
-				this.pvp(damager, (Player) event.getEntity());
-			}
-		} else if (damager != null &&
-				damager.getItemInHand().hasItemMeta() &&
-				damager.getItemInHand().getItemMeta().hasLore() &&
-				damager.getItemInHand().getItemMeta().getLore().contains(this.getDisplayName()))
+			this.pvp(damager, (Player) event.getEntity());
+		} else
 		{
 			this.pve(damager, (LivingEntity) event.getEntity());
 		}
