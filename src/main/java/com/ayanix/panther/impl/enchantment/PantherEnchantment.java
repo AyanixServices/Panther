@@ -35,6 +35,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -187,7 +188,10 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		return 0;
 	}
 
-	abstract void place(Player player, Block block);
+	protected void place(Player player, Block block)
+	{
+		// Do nothing
+	}
 
 	@EventHandler(ignoreCancelled = false)
 	public void onBlockDestroy(BlockBreakEvent event)
@@ -198,7 +202,10 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		}
 	}
 
-	abstract void mine(Player player, Block block);
+	protected void mine(Player player, Block block)
+	{
+		// Do nothing
+	}
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
@@ -232,9 +239,15 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		}
 	}
 
-	abstract void pve(Player player, LivingEntity enemy);
+	protected void pve(Player player, LivingEntity enemy)
+	{
+		// Do nothing
+	}
 
-	abstract void pvp(Player player, Player enemy);
+	protected void pvp(Player player, Player enemy)
+	{
+		// Do nothing.
+	}
 
 	@Override
 	public boolean equals(@Nullable Object enchantment)
@@ -253,6 +266,29 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 
 		return pEnchantment.getName().equals(this.getName()) &&
 				pEnchantment.getId() == this.getId();
+	}
+
+	protected void onEquip(Player player)
+	{
+		// Do nothing.
+	}
+
+	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public EnchantmentTarget getItemTarget()
+	{
+		return EnchantmentTarget.ALL;
+	}
+
+	@Override
+	public boolean conflictsWith(Enchantment enchantment)
+	{
+		return false;
 	}
 
 }
