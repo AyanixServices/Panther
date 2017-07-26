@@ -28,48 +28,30 @@
  */
 package com.ayanix.panther.utils;
 
-import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IItemUtils
+public interface IRandomUtils
 {
 
 	/**
-	 * Return whether or not the given string is a material.
-	 * This is case-sensitive.
+	 * Get a random integer between min and max, inclusive of both.
 	 *
-	 * @param materialName Material name.
-	 * @return If true, its a material.
+	 * @param min The minimum range.
+	 * @param max The maximum range, inclusive.
+	 * @return A random integer betewen the two values.
 	 */
-	boolean isMaterial(@Nullable String materialName);
+	int getInteger(int min, int max);
 
 	/**
-	 * Converts an ItemStack into a string for saving.
+	 * Get a random element from a list.
 	 *
-	 * @param item The item to generate as String.
-	 * @return A string compressed version of item.
+	 * @param list List to grab element from.
+	 * @return A random element from given list.
 	 */
-	String itemToString(@Nullable ItemStack item);
-
-	/**
-	 * Converts a compressed item string into an ItemStack.
-	 *
-	 * @param item The string version of the item.
-	 * @return An ItemStack.
-	 */
-	ItemStack stringToItem(@Nullable String item);
-
-	/**
-	 * Checks whether or not the items match.
-	 * This only applies to names, types, data and lores.
-	 *
-	 * @param itemA The first item to check.
-	 * @param itemB The second item to compare with.
-	 */
-	boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB);
+	<E> E getElement(List<E> list);
 
 }

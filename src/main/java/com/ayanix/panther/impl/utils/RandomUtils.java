@@ -26,50 +26,40 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.impl.utils;
 
-import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import com.ayanix.panther.utils.IRandomUtils;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IItemUtils
+public class RandomUtils implements IRandomUtils
 {
 
-	/**
-	 * Return whether or not the given string is a material.
-	 * This is case-sensitive.
-	 *
-	 * @param materialName Material name.
-	 * @return If true, its a material.
-	 */
-	boolean isMaterial(@Nullable String materialName);
+	private static Random RANDOM;
 
-	/**
-	 * Converts an ItemStack into a string for saving.
-	 *
-	 * @param item The item to generate as String.
-	 * @return A string compressed version of item.
-	 */
-	String itemToString(@Nullable ItemStack item);
+	static
+	{
+		if (RANDOM == null)
+		{
+			RANDOM = new Random();
+		}
+	}
 
-	/**
-	 * Converts a compressed item string into an ItemStack.
-	 *
-	 * @param item The string version of the item.
-	 * @return An ItemStack.
-	 */
-	ItemStack stringToItem(@Nullable String item);
+	@Override
+	public int getInteger(int min, int max)
+	{
+		return RANDOM.nextInt((max - min) + 1) + min;
+	}
 
-	/**
-	 * Checks whether or not the items match.
-	 * This only applies to names, types, data and lores.
-	 *
-	 * @param itemA The first item to check.
-	 * @param itemB The second item to compare with.
-	 */
-	boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB);
+	@Override
+	public <E> E getElement(List<E> list)
+	{
+		return list.get(RANDOM.nextInt(list.size()));
+	}
 
 }

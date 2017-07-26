@@ -28,48 +28,53 @@
  */
 package com.ayanix.panther.utils;
 
-import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import com.ayanix.panther.impl.utils.RandomUtils;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.fail;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IItemUtils
+@RunWith(PowerMockRunner.class)
+public class RandomUtilsTest
 {
 
-	/**
-	 * Return whether or not the given string is a material.
-	 * This is case-sensitive.
-	 *
-	 * @param materialName Material name.
-	 * @return If true, its a material.
-	 */
-	boolean isMaterial(@Nullable String materialName);
+	@Test
+	public void testInteger()
+	{
+		RandomUtils randomUtils = new RandomUtils();
 
-	/**
-	 * Converts an ItemStack into a string for saving.
-	 *
-	 * @param item The item to generate as String.
-	 * @return A string compressed version of item.
-	 */
-	String itemToString(@Nullable ItemStack item);
+		int min = 100;
+		int max = 200;
 
-	/**
-	 * Converts a compressed item string into an ItemStack.
-	 *
-	 * @param item The string version of the item.
-	 * @return An ItemStack.
-	 */
-	ItemStack stringToItem(@Nullable String item);
+		int random = randomUtils.getInteger(min, max);
 
-	/**
-	 * Checks whether or not the items match.
-	 * This only applies to names, types, data and lores.
-	 *
-	 * @param itemA The first item to check.
-	 * @param itemB The second item to compare with.
-	 */
-	boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB);
+		if (random < min || random > max)
+		{
+			fail("Random integer cannot be larger or smaller than range");
+		}
+	}
+
+	@Test
+	public void testArray()
+	{
+		RandomUtils randomUtils = new RandomUtils();
+
+		List<String> list = new ArrayList<>();
+
+		list.add("banana");
+		list.add("apple");
+		list.add("orange");
+
+		Assert.assertTrue("Random element from list must be contained in list", list.contains(randomUtils.getElement(list)));
+	}
 
 }

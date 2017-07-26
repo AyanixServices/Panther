@@ -208,4 +208,39 @@ public class ItemUtils implements IItemUtils
 		return true;
 	}
 
+	@Override
+	public boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB)
+	{
+		if (itemA == null ||
+				itemB == null)
+		{
+			return false;
+		}
+
+		if (itemA.getType() != itemB.getType())
+		{
+			return false;
+		}
+
+		if (itemA.getDurability() != itemB.getDurability())
+		{
+			return false;
+		}
+
+		ItemMeta metaA = itemA.hasItemMeta() ? itemA.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemA.getType());
+		ItemMeta metaB = itemB.hasItemMeta() ? itemB.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemB.getType());
+
+		if (!metaA.getLore().equals(metaB.getLore()))
+		{
+			return false;
+		}
+
+		if (!metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName()))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 }
