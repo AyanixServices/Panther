@@ -81,6 +81,7 @@
             <groupId>org.checkerframework</groupId>
             <artifactId>checker-qual</artifactId>
             <version>2.1.13</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.checkerframework</groupId>
@@ -91,6 +92,7 @@
             <groupId>org.checkerframework</groupId>
             <artifactId>jdk8</artifactId>
             <version>2.1.13</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -127,7 +129,7 @@
                     <outputDirectory>${project.basedir}/out/</outputDirectory>
                 </configuration>
             </plugin>
-            
+
             <!-- Don't need a /target/ folder after installing !-->
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
