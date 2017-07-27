@@ -74,7 +74,7 @@ public class DependencyChecks implements IDependencyChecks
 			{
 				allEnabled = false;
 
-				String error = "✘ Missing " + pluginName;
+				String error = "\u2718 Missing " + pluginName;
 
 				if (!version.isEmpty())
 				{
@@ -86,7 +86,7 @@ public class DependencyChecks implements IDependencyChecks
 				continue;
 			}
 
-			plugin.getLogger().info("✔ " + pluginName + " detected");
+			plugin.getLogger().info("\u2714 " + pluginName + " detected");
 		}
 
 		return allEnabled;
