@@ -57,7 +57,7 @@ public class YAMLStorageTest
 		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
 		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
 		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
-		PowerMockito.when(plugin.getDataFolder()).thenReturn(new File(System.getProperty("user.dir") + File.pathSeparator + "target"));
+		PowerMockito.when(plugin.getDataFolder()).thenReturn(new File(System.getProperty("user.dir") + File.separator + "target"));
 
 		/* Test loading storage */
 		YAMLStorage storage = PowerMockito.spy(new YAMLStorage(plugin, "test"));

@@ -57,7 +57,7 @@ public class LocaleTest
 		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
 		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
 		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
-		PowerMockito.when(plugin.getDataFolder()).thenReturn(new File(System.getProperty("user.dir") + File.pathSeparator + "target"));
+		PowerMockito.when(plugin.getDataFolder()).thenReturn(new File(System.getProperty("user.dir") + File.separator + "target"));
 
 		Locale locale = PowerMockito.spy(new Locale(plugin, "locale"));
 
