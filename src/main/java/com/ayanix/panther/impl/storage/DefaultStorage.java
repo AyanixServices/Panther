@@ -29,6 +29,7 @@
 package com.ayanix.panther.impl.storage;
 
 import com.ayanix.panther.storage.IDefaultStorage;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -63,6 +64,20 @@ public class DefaultStorage implements IDefaultStorage
 
 		for (String key : configuration.getKeys(false))
 		{
+			ConfigurationSection section = configuration.getConfigurationSection(key);
+
+			if (section != null)
+			{
+				for (String innerKey : section.getKeys(false))
+				{
+					String totalKey = key + "." + innerKey;
+
+					defaultValues.put(totalKey, configuration.get(totalKey));
+				}
+
+				continue;
+			}
+
 			defaultValues.put(key, configuration.get(key));
 		}
 	}

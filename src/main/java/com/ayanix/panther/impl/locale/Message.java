@@ -108,7 +108,7 @@ public class Message implements IMessage
 
 		String toString = builder.toString();
 
-		toString = toString.substring(0, toString.length() - 2);
+		toString = toString.substring(0, toString.length() - 1);
 
 		return toString;
 	}
