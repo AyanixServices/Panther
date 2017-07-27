@@ -46,7 +46,7 @@ public abstract class GUIItem implements IGUIItem
 	 */
 	public GUIItem(@NonNull ItemStack item)
 	{
-		if (this.item == null)
+		if (item == null)
 		{
 			throw new IllegalArgumentException("Item cannot be null");
 		}
@@ -63,7 +63,7 @@ public abstract class GUIItem implements IGUIItem
 	@Override
 	public void setItemStack(@NonNull ItemStack item)
 	{
-		if (this.item == null)
+		if (item == null)
 		{
 			throw new IllegalArgumentException("Item cannot be null");
 		}

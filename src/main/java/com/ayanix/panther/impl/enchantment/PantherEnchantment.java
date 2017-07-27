@@ -121,12 +121,6 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		item.addUnsafeEnchantment(this, level);
 	}
 
-	@Override
-	public String getDisplayName()
-	{
-		return this.name;
-	}
-
 	@EventHandler(ignoreCancelled = false)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
@@ -186,6 +180,12 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		}
 
 		return 0;
+	}
+
+	@Override
+	public String getDisplayName()
+	{
+		return this.name;
 	}
 
 	protected void place(Player player, Block block)
@@ -268,15 +268,15 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 				pEnchantment.getId() == this.getId();
 	}
 
-	protected void onEquip(Player player)
-	{
-		// Do nothing.
-	}
-
 	@Override
 	public String getName()
 	{
 		return name;
+	}
+
+	protected void onEquip(Player player)
+	{
+		// Do nothing.
 	}
 
 	@Override
