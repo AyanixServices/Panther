@@ -26,7 +26,7 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.utils.item;
 
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;

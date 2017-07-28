@@ -26,9 +26,9 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.utils;
+package com.ayanix.panther.impl.utils.item;
 
-import com.ayanix.panther.utils.IItemUtils;
+import com.ayanix.panther.utils.item.IItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
