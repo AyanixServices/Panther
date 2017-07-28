@@ -53,6 +53,15 @@ public class HikariMySQLStorage implements ISQLStorage
 	                   String database,
 	                   String table)
 	{
+		if (host == null ||
+				username == null ||
+				password == null ||
+				table == null ||
+				database == null)
+		{
+			throw new IllegalArgumentException("Parameters cannot be null");
+		}
+
 		this.table = table;
 
 		HikariConfig config = new HikariDataSource();
@@ -108,7 +117,13 @@ public class HikariMySQLStorage implements ISQLStorage
 
 		public HikariSQLStorageBuilder()
 		{
-
+			/* Default parameters for testing */
+			this.host = "localhost";
+			this.port = 3306;
+			this.username = "root";
+			this.password = "";
+			this.database = "minecraft";
+			this.table = "minecraft";
 		}
 
 		public HikariSQLStorageBuilder host(String host)
