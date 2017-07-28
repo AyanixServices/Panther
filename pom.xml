@@ -55,6 +55,20 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- SQL !-->
+        <dependency>
+            <groupId>org.sql2o</groupId>
+            <artifactId>sql2o</artifactId>
+            <version>1.5.4</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>2.6.2</version>
+            <scope>compile</scope>
+        </dependency>
+
         <!-- Testing !-->
         <dependency>
             <groupId>junit</groupId>
@@ -118,6 +132,39 @@
                         <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+
+            <!-- Shading !-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.3</version>
+                <configuration>
+                    <minimizeJar>true</minimizeJar>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                    <relocations>
+                        <relocation>
+                            <pattern>org.sql2o</pattern>
+                            <shadedPattern>com.ayanix.panther.lib.sql2o</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.zaxxer.hikari</pattern>
+                            <shadedPattern>com.ayanix.panther.lib.hikari</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.slf4j</pattern>
+                            <shadedPattern>com.ayanix.panther.lib.slf4j</shadedPattern>
+                        </relocation>
+                    </relocations>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- Creating a jar is pretty useless however its nice to have !-->
