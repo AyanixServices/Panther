@@ -29,52 +29,44 @@
 package com.ayanix.panther.impl.utils.item;
 
 import com.ayanix.panther.utils.item.IItemBuilder;
+import com.ayanix.panther.utils.item.IPotionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class ItemBuilder implements IItemBuilder
+public class PotionBuilder extends ItemBuilder implements IPotionBuilder
 {
 
-	protected Material                      material;
-	protected int                           amount;
-	protected short                         data;
-	protected String                        name;
-	protected List<String>                  lore;
-	protected HashMap<Enchantment, Integer> enchants;
-	protected Color                         color;
+	private PotionEffectType type;
+	private int              amplifier;
+	private boolean          splash;
+	private boolean          extended;
 
-	public ItemBuilder(Material material)
+	public PotionBuilder(PotionEffectType type)
 	{
-		this.material = material;
-		this.amount = 1;
-		this.data = 0;
-		this.name = "";
-		this.lore = new ArrayList<>();
-		this.enchants = new HashMap<>();
-		this.color = null;
+		super(Material.POTION);
+
+		this.type = type;
+		this.amplifier = 0;
+		this.splash = false;
+		this.extended = false;
 	}
 
 	@Override
-	public IItemBuilder amount(int amount)
+	public IPotionBuilder amount(int amount)
 	{
-		if (amount < 1 || amount > 64)
-		{
-			throw new IllegalArgumentException("Amount cannot be less than 1 or greater than 64");
-		}
-
-		this.amount = amount;
+		super.amount(amount);
 
 		return this;
 	}
@@ -82,44 +74,39 @@ public class ItemBuilder implements IItemBuilder
 	@Override
 	public IItemBuilder data(short data)
 	{
-		if (data < 0)
-		{
-			throw new IllegalArgumentException("Data cannot be negative");
-		}
+		super.data(data);
 
-		this.data = data;
-
-		return null;
+		return this;
 	}
 
 	@Override
 	public IItemBuilder name(String name)
 	{
-		this.name = name;
+		super.name(name);
 
-		return null;
+		return this;
 	}
 
 	@Override
 	public IItemBuilder lore(List<String> lore)
 	{
-		this.lore = lore;
+		super.lore(lore);
 
-		return null;
+		return this;
 	}
 
 	@Override
 	public IItemBuilder enchant(Enchantment enchantment, int level)
 	{
-		this.enchants.put(enchantment, level);
+		super.enchant(enchantment, level);
 
-		return null;
+		return this;
 	}
 
 	@Override
 	public IItemBuilder color(Color color)
 	{
-		this.color = color;
+		super.color(color);
 
 		return this;
 	}
@@ -127,27 +114,56 @@ public class ItemBuilder implements IItemBuilder
 	@Override
 	public ItemStack build()
 	{
-		ItemStack item = new ItemStack(material);
+		ItemStack item = new ItemStack(super.material, 1, (short) 24576);
 
-		item.setAmount(amount);
-		item.setDurability(data);
+		PotionMeta meta = (PotionMeta) Bukkit.getItemFactory().getItemMeta(super.material);
 
-		ItemMeta meta = Bukkit.getItemFactory().getItemMeta(material);
+		meta.setMainEffect(type);
 
-		if (!name.isEmpty())
+		if (!super.name.isEmpty())
 		{
-			meta.setDisplayName(name);
+			meta.setDisplayName(super.name);
 		}
 
-		meta.setLore(lore);
+		meta.setLore(super.lore);
 
 		item.setItemMeta(meta);
 
-		for (Enchantment enchantment : enchants.keySet())
+		Potion potion = Potion.fromItemStack(item);
+
+		potion.setSplash(splash);
+		potion.setHasExtendedDuration(extended);
+
+		return potion.toItemStack(amount);
+	}
+
+	@Override
+	public IPotionBuilder amplifier(int amplifier)
+	{
+		if (amplifier < 0)
 		{
-			item.addUnsafeEnchantment(enchantment, enchants.get(enchantment));
+			throw new IllegalArgumentException("Amplifier cannot be negative");
 		}
 
-		return item;
+		this.amplifier = amplifier;
+
+		return this;
 	}
+
+	@Override
+	public IPotionBuilder splash(boolean splash)
+	{
+		this.splash = splash;
+
+		return this;
+	}
+
+	@Override
+	public IPotionBuilder extended(boolean extended)
+	{
+		this.extended = extended;
+
+		return this;
+	}
+
 }
