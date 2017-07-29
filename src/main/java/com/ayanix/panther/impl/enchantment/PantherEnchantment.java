@@ -43,12 +43,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -60,17 +64,24 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 
 	private final RomanNumerals ROMAN_NUMERALS;
 	private       String        name;
+	private       List<Player>  toggled;
+	private       JavaPlugin    plugin;
+	@Nullable
+	private       BukkitTask    task;
 
 	/**
 	 * @param id   Unique ID of the enchantment.
 	 * @param name Unique name of the enchantment.
 	 */
-	public PantherEnchantment(int id, String name)
+	public PantherEnchantment(JavaPlugin plugin, int id, String name)
 	{
 		super(id);
 
+		this.plugin = plugin;
 		this.name = ChatColor.translateAlternateColorCodes('&', name);
 		this.ROMAN_NUMERALS = new RomanNumerals();
+		this.toggled = new ArrayList<>();
+		this.task = null;
 	}
 
 	@Override
@@ -207,7 +218,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		// Do nothing
 	}
 
-	@EventHandler
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
 	{
 		Player damager = null;
@@ -274,9 +285,64 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		return name;
 	}
 
-	protected void onEquip(Player player)
+	@EventHandler(ignoreCancelled = true)
+	public void onPlayerEquip(PlayerItemHeldEvent e)
 	{
-		// Do nothing.
+		Player    player = e.getPlayer();
+		ItemStack item   = player.getInventory().getItem(e.getNewSlot());
+
+		int level = getLevel(item);
+
+		if (level == 0)
+		{
+			return;
+		}
+
+		this.toggled.add(player);
+
+		runEquipTimer();
+	}
+
+	public void runEquipTimer()
+	{
+		if (this.task != null)
+		{
+			return;
+		}
+
+		this.task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Iterator<Player> iterator = toggled.iterator();
+
+				while (iterator.hasNext())
+				{
+					Player player = iterator.next();
+
+					int level = 0;
+
+					for (ItemStack item : player.getInventory().getArmorContents())
+					{
+						int cLevel = getLevel(item);
+
+						if (cLevel > level)
+						{
+							level = cLevel;
+						}
+					}
+
+					if (level == 0)
+					{
+						iterator.remove();
+						continue;
+					}
+
+					equipTask(player, level);
+				}
+			}
+		}, 0, 5 * 20);
 	}
 
 	@Override
@@ -289,6 +355,12 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	public boolean conflictsWith(Enchantment enchantment)
 	{
 		return false;
+	}
+
+	/* This runs every 5 seconds. */
+	protected void equipTask(Player player, int level)
+	{
+		// Do nothing.
 	}
 
 }
