@@ -35,6 +35,7 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class ItemBuilder implements IItemBuilder
 		this.name = "";
 		this.lore = new ArrayList<>();
 		this.enchants = new HashMap<>();
-		this.color = null;
+		this.color = Color.AQUA;
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class ItemBuilder implements IItemBuilder
 
 		this.data = data;
 
-		return null;
+		return this;
 	}
 
 	@Override
@@ -97,7 +98,7 @@ public class ItemBuilder implements IItemBuilder
 	{
 		this.name = name;
 
-		return null;
+		return this;
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class ItemBuilder implements IItemBuilder
 	{
 		this.lore = lore;
 
-		return null;
+		return this;
 	}
 
 	@Override
@@ -113,7 +114,7 @@ public class ItemBuilder implements IItemBuilder
 	{
 		this.enchants.put(enchantment, level);
 
-		return null;
+		return this;
 	}
 
 	@Override
@@ -141,7 +142,10 @@ public class ItemBuilder implements IItemBuilder
 
 		meta.setLore(lore);
 
-		item.setItemMeta(meta);
+		LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+		armorMeta.setColor(color);
+
+		item.setItemMeta(armorMeta);
 
 		for (Enchantment enchantment : enchants.keySet())
 		{
