@@ -97,6 +97,18 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
+	public String getName()
+	{
+		return name;
+	}
+
+	@Override
+	public String getDisplayName()
+	{
+		return this.name;
+	}
+
+	@Override
 	public List<Material> getEnchantable()
 	{
 		return new ArrayList<>();
@@ -130,15 +142,6 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
 		item.addUnsafeEnchantment(this, level);
-	}
-
-	@EventHandler(ignoreCancelled = false)
-	public void onBlockPlace(BlockPlaceEvent event)
-	{
-		if (isEnchanted(event.getPlayer().getItemInHand()))
-		{
-			this.place(event.getPlayer(), event.getBlock());
-		}
 	}
 
 	@Override
@@ -194,73 +197,6 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public String getDisplayName()
-	{
-		return this.name;
-	}
-
-	protected void place(Player player, Block block)
-	{
-		// Do nothing
-	}
-
-	@EventHandler(ignoreCancelled = false)
-	public void onBlockDestroy(BlockBreakEvent event)
-	{
-		if (isEnchanted(event.getPlayer().getItemInHand()))
-		{
-			this.mine(event.getPlayer(), event.getBlock());
-		}
-	}
-
-	protected void mine(Player player, Block block)
-	{
-		// Do nothing
-	}
-
-	@EventHandler(ignoreCancelled = true)
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
-	{
-		Player damager = null;
-
-		if (event.getDamager() instanceof Player)
-		{
-			damager = (Player) event.getDamager();
-		} else if (event.getDamager() instanceof Arrow && ((Arrow) event.getDamager()).getShooter() instanceof Player)
-		{
-			damager = (Player) ((Arrow) event.getDamager()).getShooter();
-		}
-
-		if (damager == null)
-		{
-			return;
-		}
-
-		if (!isEnchanted(damager.getItemInHand()))
-		{
-			return;
-		}
-
-		if (event.getEntity() instanceof Player)
-		{
-			this.pvp(damager, (Player) event.getEntity());
-		} else
-		{
-			this.pve(damager, (LivingEntity) event.getEntity());
-		}
-	}
-
-	protected void pve(Player player, LivingEntity enemy)
-	{
-		// Do nothing
-	}
-
-	protected void pvp(Player player, Player enemy)
-	{
-		// Do nothing.
-	}
-
-	@Override
 	public boolean equals(@Nullable Object enchantment)
 	{
 		if (enchantment == null)
@@ -279,13 +215,8 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 				pEnchantment.getId() == this.getId();
 	}
 
-	@Override
-	public String getName()
-	{
-		return name;
-	}
-
-	@EventHandler(ignoreCancelled = true)
+	/* Listeners & enchantment methods */
+	@EventHandler(ignoreCancelled = false)
 	public void onPlayerEquip(PlayerItemHeldEvent e)
 	{
 		Player    player = e.getPlayer();
@@ -303,7 +234,19 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		runEquipTimer();
 	}
 
-	public void runEquipTimer()
+	@Override
+	public EnchantmentTarget getItemTarget()
+	{
+		return EnchantmentTarget.ALL;
+	}
+
+	@Override
+	public boolean conflictsWith(Enchantment enchantment)
+	{
+		return false;
+	}
+
+	private void runEquipTimer()
 	{
 		if (this.task != null)
 		{
@@ -345,22 +288,82 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		}, 0, 5 * 20);
 	}
 
-	@Override
-	public EnchantmentTarget getItemTarget()
-	{
-		return EnchantmentTarget.ALL;
-	}
-
-	@Override
-	public boolean conflictsWith(Enchantment enchantment)
-	{
-		return false;
-	}
-
-	/* This runs every 5 seconds. */
+	/*
+	 * This method runs every 5 seconds.
+	 */
 	protected void equipTask(Player player, int level)
 	{
 		// Do nothing.
+	}
+
+	@EventHandler(ignoreCancelled = false)
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
+	{
+		Player damager = null;
+
+		if (event.getDamager() instanceof Player)
+		{
+			damager = (Player) event.getDamager();
+		} else if (event.getDamager() instanceof Arrow && ((Arrow) event.getDamager()).getShooter() instanceof Player)
+		{
+			damager = (Player) ((Arrow) event.getDamager()).getShooter();
+		}
+
+		if (damager == null)
+		{
+			return;
+		}
+
+		if (!isEnchanted(damager.getItemInHand()))
+		{
+			return;
+		}
+
+		if (event.getEntity() instanceof Player)
+		{
+			this.pvp(damager, (Player) event.getEntity());
+		} else
+		{
+			this.pve(damager, (LivingEntity) event.getEntity());
+		}
+	}
+
+	protected void pve(Player player, LivingEntity enemy)
+	{
+		// Do nothing
+	}
+
+	protected void pvp(Player player, Player enemy)
+	{
+		// Do nothing.
+	}
+
+	@EventHandler(ignoreCancelled = false)
+	public void onBlockPlace(BlockPlaceEvent event)
+	{
+		if (isEnchanted(event.getPlayer().getItemInHand()))
+		{
+			this.place(event.getPlayer(), event.getBlock());
+		}
+	}
+
+	protected void place(Player player, Block block)
+	{
+		// Do nothing
+	}
+
+	@EventHandler(ignoreCancelled = false)
+	public void onBlockDestroy(BlockBreakEvent event)
+	{
+		if (isEnchanted(event.getPlayer().getItemInHand()))
+		{
+			this.mine(event.getPlayer(), event.getBlock());
+		}
+	}
+
+	protected void mine(Player player, Block block)
+	{
+		// Do nothing
 	}
 
 }
