@@ -54,13 +54,17 @@ public class ItemUtils implements IItemUtils
 			return "";
 		}
 
-		String                    itemString            = "";
 		String                    mat                   = item.getType().toString();
+		short                     durability            = item.getDurability();
 		String                    amount                = ((Integer) item.getAmount()).toString();
 		Map<Enchantment, Integer> enchants              = item.getEnchantments();
-		String                    fullEnchantmentString = "";
+		StringBuilder             fullEnchantmentString = new StringBuilder();
+		StringBuilder             itemString            = new StringBuilder(mat + " " + amount);
 
-		itemString = mat + " " + amount;
+		if (durability != 0)
+		{
+			itemString = new StringBuilder(mat + ":" + durability + " " + amount);
+		}
 
 		if (item.hasItemMeta())
 		{
@@ -69,7 +73,7 @@ public class ItemUtils implements IItemUtils
 				String displayName = item.getItemMeta().getDisplayName();
 				displayName = displayName.replace(" ", "_");
 
-				itemString += " " + displayName;
+				itemString.append(" ").append(displayName);
 			} catch (NullPointerException ignored)
 			{
 			}
@@ -80,7 +84,7 @@ public class ItemUtils implements IItemUtils
 
 				for (String message : lore)
 				{
-					itemString += " lore:" + message;
+					itemString.append(" lore:").append(message);
 				}
 			} catch (NullPointerException ignored)
 			{
@@ -93,15 +97,15 @@ public class ItemUtils implements IItemUtils
 		{
 			Enchantment ench     = e.getKey();
 			int         level    = e.getValue();
-			String      enchName = e.getKey().getName();
+			String      enchName = ench.getName();
 
-			fullEnchantmentString += " " + enchName + ":" + level;
+			fullEnchantmentString.append(" ").append(enchName).append(":").append(level);
 		}
 
-		if (!fullEnchantmentString.equals(""))
-			itemString = itemString + fullEnchantmentString;
+		if (!fullEnchantmentString.toString().equals(""))
+			itemString.append(fullEnchantmentString);
 
-		return itemString;
+		return itemString.toString();
 	}
 
 	@Override
@@ -117,6 +121,14 @@ public class ItemUtils implements IItemUtils
 		List<String> itemWordList = Arrays.asList(itemSplit);
 
 		String materialName = itemWordList.get(0);
+		int    durability   = 0;
+
+		if (materialName.contains(":"))
+		{
+			String[] materialData = materialName.split(":");
+			materialName = materialData[0];
+			durability = Integer.parseInt(materialData[1]);
+		}
 
 		if (!isMaterial(materialName))
 		{
@@ -137,11 +149,11 @@ public class ItemUtils implements IItemUtils
 		String       name = null;
 		List<String> lore = new ArrayList<>();
 
-		Map<Enchantment, Integer> enchantments = new HashMap<Enchantment, Integer>();
+		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
-		for (String word : itemWordList)
+		for (int x = 1; x < itemWordList.size(); x++)
 		{
-			String[] parts = word.split(":");
+			String[] parts = itemWordList.get(x).split(":");
 
 			switch (parts[0])
 			{
@@ -161,7 +173,13 @@ public class ItemUtils implements IItemUtils
 
 			try
 			{
-				Enchantment enchantment = Enchantment.getByName(parts[0]);
+				Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase());
+
+				if (enchantment == null)
+				{
+					continue;
+				}
+
 				int         level       = Integer.valueOf(parts[1]);
 
 				enchantments.put(enchantment, level);
@@ -170,7 +188,7 @@ public class ItemUtils implements IItemUtils
 			}
 		}
 
-		ItemStack itemStack = new ItemStack(mat, amount);
+		ItemStack itemStack = new ItemStack(mat, amount, (short) durability);
 		ItemMeta  itemMeta  = Bukkit.getItemFactory().getItemMeta(mat);
 
 		if (name != null)
@@ -230,17 +248,39 @@ public class ItemUtils implements IItemUtils
 		ItemMeta metaA = itemA.hasItemMeta() ? itemA.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemA.getType());
 		ItemMeta metaB = itemB.hasItemMeta() ? itemB.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemB.getType());
 
-		if (!metaA.getLore().equals(metaB.getLore()))
+		if (metaA.getLore().size() != metaB.getLore().size())
 		{
 			return false;
 		}
 
-		if (!metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName()))
+		for (int x = 0; x < Math.max(metaA.getLore().size(), metaB.getLore().size()); x++)
 		{
-			return false;
+			if (!metaA.getLore().get(x).equals(metaB.getLore().get(x)))
+			{
+				return false;
+			}
 		}
 
-		return true;
+		return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
+	}
+
+	@Override
+	public List<Material> getMaterialsContaining(String... str)
+	{
+		List<Material> matching = new ArrayList<>();
+
+		for (String string : str)
+		{
+			for (Material material : Material.values())
+			{
+				if (material.name().toLowerCase().contains(string.toLowerCase()))
+				{
+					matching.add(material);
+				}
+			}
+		}
+
+		return matching;
 	}
 
 }

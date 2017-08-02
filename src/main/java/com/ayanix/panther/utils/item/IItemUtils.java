@@ -28,8 +28,11 @@
  */
 package com.ayanix.panther.utils.item;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -71,5 +74,13 @@ public interface IItemUtils
 	 * @param itemB The second item to compare with.
 	 */
 	boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB);
+
+	/**
+	 * Get materials which contain the keywords, not case-sensitive.
+	 *
+	 * @param str The strings which identify the materials.
+	 * @return A list of materials which match.
+	 */
+	List<Material> getMaterialsContaining(String... str);
 
 }

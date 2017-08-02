@@ -40,10 +40,10 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,19 +52,17 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public abstract class PantherEnchantment extends Enchantment implements IPantherEnchantment
+public abstract class PantherEnchantment extends Enchantment implements IPantherEnchantment, Listener
 {
 
 	private final RomanNumerals ROMAN_NUMERALS;
 	private       String        name;
-	private       List<Player>  toggled;
 	private       JavaPlugin    plugin;
 	@Nullable
 	private       BukkitTask    task;
@@ -73,6 +71,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	 * @param id   Unique ID of the enchantment.
 	 * @param name Unique name of the enchantment.
 	 */
+	@SuppressWarnings({"argument.type.incompatible", "method.invocation.invalid"})
 	public PantherEnchantment(JavaPlugin plugin, int id, String name)
 	{
 		super(id);
@@ -80,8 +79,11 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		this.plugin = plugin;
 		this.name = ChatColor.translateAlternateColorCodes('&', name);
 		this.ROMAN_NUMERALS = new RomanNumerals();
-		this.toggled = new ArrayList<>();
 		this.task = null;
+
+		Bukkit.getPluginManager().registerEvents(this, plugin);
+
+		runEquipTimer();
 	}
 
 	@Override
@@ -102,10 +104,30 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		return name;
 	}
 
-	@Override
-	public String getDisplayName()
+	/* Listeners & enchantment methods */
+	private void runEquipTimer()
 	{
-		return this.name;
+		if (this.task != null)
+		{
+			return;
+		}
+
+		this.task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+			for (Player player : Bukkit.getOnlinePlayers())
+			{
+				for (ItemStack item : player.getInventory().getArmorContents())
+				{
+					int level = getLevel(item);
+
+					if (level == 0)
+					{
+						continue;
+					}
+
+					equipTask(player, level);
+				}
+			}
+		}, 1, 5 * 20);
 	}
 
 	@Override
@@ -114,10 +136,12 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		return new ArrayList<>();
 	}
 
-	@Override
-	public boolean canEnchantItem(@Nullable ItemStack item)
+	/*
+	 * This method runs every 3 seconds.
+	 */
+	protected void equipTask(Player player, int level)
 	{
-		return item != null;
+		// Do nothing.
 	}
 
 	@Override
@@ -129,7 +153,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		}
 
 		ItemMeta     itemMeta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
-		List<String> lore     = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
+		List<String> lore     = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
 
 		if (isEnchanted(item))
 		{
@@ -197,41 +221,9 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public boolean equals(@Nullable Object enchantment)
+	public String getDisplayName()
 	{
-		if (enchantment == null)
-		{
-			return false;
-		}
-
-		if (!(enchantment instanceof PantherEnchantment))
-		{
-			return false;
-		}
-
-		PantherEnchantment pEnchantment = (PantherEnchantment) enchantment;
-
-		return pEnchantment.getName().equals(this.getName()) &&
-				pEnchantment.getId() == this.getId();
-	}
-
-	/* Listeners & enchantment methods */
-	@EventHandler(ignoreCancelled = false)
-	public void onPlayerEquip(PlayerItemHeldEvent e)
-	{
-		Player    player = e.getPlayer();
-		ItemStack item   = player.getInventory().getItem(e.getNewSlot());
-
-		int level = getLevel(item);
-
-		if (level == 0)
-		{
-			return;
-		}
-
-		this.toggled.add(player);
-
-		runEquipTimer();
+		return ChatColor.RESET + this.name;
 	}
 
 	@Override
@@ -246,57 +238,41 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		return false;
 	}
 
-	private void runEquipTimer()
+	@Override
+	public boolean equals(@Nullable Object enchantment)
 	{
-		if (this.task != null)
+		if (enchantment == null)
 		{
-			return;
+			return false;
 		}
 
-		this.task = Bukkit.getScheduler().runTaskTimer(plugin, new Runnable()
+		if (!(enchantment instanceof PantherEnchantment))
 		{
-			@Override
-			public void run()
-			{
-				Iterator<Player> iterator = toggled.iterator();
+			return false;
+		}
 
-				while (iterator.hasNext())
-				{
-					Player player = iterator.next();
+		PantherEnchantment pEnchantment = (PantherEnchantment) enchantment;
 
-					int level = 0;
-
-					for (ItemStack item : player.getInventory().getArmorContents())
-					{
-						int cLevel = getLevel(item);
-
-						if (cLevel > level)
-						{
-							level = cLevel;
-						}
-					}
-
-					if (level == 0)
-					{
-						iterator.remove();
-						continue;
-					}
-
-					equipTask(player, level);
-				}
-			}
-		}, 0, 5 * 20);
+		return pEnchantment.getName().equals(this.getName());
 	}
 
-	/*
-	 * This method runs every 5 seconds.
-	 */
-	protected void equipTask(Player player, int level)
+	@Override
+	public boolean canEnchantItem(@Nullable ItemStack item)
 	{
-		// Do nothing.
+		if (item == null)
+		{
+			return false;
+		}
+
+		if (getEnchantable().isEmpty())
+		{
+			return getItemTarget().includes(item);
+		}
+
+		return getEnchantable().contains(item.getType());
 	}
 
-	@EventHandler(ignoreCancelled = false)
+	@EventHandler(ignoreCancelled = true)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
 	{
 		Player damager = null;
@@ -314,17 +290,36 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 			return;
 		}
 
-		if (!isEnchanted(damager.getItemInHand()))
+		if (isEnchanted(damager.getItemInHand()))
 		{
-			return;
+			if (event.getEntity() instanceof Player)
+			{
+				Player player = (Player) event.getEntity();
+
+				if (player.getHealth() - event.getDamage() <= 0)
+				{
+					this.killed(damager, player);
+				} else
+				{
+					this.pvp(damager, player);
+				}
+			} else
+			{
+				this.pve(damager, (LivingEntity) event.getEntity());
+			}
 		}
 
 		if (event.getEntity() instanceof Player)
 		{
-			this.pvp(damager, (Player) event.getEntity());
-		} else
-		{
-			this.pve(damager, (LivingEntity) event.getEntity());
+			Player player = (Player) event.getEntity();
+
+			for (ItemStack item : player.getInventory().getArmorContents())
+			{
+				if (isEnchanted(item))
+				{
+					this.hurt(item, player, damager, event);
+				}
+			}
 		}
 	}
 
@@ -338,7 +333,17 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		// Do nothing.
 	}
 
-	@EventHandler(ignoreCancelled = false)
+	protected void hurt(ItemStack item, Player player, Player attacker, EntityDamageByEntityEvent event)
+	{
+		// Do nothing.
+	}
+
+	protected void killed(Player player, Player dead)
+	{
+		// Do nothing.
+	}
+
+	@EventHandler(ignoreCancelled = true)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if (isEnchanted(event.getPlayer().getItemInHand()))
@@ -352,16 +357,16 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		// Do nothing
 	}
 
-	@EventHandler(ignoreCancelled = false)
+	@EventHandler(ignoreCancelled = true)
 	public void onBlockDestroy(BlockBreakEvent event)
 	{
 		if (isEnchanted(event.getPlayer().getItemInHand()))
 		{
-			this.mine(event.getPlayer(), event.getBlock());
+			this.mine(event.getPlayer(), event.getBlock(), event);
 		}
 	}
 
-	protected void mine(Player player, Block block)
+	protected void mine(Player player, Block block, BlockBreakEvent event)
 	{
 		// Do nothing
 	}

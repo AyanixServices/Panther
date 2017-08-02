@@ -31,6 +31,7 @@ package com.ayanix.panther.impl.command;
 import com.ayanix.panther.command.IPantherCommand;
 import com.ayanix.panther.command.PantherSubCommand;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -42,7 +43,7 @@ import java.util.Arrays;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public abstract class PantherCommand extends Command implements IPantherCommand
+public abstract class PantherCommand extends Command implements IPantherCommand, CommandExecutor
 {
 
 	/**
@@ -50,9 +51,15 @@ public abstract class PantherCommand extends Command implements IPantherCommand
 	 *
 	 * @param name Name of command as specified in plugin.yml
 	 */
-	PantherCommand(String name)
+	public PantherCommand(String name)
 	{
 		super(name);
+	}
+
+	@Override
+	public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings)
+	{
+		return command.getName().equalsIgnoreCase(getName()) && execute(commandSender, s, strings);
 	}
 
 	@Override
