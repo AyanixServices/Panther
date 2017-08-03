@@ -62,6 +62,10 @@ public class LocationUtils implements ILocationUtils
 		builder.append(location.getBlockY());
 		builder.append(":");
 		builder.append(location.getBlockZ());
+		builder.append(":");
+		builder.append(location.getYaw());
+		builder.append(":");
+		builder.append(location.getPitch());
 
 		return builder.toString();
 	}
@@ -76,9 +80,9 @@ public class LocationUtils implements ILocationUtils
 
 		String[] parts = string.split(":");
 
-		if (parts.length != 4)
+		if (parts.length < 4)
 		{
-			throw new IllegalArgumentException("String parts is not equal to 4");
+			throw new IllegalArgumentException("String parts is not equal to or above 4");
 		}
 
 		World world = Bukkit.getWorld(parts[0]);
@@ -92,7 +96,11 @@ public class LocationUtils implements ILocationUtils
 		int y = Integer.valueOf(parts[2]);
 		int z = Integer.valueOf(parts[3]);
 
-		return new Location(world, x, y, z);
+		if(parts.length != 6) {
+			return new Location(world, x, y, z);
+		}
+
+		return new Location(world, x, y, z, Float.valueOf(parts[4]), Float.valueOf(parts[5]));
 	}
 
 	@Override
