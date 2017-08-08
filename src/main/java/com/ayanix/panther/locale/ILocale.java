@@ -28,8 +28,6 @@
  */
 package com.ayanix.panther.locale;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
@@ -48,6 +46,6 @@ public interface ILocale
 	 * @param key Key representing specific message.
 	 * @return A message.
 	 */
-	IMessage get(@NonNull String key);
+	IMessage get(String key);
 
 }

@@ -28,8 +28,6 @@
  */
 package com.ayanix.panther.storage;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.util.Map;
 
 /**
@@ -45,7 +43,7 @@ public interface IDefaultStorage
 	 * @param key    The key identifying the value.
 	 * @param object The default value to be inserted - cannot be null.
 	 */
-	void insert(@NonNull String key, @NonNull Object object);
+	void insert(String key, Object object);
 
 	/**
 	 * Get the default values with corresponding key.

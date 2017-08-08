@@ -31,7 +31,6 @@ package com.ayanix.panther.gui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -50,7 +49,7 @@ public interface IGUIItem
 	 *
 	 * @param item The ItemStack representing the GUIItem.
 	 */
-	void setItemStack(@NonNull ItemStack item);
+	void setItemStack(ItemStack item);
 
 	/**
 	 * Method ran when item is clicked.

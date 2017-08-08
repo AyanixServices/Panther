@@ -32,7 +32,6 @@ import com.ayanix.panther.storage.IDefaultStorage;
 import com.ayanix.panther.storage.IYAMLStorage;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -109,7 +108,7 @@ public class YAMLStorage implements IYAMLStorage
 	}
 
 	@Override
-	public void insertDefault(@NonNull IDefaultStorage defaultStorage)
+	public void insertDefault(IDefaultStorage defaultStorage)
 	{
 		if (defaultStorage == null)
 		{

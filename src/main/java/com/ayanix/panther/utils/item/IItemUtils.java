@@ -30,7 +30,6 @@ package com.ayanix.panther.utils.item;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public interface IItemUtils
 	 * @param materialName Material name.
 	 * @return If true, its a material.
 	 */
-	boolean isMaterial(@Nullable String materialName);
+	boolean isMaterial(String materialName);
 
 	/**
 	 * Converts an ItemStack into a string for saving.
@@ -56,7 +55,7 @@ public interface IItemUtils
 	 * @param item The item to generate as String.
 	 * @return A string compressed version of item.
 	 */
-	String itemToString(@Nullable ItemStack item);
+	String itemToString(ItemStack item);
 
 	/**
 	 * Converts a compressed item string into an ItemStack.
@@ -64,7 +63,7 @@ public interface IItemUtils
 	 * @param item The string version of the item.
 	 * @return An ItemStack.
 	 */
-	ItemStack stringToItem(@Nullable String item);
+	ItemStack stringToItem(String item);
 
 	/**
 	 * Checks whether or not the items match.
@@ -73,7 +72,7 @@ public interface IItemUtils
 	 * @param itemA The first item to check.
 	 * @param itemB The second item to compare with.
 	 */
-	boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB);
+	boolean areItemsEqual(ItemStack itemA, ItemStack itemB);
 
 	/**
 	 * Get materials which contain the keywords, not case-sensitive.

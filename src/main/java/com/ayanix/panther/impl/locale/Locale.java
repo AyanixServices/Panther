@@ -33,7 +33,6 @@ import com.ayanix.panther.locale.ILocale;
 import com.ayanix.panther.storage.IDefaultStorage;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +81,18 @@ public class Locale extends YAMLStorage implements ILocale
 		}
 	}
 
-	private void loadMessage(@NonNull String key)
+	@Override
+	public void insertDefault(IDefaultStorage defaultStorage)
+	{
+		super.insertDefault(defaultStorage);
+
+		for (String key : defaultStorage.getDefaultValues().keySet())
+		{
+			loadMessage(key);
+		}
+	}
+
+	private void loadMessage(String key)
 	{
 		if (key == null)
 		{
@@ -115,7 +125,7 @@ public class Locale extends YAMLStorage implements ILocale
 	}
 
 	@Override
-	public Message get(@NonNull String key)
+	public Message get(String key)
 	{
 		if (key == null)
 		{
@@ -131,17 +141,6 @@ public class Locale extends YAMLStorage implements ILocale
 		}
 
 		return new Message(key, Collections.singletonList(key));
-	}
-
-	@Override
-	public void insertDefault(@NonNull IDefaultStorage defaultStorage)
-	{
-		super.insertDefault(defaultStorage);
-
-		for (String key : defaultStorage.getDefaultValues().keySet())
-		{
-			loadMessage(key);
-		}
 	}
 
 }

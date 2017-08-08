@@ -30,7 +30,6 @@ package com.ayanix.panther.impl.gui;
 
 import com.ayanix.panther.gui.IGUIItem;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -44,7 +43,7 @@ public abstract class GUIItem implements IGUIItem
 	/**
 	 * @param item ItemStack representing item.
 	 */
-	public GUIItem(@NonNull ItemStack item)
+	public GUIItem(ItemStack item)
 	{
 		if (item == null)
 		{
@@ -61,7 +60,7 @@ public abstract class GUIItem implements IGUIItem
 	}
 
 	@Override
-	public void setItemStack(@NonNull ItemStack item)
+	public void setItemStack(ItemStack item)
 	{
 		if (item == null)
 		{

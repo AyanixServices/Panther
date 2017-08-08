@@ -60,7 +60,7 @@ public class DateUtils implements IDateUtils
 	}
 
 	@Override
-	public long parseDateDiff(String time, boolean future) throws Exception
+	public long parseDateDiff(String time, boolean future) throws DateTimeException
 	{
 		Matcher m       = TIME_PATTERN.matcher(time);
 		int     years   = 0;

@@ -48,8 +48,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +62,6 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	private final RomanNumerals ROMAN_NUMERALS;
 	private       String        name;
 	private       JavaPlugin    plugin;
-	@Nullable
 	private       BukkitTask    task;
 
 	/**
@@ -79,7 +76,6 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 		this.plugin = plugin;
 		this.name = ChatColor.translateAlternateColorCodes('&', name);
 		this.ROMAN_NUMERALS = new RomanNumerals();
-		this.task = null;
 
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 
@@ -145,7 +141,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public void apply(@NonNull ItemStack item, int level)
+	public void apply(ItemStack item, int level)
 	{
 		if (item == null)
 		{
@@ -169,13 +165,13 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public boolean isEnchanted(@Nullable ItemStack item)
+	public boolean isEnchanted(ItemStack item)
 	{
 		return getLevel(item) != 0;
 	}
 
 	@Override
-	public int getLevel(@Nullable ItemStack item)
+	public int getLevel(ItemStack item)
 	{
 		if (item == null)
 		{
@@ -239,7 +235,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public boolean equals(@Nullable Object enchantment)
+	public boolean equals(Object enchantment)
 	{
 		if (enchantment == null)
 		{
@@ -263,7 +259,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	public boolean canEnchantItem(@Nullable ItemStack item)
+	public boolean canEnchantItem(ItemStack item)
 	{
 		if (item == null)
 		{

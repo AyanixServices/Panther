@@ -32,8 +32,6 @@ import com.ayanix.panther.storage.IDefaultStorage;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
@@ -55,7 +53,7 @@ public class DefaultStorage implements IDefaultStorage
 	 * @param plugin Plugin where configuration is stored.
 	 * @param name   Name of default resource.
 	 */
-	public DefaultStorage(@Nullable JavaPlugin plugin, @Nullable String name)
+	public DefaultStorage(JavaPlugin plugin, String name)
 	{
 		if (plugin == null || name == null)
 		{
@@ -85,7 +83,7 @@ public class DefaultStorage implements IDefaultStorage
 	}
 
 	@Override
-	public void insert(@NonNull String key, @NonNull Object object)
+	public void insert(String key, Object object)
 	{
 		if (key == null)
 		{

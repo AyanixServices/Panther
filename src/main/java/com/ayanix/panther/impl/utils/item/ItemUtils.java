@@ -39,7 +39,6 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
 
@@ -51,7 +50,7 @@ public class ItemUtils implements IItemUtils
 {
 
 	@Override
-	public String itemToString(@Nullable ItemStack item)
+	public String itemToString(ItemStack item)
 	{
 		if (item == null)
 		{
@@ -115,7 +114,7 @@ public class ItemUtils implements IItemUtils
 	}
 
 	@Override
-	public ItemStack stringToItem(@Nullable String item)
+	public ItemStack stringToItem(String item)
 	{
 		if (item == null ||
 				item.isEmpty())
@@ -238,8 +237,6 @@ public class ItemUtils implements IItemUtils
 					}
 
 					continue;
-				default:
-					continue;
 			}
 
 			try
@@ -293,7 +290,7 @@ public class ItemUtils implements IItemUtils
 	}
 
 	@Override
-	public boolean isMaterial(@Nullable String materialName)
+	public boolean isMaterial(String materialName)
 	{
 		if (materialName == null)
 		{
@@ -312,7 +309,7 @@ public class ItemUtils implements IItemUtils
 	}
 
 	@Override
-	public boolean areItemsEqual(@Nullable ItemStack itemA, @Nullable ItemStack itemB)
+	public boolean areItemsEqual(ItemStack itemA, ItemStack itemB)
 	{
 		if (itemA == null ||
 				itemB == null)

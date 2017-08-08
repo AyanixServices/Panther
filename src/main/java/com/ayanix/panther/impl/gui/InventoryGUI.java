@@ -44,7 +44,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -119,7 +118,7 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	}
 
 	@Override
-	public void insert(int slot, @NonNull ItemStack item)
+	public void insert(int slot, ItemStack item)
 	{
 		if (item == null)
 		{
@@ -137,7 +136,7 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	}
 
 	@Override
-	public void insert(int slot, @NonNull IGUIItem item)
+	public void insert(int slot, IGUIItem item)
 	{
 		if (item == null)
 		{

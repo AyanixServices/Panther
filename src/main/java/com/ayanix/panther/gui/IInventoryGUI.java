@@ -30,7 +30,6 @@ package com.ayanix.panther.gui;
 
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -69,7 +68,7 @@ public interface IInventoryGUI
 	 * @param slot The corresponding slot, starting from 0.
 	 * @param item The GUIItem with action and ItemStack.
 	 */
-	void insert(int slot, @NonNull IGUIItem item);
+	void insert(int slot, IGUIItem item);
 
 	/**
 	 * Inserts an item into the GUI with no action.
@@ -77,7 +76,7 @@ public interface IInventoryGUI
 	 * @param slot The corresponding slot, starting from 0.
 	 * @param item The ItemStack.
 	 */
-	void insert(int slot, @NonNull ItemStack item);
+	void insert(int slot, ItemStack item);
 
 	/**
 	 * Remove all items from the GUI.

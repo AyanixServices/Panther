@@ -28,8 +28,6 @@
  */
 package com.ayanix.panther.utils;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import java.util.Map;
 
 /**
@@ -48,7 +46,7 @@ public interface IDependencyChecks
 	 * @param dependencies HashMap of dependencies - key is plugin, value is version.
 	 * @return If all dependencies are enabled.
 	 */
-	boolean runChecks(@NonNull Map<String, String> dependencies);
+	boolean runChecks(Map<String, String> dependencies);
 
 	/**
 	 * Checks if plugin is enabled and whether the correct version is supplied.
@@ -57,7 +55,7 @@ public interface IDependencyChecks
 	 * @param version The version checks the starting version, e.g. a parameter of 6 would work with 6.x.x versions.
 	 * @return If plugin is enabled and correct version is supplied.
 	 */
-	boolean isEnabled(@NonNull String plugin, String version);
+	boolean isEnabled(String plugin, String version);
 
 	/**
 	 * Checks whether plugin is enabled.
@@ -65,6 +63,6 @@ public interface IDependencyChecks
 	 * @param plugin Name of plugin.
 	 * @return If plugin is enabled.
 	 */
-	boolean isEnabled(@NonNull String plugin);
+	boolean isEnabled(String plugin);
 
 }

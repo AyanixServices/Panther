@@ -34,8 +34,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public class Message implements IMessage
 	}
 
 	@Override
-	public Message replace(@NonNull String key, @Nullable String value)
+	public Message replace(String key, String value)
 	{
 		if (key == null)
 		{
@@ -143,7 +141,7 @@ public class Message implements IMessage
 	}
 
 	@Override
-	public void send(@NonNull CommandSender sender)
+	public void send(CommandSender sender)
 	{
 		if (sender == null)
 		{

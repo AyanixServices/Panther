@@ -89,26 +89,6 @@
             <version>1.7.0</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Checker Framework !-->
-        <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>checker-qual</artifactId>
-            <version>2.1.13</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>checker</artifactId>
-            <version>2.1.13</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.checkerframework</groupId>
-            <artifactId>jdk8</artifactId>
-            <version>2.1.13</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
@@ -119,18 +99,6 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <!-- Checker Framework !-->
-                    <fork>true</fork>
-                    <compilerArguments>
-                        <Xmaxerrs>10000</Xmaxerrs>
-                        <Xmaxwarns>10000</Xmaxwarns>
-                    </compilerArguments>
-                    <annotationProcessors>
-                        <annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
-                    </annotationProcessors>
-                    <compilerArgs>
-                        <arg>-Xbootclasspath/p:${annotatedJdk}</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
 
@@ -194,10 +162,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <properties>
-        <!-- Checker Framework !-->
-        <annotatedJdk>${org.checkerframework:jdk8:jar}</annotatedJdk>
-    </properties>
 
 </project>

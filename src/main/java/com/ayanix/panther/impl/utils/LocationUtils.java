@@ -68,7 +68,7 @@ public class LocationUtils implements ILocationUtils
 	}
 
 	@Override
-	public Location fromString(String string) throws Exception
+	public Location fromString(String string) throws IllegalArgumentException
 	{
 		if (!string.contains(":"))
 		{

@@ -30,8 +30,6 @@ package com.ayanix.panther.enchantment;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
@@ -66,24 +64,24 @@ public interface IPantherEnchantment
 	 * @param item The item which wishes to be enchanted.
 	 * @return Whether or not the item can be enchanted.
 	 */
-	boolean canEnchantItem(@Nullable ItemStack item);
+	boolean canEnchantItem(ItemStack item);
 
 	/**
 	 * @param item  The item to be enchanted.
 	 * @param level The level of enchantment to apply.
 	 */
-	void apply(@NonNull ItemStack item, int level);
+	void apply(ItemStack item, int level);
 
 	/**
 	 * @param item The item to check.
 	 * @return The level of the enchantment applied to item, can be 0 if no enchantment.
 	 */
-	int getLevel(@Nullable ItemStack item);
+	int getLevel(ItemStack item);
 
 	/**
 	 * @param item The item to check.
 	 * @return Whether or not the item has the specific enchantment.
 	 */
-	boolean isEnchanted(@Nullable ItemStack item);
+	boolean isEnchanted(ItemStack item);
 
 }

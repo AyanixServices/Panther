@@ -29,8 +29,6 @@
 package com.ayanix.panther.locale;
 
 import org.bukkit.command.CommandSender;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.List;
 
@@ -54,7 +52,7 @@ public interface IMessage
 	 * @param key   Substring to replace, excluding { and }.
 	 * @param value Substring to replace with.
 	 */
-	IMessage replace(@NonNull String key, @Nullable String value);
+	IMessage replace(String key, String value);
 
 	/**
 	 * Get the formatted message in a String format.
@@ -97,7 +95,7 @@ public interface IMessage
 	 *
 	 * @param sender Message to be sent to.
 	 */
-	void send(@NonNull CommandSender sender);
+	void send(CommandSender sender);
 
 	/**
 	 * Broadcast the formatted message to all players online and console.

@@ -29,7 +29,6 @@
 package com.ayanix.panther.storage;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 
@@ -62,8 +61,8 @@ public interface IYAMLStorage
 	/**
 	 * Insert default configuration to replace missing values.
 	 *
-	 * @param storage Default configuration.
+	 * @param defaultStorage Default configuration.
 	 */
-	void insertDefault(@NonNull IDefaultStorage defaultStorage);
+	void insertDefault(IDefaultStorage defaultStorage);
 
 }
