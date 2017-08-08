@@ -34,6 +34,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -51,7 +52,8 @@ public class HikariMySQLStorage implements ISQLStorage
 	                   String username,
 	                   String password,
 	                   String database,
-	                   String table)
+	                   String table,
+	                   ThreadFactory factory)
 	{
 		if (host == null ||
 				username == null ||
@@ -76,6 +78,11 @@ public class HikariMySQLStorage implements ISQLStorage
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");
 		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+		if (factory != null)
+		{
+			config.setThreadFactory(factory);
+		}
 
 		dataSource = new HikariDataSource(config);
 		sql2o = new Sql2o(dataSource);
@@ -105,15 +112,17 @@ public class HikariMySQLStorage implements ISQLStorage
 		return this.table;
 	}
 
+	@SuppressWarnings({"uninitialised", "incompatible"})
 	public static class HikariSQLStorageBuilder
 	{
 
-		private String host;
-		private int    port;
-		private String username;
-		private String password;
-		private String database;
-		private String table;
+		private String        host;
+		private int           port;
+		private String        username;
+		private String        password;
+		private String        database;
+		private String        table;
+		private ThreadFactory factory;
 
 		public HikariSQLStorageBuilder()
 		{
@@ -124,6 +133,7 @@ public class HikariMySQLStorage implements ISQLStorage
 			this.password = "";
 			this.database = "minecraft";
 			this.table = "minecraft";
+			this.factory = null;
 		}
 
 		public HikariSQLStorageBuilder host(String host)
@@ -168,9 +178,16 @@ public class HikariMySQLStorage implements ISQLStorage
 			return this;
 		}
 
+		public HikariSQLStorageBuilder factory(ThreadFactory factory)
+		{
+			this.factory = factory;
+
+			return this;
+		}
+
 		public HikariMySQLStorage build()
 		{
-			return new HikariMySQLStorage(host, port, username, password, database, table);
+			return new HikariMySQLStorage(host, port, username, password, database, table, factory);
 		}
 
 	}

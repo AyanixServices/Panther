@@ -103,7 +103,7 @@ public class Message implements IMessage
 		for (String message : getList(formatted))
 		{
 			builder.append(message);
-			builder.append("\n");
+			builder.append('\n');
 		}
 
 		String toString = builder.toString();

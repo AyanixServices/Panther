@@ -69,18 +69,24 @@ public class YAMLStorage implements IYAMLStorage
 
 		this.plugin = plugin;
 		this.name = name;
+		String fullName = name + ".yml";
 
-		this.file = new File(plugin.getDataFolder(), name + ".yml");
+		this.file = new File(plugin.getDataFolder(), fullName);
 
 		if (!file.exists())
 		{
-			file.getParentFile().mkdirs();
+			if(!file.getParentFile().exists())
+			{
+				if(!file.getParentFile().mkdirs()) {
+					plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
+				}
+			}
 
 			try
 			{
 				if (!file.createNewFile())
 				{
-					plugin.getLogger().severe("Unable to create file: " + name + ".yml");
+					plugin.getLogger().severe("Unable to create file: " + fullName);
 				}
 			} catch (IOException e)
 			{

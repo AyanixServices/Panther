@@ -71,14 +71,11 @@ public abstract class PantherCommand extends Command implements IPantherCommand,
 			return true;
 		}
 
-		if (getPermission() != null && !getPermission().isEmpty())
+		if (getPermission() != null && !getPermission().isEmpty() && !commandSender.hasPermission(getPermission()))
 		{
-			if (!commandSender.hasPermission(getPermission()))
-			{
-				getPermissionError().send(commandSender);
+			getPermissionError().send(commandSender);
 
-				return true;
-			}
+			return true;
 		}
 
 		if (args.length < getMinArgs())
@@ -119,14 +116,11 @@ public abstract class PantherCommand extends Command implements IPantherCommand,
 					return true;
 				}
 
-				if (!subCommand.permission().isEmpty())
+				if (!subCommand.permission().isEmpty() && !commandSender.hasPermission(subCommand.permission()))
 				{
-					if (!commandSender.hasPermission(subCommand.permission()))
-					{
-						getPermissionError().send(commandSender);
+					getPermissionError().send(commandSender);
 
-						return true;
-					}
+					return true;
 				}
 
 				args = Arrays.copyOfRange(args, 1, args.length);

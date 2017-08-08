@@ -47,6 +47,7 @@ import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -164,9 +165,9 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	@Override
 	public void refresh()
 	{
-		for (int slot : items.keySet())
+		for(Map.Entry<Integer, IGUIItem> entry : items.entrySet())
 		{
-			inventory.setItem(slot, items.get(slot).getItemStack());
+			inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
 		}
 	}
 

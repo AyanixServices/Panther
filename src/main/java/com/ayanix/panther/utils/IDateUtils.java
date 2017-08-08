@@ -41,7 +41,7 @@ public interface IDateUtils
 	 * @param unixTime The unix timestamp.
 	 * @return If the timestamp has expired.
 	 */
-	public boolean shouldExpire(long unixTime);
+	boolean shouldExpire(long unixTime);
 
 	/**
 	 * Converts a time string to a unix timestamp.
@@ -51,7 +51,7 @@ public interface IDateUtils
 	 * @return A unix timestamp.
 	 * @throws Exception if the date input was invalid.
 	 */
-	public long parseDateDiff(String time, boolean future) throws Exception;
+	long parseDateDiff(String time, boolean future) throws Exception;
 
 	/**
 	 * Converts a unix timestamp to string format of time distance (1 years, 2 months etc)
@@ -59,6 +59,6 @@ public interface IDateUtils
 	 * @param unixTime The unix timestamp in future or past.
 	 * @return A date difference between unixTime and current time.
 	 */
-	public String formatDateDiff(long unixTime);
+	String formatDateDiff(long unixTime);
 
 }

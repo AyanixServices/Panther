@@ -36,6 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 /**
@@ -60,7 +61,7 @@ public class DefaultStorage implements IDefaultStorage
 			return;
 		}
 
-		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource(name + ".yml")));
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource(name + ".yml"), Charset.forName("UTF-8")));
 
 		for (String key : configuration.getKeys(false))
 		{

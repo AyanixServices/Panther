@@ -40,6 +40,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -147,9 +148,9 @@ public class ItemBuilder implements IItemBuilder
 
 		item.setItemMeta(armorMeta);
 
-		for (Enchantment enchantment : enchants.keySet())
+		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet())
 		{
-			item.addUnsafeEnchantment(enchantment, enchants.get(enchantment));
+			item.addUnsafeEnchantment(entry.getKey(), entry.getValue());
 		}
 
 		return item;

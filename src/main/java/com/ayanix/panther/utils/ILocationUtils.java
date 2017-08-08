@@ -43,7 +43,7 @@ public interface ILocationUtils
 	 * @param location The location to turn into a string.
 	 * @return The string version.
 	 */
-	public String toString(Location location);
+	String toString(Location location);
 
 	/**
 	 * Gets a Location from a #toString(Location) string.
@@ -52,7 +52,7 @@ public interface ILocationUtils
 	 * @return The location.
 	 * @throws Exception If the location was invalid
 	 */
-	public Location fromString(String string) throws Exception;
+	Location fromString(String string) throws Exception;
 
 	/**
 	 * Gets the center position of a block.
@@ -60,6 +60,6 @@ public interface ILocationUtils
 	 * @param location The location to get the center position of.
 	 * @return The center position (0.5, 0.5) of the given location.
 	 */
-	public Location getCenter(Location location);
+	Location getCenter(Location location);
 
 }

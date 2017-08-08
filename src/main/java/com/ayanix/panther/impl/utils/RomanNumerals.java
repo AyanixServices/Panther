@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.utils;
 
 import com.ayanix.panther.utils.IRomanNumerals;
 
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -94,11 +95,11 @@ public class RomanNumerals implements IRomanNumerals
 
 		int amount = 0;
 
-		for (int x : map.keySet())
+		for (Map.Entry<Integer, String> entry : map.entrySet())
 		{
-			if (map.get(x).equalsIgnoreCase(key))
+			if (entry.getValue().equalsIgnoreCase(key))
 			{
-				amount = x;
+				amount = entry.getKey();
 
 				break;
 			}

@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.utils;
 
 import com.ayanix.panther.utils.IDateUtils;
 
+import java.time.DateTimeException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
@@ -124,7 +125,7 @@ public class DateUtils implements IDateUtils
 
 		if (!found)
 		{
-			throw new Exception("Date is invalid");
+			throw new DateTimeException("Date is invalid");
 		}
 
 		Calendar c = new GregorianCalendar();
@@ -219,7 +220,7 @@ public class DateUtils implements IDateUtils
 			if (diff > 0)
 			{
 				accuracy++;
-				sb.append(" ").append(diff).append(" ").append(names[i * 2 + (diff > 1 ? 1 : 0)]);
+				sb.append(' ').append(diff).append(' ').append(names[i * 2 + (diff > 1 ? 1 : 0)]);
 			}
 		}
 

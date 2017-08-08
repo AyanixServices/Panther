@@ -34,6 +34,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -66,9 +67,10 @@ public class DependencyChecks implements IDependencyChecks
 
 		boolean allEnabled = true;
 
-		for (String pluginName : dependencies.keySet())
+		for (Map.Entry<String, String> entry : dependencies.entrySet())
 		{
-			String version = dependencies.get(pluginName);
+			String pluginName = entry.getKey();
+			String version = entry.getValue();
 
 			if (!isEnabled(pluginName, version))
 			{

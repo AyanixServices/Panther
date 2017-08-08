@@ -257,6 +257,12 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
+	@SuppressWarnings("deprecated")
+	public int hashCode() {
+		return getId();
+	}
+
+	@Override
 	public boolean canEnchantItem(@Nullable ItemStack item)
 	{
 		if (item == null)

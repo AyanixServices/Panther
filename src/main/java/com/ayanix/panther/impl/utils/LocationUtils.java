@@ -53,21 +53,18 @@ public class LocationUtils implements ILocationUtils
 			throw new IllegalArgumentException("Location cannot be null");
 		}
 
-		StringBuilder builder = new StringBuilder();
-
-		builder.append(location.getWorld().getName());
-		builder.append(":");
-		builder.append(location.getBlockX());
-		builder.append(":");
-		builder.append(location.getBlockY());
-		builder.append(":");
-		builder.append(location.getBlockZ());
-		builder.append(":");
-		builder.append(location.getYaw());
-		builder.append(":");
-		builder.append(location.getPitch());
-
-		return builder.toString();
+		return new StringBuilder().append(location.getWorld().getName())
+				.append(':')
+				.append(location.getBlockX())
+				.append(':')
+				.append(location.getBlockY())
+				.append(':')
+				.append(location.getBlockZ())
+				.append(':')
+				.append(location.getYaw())
+				.append(':')
+				.append(location.getPitch())
+				.toString();
 	}
 
 	@Override
@@ -89,12 +86,12 @@ public class LocationUtils implements ILocationUtils
 
 		if (world == null)
 		{
-			throw new Exception(parts[0] + " world does not exist");
+			throw new IllegalArgumentException(parts[0] + " world does not exist");
 		}
 
-		int x = Integer.valueOf(parts[1]);
-		int y = Integer.valueOf(parts[2]);
-		int z = Integer.valueOf(parts[3]);
+		int x = Integer.parseInt(parts[1]);
+		int y = Integer.parseInt(parts[2]);
+		int z = Integer.parseInt(parts[3]);
 
 		if(parts.length != 6) {
 			return new Location(world, x, y, z);

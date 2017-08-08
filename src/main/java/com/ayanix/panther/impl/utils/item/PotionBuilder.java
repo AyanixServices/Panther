@@ -131,6 +131,7 @@ public class PotionBuilder extends ItemBuilder implements IPotionBuilder
 
 		Potion potion = Potion.fromItemStack(item);
 
+		potion.setLevel(amplifier - 1);
 		potion.setSplash(splash);
 		potion.setHasExtendedDuration(extended);
 

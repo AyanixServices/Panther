@@ -35,6 +35,10 @@ import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.*;
@@ -56,10 +60,10 @@ public class ItemUtils implements IItemUtils
 
 		String                    mat                   = item.getType().toString();
 		short                     durability            = item.getDurability();
-		String                    amount                = ((Integer) item.getAmount()).toString();
+		String                    amount                = Integer.toString(item.getAmount());
 		Map<Enchantment, Integer> enchants              = item.getEnchantments();
 		StringBuilder             fullEnchantmentString = new StringBuilder();
-		StringBuilder             itemString            = new StringBuilder(mat + " " + amount);
+		StringBuilder             itemString            = new StringBuilder(mat).append(' ').append(amount);
 
 		if (durability != 0)
 		{
@@ -73,7 +77,7 @@ public class ItemUtils implements IItemUtils
 				String displayName = item.getItemMeta().getDisplayName();
 				displayName = displayName.replace(" ", "_");
 
-				itemString.append(" ").append(displayName);
+				itemString.append(' ').append(displayName);
 			} catch (NullPointerException ignored)
 			{
 			}
@@ -99,11 +103,13 @@ public class ItemUtils implements IItemUtils
 			int         level    = e.getValue();
 			String      enchName = ench.getName();
 
-			fullEnchantmentString.append(" ").append(enchName).append(":").append(level);
+			fullEnchantmentString.append(' ').append(enchName).append(":").append(level);
 		}
 
-		if (!fullEnchantmentString.toString().equals(""))
+		if (fullEnchantmentString.length() != 0)
+		{
 			itemString.append(fullEnchantmentString);
+		}
 
 		return itemString.toString();
 	}
@@ -128,6 +134,9 @@ public class ItemUtils implements IItemUtils
 			String[] materialData = materialName.split(":");
 			materialName = materialData[0];
 			durability = Integer.parseInt(materialData[1]);
+		} else if (materialName.equalsIgnoreCase("POTION"))
+		{
+			durability = (short) 24576;
 		}
 
 		if (!isMaterial(materialName))
@@ -141,13 +150,20 @@ public class ItemUtils implements IItemUtils
 
 		try
 		{
-			amount = Integer.valueOf(itemWordList.get(1));
+			amount = Integer.parseInt(itemWordList.get(1));
 		} catch (Exception ignored)
 		{
 		}
 
 		String       name = null;
 		List<String> lore = new ArrayList<>();
+
+		// Potion
+		PotionEffectType type      = null;
+		boolean          splash    = false;
+		boolean          extended  = false;
+		int              duration  = 10;
+		int              amplifier = 0;
 
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
@@ -169,6 +185,59 @@ public class ItemUtils implements IItemUtils
 					lore.add(loreString);
 
 					continue;
+
+					// Potion
+				case "effect":
+					for (PotionEffectType pType : PotionEffectType.values())
+					{
+						if (pType.getName().equalsIgnoreCase(parts[1]))
+						{
+							type = pType;
+							break;
+						}
+					}
+
+					continue;
+
+				case "power":
+					try
+					{
+						amplifier = Integer.parseInt(parts[1]) - 1;
+					} catch (Exception ignored)
+					{
+					}
+
+					continue;
+
+				case "duration":
+					try
+					{
+						duration = Integer.parseInt(parts[1]);
+					} catch (Exception ignored)
+					{
+					}
+
+					continue;
+
+				case "splash":
+					try
+					{
+						splash = Boolean.valueOf(parts[1]);
+					} catch (Exception ignored)
+					{
+					}
+
+					continue;
+
+				case "extended":
+					try
+					{
+						extended = Boolean.valueOf(parts[1]);
+					} catch (Exception ignored)
+					{
+					}
+
+					continue;
 			}
 
 			try
@@ -180,7 +249,7 @@ public class ItemUtils implements IItemUtils
 					continue;
 				}
 
-				int         level       = Integer.valueOf(parts[1]);
+				int         level       = Integer.parseInt(parts[1]);
 
 				enchantments.put(enchantment, level);
 			} catch (Exception ignored)
@@ -202,6 +271,20 @@ public class ItemUtils implements IItemUtils
 		}
 
 		itemStack.setItemMeta(itemMeta);
+
+		if (mat == Material.POTION && type != null)
+		{
+			PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+
+			potionMeta.addCustomEffect(new PotionEffect(type, duration * 20, amplifier), extended);
+
+			itemStack.setItemMeta(potionMeta);
+
+			Potion potion = Potion.fromItemStack(itemStack);
+			potion.setSplash(splash);
+			potion.apply(itemStack);
+		}
+
 		itemStack.addUnsafeEnchantments(enchantments);
 
 		return itemStack;
