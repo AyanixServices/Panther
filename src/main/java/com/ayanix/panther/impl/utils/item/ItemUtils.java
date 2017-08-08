@@ -238,6 +238,8 @@ public class ItemUtils implements IItemUtils
 					}
 
 					continue;
+				default:
+					continue;
 			}
 
 			try
@@ -249,7 +251,7 @@ public class ItemUtils implements IItemUtils
 					continue;
 				}
 
-				int         level       = Integer.parseInt(parts[1]);
+				int level = Integer.parseInt(parts[1]);
 
 				enchantments.put(enchantment, level);
 			} catch (Exception ignored)

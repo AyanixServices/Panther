@@ -36,6 +36,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -75,22 +76,20 @@ public class YAMLStorage implements IYAMLStorage
 
 		if (!file.exists())
 		{
-			if(!file.getParentFile().exists())
+			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
 			{
-				if(!file.getParentFile().mkdirs()) {
-					plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
-				}
+				plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
 			}
 
 			try
 			{
 				if (!file.createNewFile())
 				{
-					plugin.getLogger().severe("Unable to create file: " + fullName);
+					throw new IOException();
 				}
 			} catch (IOException e)
 			{
-				e.printStackTrace();
+				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + fullName, e);
 			}
 		}
 
@@ -127,7 +126,7 @@ public class YAMLStorage implements IYAMLStorage
 			}
 
 			configuration.set(key, defaultStorage.getDefaultValues().get(key));
-			plugin.getLogger().info("Loaded default value of " + key + " into " + name + ".yml");
+			plugin.getLogger().info(() -> "Loaded default value of " + key + " into " + name + ".yml");
 
 			changes = true;
 		}

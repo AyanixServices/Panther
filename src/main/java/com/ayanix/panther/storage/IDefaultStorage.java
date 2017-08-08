@@ -30,7 +30,7 @@ package com.ayanix.panther.storage;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -52,6 +52,6 @@ public interface IDefaultStorage
 	 *
 	 * @return Default configuration values.
 	 */
-	HashMap<String, Object> getDefaultValues();
+	Map<String, Object> getDefaultValues();
 
 }

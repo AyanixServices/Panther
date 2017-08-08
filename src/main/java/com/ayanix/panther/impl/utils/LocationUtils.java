@@ -42,7 +42,7 @@ public class LocationUtils implements ILocationUtils
 
 	public LocationUtils()
 	{
-
+// LocationUtils is an API.
 	}
 
 	@Override
@@ -103,12 +103,12 @@ public class LocationUtils implements ILocationUtils
 	@Override
 	public Location getCenter(Location location)
 	{
-		location = location.clone();
+		Location newLoc = location.clone();
 
-		location.setX(location.getBlockX() + 0.5);
-		location.setZ(location.getBlockZ() + 0.5);
+		newLoc.setX(location.getBlockX() + 0.5);
+		newLoc.setZ(location.getBlockZ() + 0.5);
 
-		return location;
+		return newLoc;
 	}
 
 }

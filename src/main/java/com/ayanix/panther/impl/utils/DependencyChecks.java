@@ -33,7 +33,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -58,7 +57,7 @@ public class DependencyChecks implements IDependencyChecks
 		this.plugin = plugin;
 	}
 
-	public boolean runChecks(HashMap<String, String> dependencies)
+	public boolean runChecks(Map<String, String> dependencies)
 	{
 		if (dependencies == null)
 		{
@@ -70,25 +69,25 @@ public class DependencyChecks implements IDependencyChecks
 		for (Map.Entry<String, String> entry : dependencies.entrySet())
 		{
 			String pluginName = entry.getKey();
-			String version = entry.getValue();
+			String version    = entry.getValue();
 
 			if (!isEnabled(pluginName, version))
 			{
 				allEnabled = false;
 
-				String error = "\u2718 Missing " + pluginName;
+				StringBuilder error = new StringBuilder("\u2718").append(" Missing ").append(pluginName);
 
 				if (!version.isEmpty())
 				{
-					error += " (v" + version + ")";
+					error.append(" (v").append(version).append(")");
 				}
 
-				plugin.getLogger().severe(error);
+				plugin.getLogger().severe(error::toString);
 
 				continue;
 			}
 
-			plugin.getLogger().info("\u2714 " + pluginName + " detected");
+			plugin.getLogger().info(() -> "\u2714 " + pluginName + " detected");
 		}
 
 		return allEnabled;
@@ -103,12 +102,7 @@ public class DependencyChecks implements IDependencyChecks
 			return false;
 		}
 
-		if (!dependency.getDescription().getVersion().startsWith(version))
-		{
-			return false;
-		}
-
-		return true;
+		return dependency.getDescription().getVersion().startsWith(version);
 	}
 
 	public boolean isEnabled(String plugin)

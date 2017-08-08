@@ -66,7 +66,7 @@ public class HikariMySQLStorage implements ISQLStorage
 
 		this.table = table;
 
-		HikariConfig config = new HikariDataSource();
+		HikariConfig config = new HikariConfig();
 
 		config.setJdbcUrl("jdbc:mysql://%host%:%port%/%database%"
 				.replace("%host%", host)
@@ -130,7 +130,6 @@ public class HikariMySQLStorage implements ISQLStorage
 			this.host = "localhost";
 			this.port = 3306;
 			this.username = "root";
-			this.password = "";
 			this.database = "minecraft";
 			this.table = "minecraft";
 			this.factory = null;
@@ -187,6 +186,11 @@ public class HikariMySQLStorage implements ISQLStorage
 
 		public HikariMySQLStorage build()
 		{
+			if (password == null)
+			{
+				throw new IllegalArgumentException("Password is not defined");
+			}
+
 			return new HikariMySQLStorage(host, port, username, password, database, table, factory);
 		}
 

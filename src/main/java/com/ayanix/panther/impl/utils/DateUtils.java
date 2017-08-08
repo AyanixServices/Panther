@@ -50,7 +50,7 @@ public class DateUtils implements IDateUtils
 
 	public DateUtils()
 	{
-
+		// DateUtils is an API.
 	}
 
 	@Override
@@ -62,9 +62,15 @@ public class DateUtils implements IDateUtils
 	@Override
 	public long parseDateDiff(String time, boolean future) throws Exception
 	{
-		Matcher m     = TIME_PATTERN.matcher(time);
-		int     years = 0, months = 0, weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0;
-		boolean found = false;
+		Matcher m       = TIME_PATTERN.matcher(time);
+		int     years   = 0;
+		int     months  = 0;
+		int     weeks   = 0;
+		int     days    = 0;
+		int     hours   = 0;
+		int     minutes = 0;
+		int     seconds = 0;
+		boolean found   = false;
 
 		while (m.find())
 		{

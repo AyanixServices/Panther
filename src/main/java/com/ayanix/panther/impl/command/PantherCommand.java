@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.command;
 
 import com.ayanix.panther.command.IPantherCommand;
 import com.ayanix.panther.command.PantherSubCommand;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +39,7 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -84,6 +86,8 @@ public abstract class PantherCommand extends Command implements IPantherCommand,
 			return true;
 		}
 
+		boolean subCommandFound = false;
+
 		if (args.length != 0)
 		{
 			for (Method method : getClazz().getDeclaredMethods())
@@ -123,28 +127,31 @@ public abstract class PantherCommand extends Command implements IPantherCommand,
 					return true;
 				}
 
-				args = Arrays.copyOfRange(args, 1, args.length);
+				String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
 
-				if (args.length < subCommand.minArgs())
+				if (newArgs.length < subCommand.minArgs())
 				{
 					getArgsError().send(commandSender);
 
 					return true;
 				}
 
+				subCommandFound = true;
+
 				try
 				{
-					method.invoke(this, commandSender, args);
+					method.invoke(this, commandSender, newArgs);
 				} catch (IllegalAccessException | InvocationTargetException e)
 				{
-					e.printStackTrace();
+					Bukkit.getLogger().log(Level.SEVERE, "Exception thrown executing command", e);
 				}
-
-				return true;
 			}
 		}
 
-		run(commandSender, label, args);
+		if (!subCommandFound)
+		{
+			run(commandSender, label, args);
+		}
 
 		return true;
 	}

@@ -123,7 +123,7 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	{
 		if (item == null)
 		{
-			item = new ItemStack(Material.AIR);
+			insert(slot, new ItemStack(Material.AIR));
 		}
 
 		insert(slot, new GUIItem(item)
@@ -131,7 +131,7 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 			@Override
 			public void run(Player player, ClickType type)
 			{
-
+				throw new UnsupportedOperationException("Cannot operate on abstract item");
 			}
 		});
 	}
@@ -165,7 +165,7 @@ public abstract class InventoryGUI implements IInventoryGUI, Listener
 	@Override
 	public void refresh()
 	{
-		for(Map.Entry<Integer, IGUIItem> entry : items.entrySet())
+		for (Map.Entry<Integer, IGUIItem> entry : items.entrySet())
 		{
 			inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
 		}

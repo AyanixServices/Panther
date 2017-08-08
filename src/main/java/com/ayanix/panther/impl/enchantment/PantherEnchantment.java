@@ -127,7 +127,7 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 					equipTask(player, level);
 				}
 			}
-		}, 1, 5 * 20);
+		}, 1, 100);
 	}
 
 	@Override
@@ -257,9 +257,9 @@ public abstract class PantherEnchantment extends Enchantment implements IPanther
 	}
 
 	@Override
-	@SuppressWarnings("deprecated")
-	public int hashCode() {
-		return getId();
+	public int hashCode()
+	{
+		return getName().hashCode();
 	}
 
 	@Override

@@ -79,14 +79,14 @@ public class Message implements IMessage
 			throw new IllegalArgumentException("Key cannot be null when replacing");
 		}
 
-		List<String> values = new ArrayList<>();
+		List<String> newValues = new ArrayList<>();
 
-		for (String message : this.values)
+		for (String message : values)
 		{
-			values.add(message.replace("{" + key + "}", value == null ? "" : value));
+			newValues.add(message.replace("{" + key + "}", value == null ? "" : value));
 		}
 
-		return new Message(key, values);
+		return new Message(key, newValues);
 	}
 
 	@Override
@@ -121,14 +121,14 @@ public class Message implements IMessage
 			return new ArrayList<>(this.values);
 		}
 
-		List<String> values = new ArrayList<>();
+		List<String> newValues = new ArrayList<>();
 
-		for (String message : this.values)
+		for (String message : values)
 		{
-			values.add(ChatColor.translateAlternateColorCodes('&', message));
+			newValues.add(ChatColor.translateAlternateColorCodes('&', message));
 		}
 
-		return values;
+		return newValues;
 	}
 
 	@Override

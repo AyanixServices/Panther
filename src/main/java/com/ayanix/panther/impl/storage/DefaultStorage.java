@@ -38,6 +38,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -100,7 +101,7 @@ public class DefaultStorage implements IDefaultStorage
 	}
 
 	@Override
-	public HashMap<String, Object> getDefaultValues()
+	public Map<String, Object> getDefaultValues()
 	{
 		return this.defaultValues;
 	}

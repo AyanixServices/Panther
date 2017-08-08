@@ -50,9 +50,9 @@ public interface ILocationUtils
 	 *
 	 * @param string String to get location from
 	 * @return The location.
-	 * @throws Exception If the location was invalid
+	 * @throws IllegalArgumentException If the location was invalid
 	 */
-	Location fromString(String string) throws Exception;
+	Location fromString(String string) throws IllegalArgumentException;
 
 	/**
 	 * Gets the center position of a block.

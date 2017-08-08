@@ -30,7 +30,7 @@ package com.ayanix.panther.utils;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -48,7 +48,7 @@ public interface IDependencyChecks
 	 * @param dependencies HashMap of dependencies - key is plugin, value is version.
 	 * @return If all dependencies are enabled.
 	 */
-	boolean runChecks(@NonNull HashMap<String, String> dependencies);
+	boolean runChecks(@NonNull Map<String, String> dependencies);
 
 	/**
 	 * Checks if plugin is enabled and whether the correct version is supplied.

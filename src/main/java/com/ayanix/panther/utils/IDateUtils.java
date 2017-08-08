@@ -28,6 +28,8 @@
  */
 package com.ayanix.panther.utils;
 
+import java.time.DateTimeException;
+
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
@@ -51,7 +53,7 @@ public interface IDateUtils
 	 * @return A unix timestamp.
 	 * @throws Exception if the date input was invalid.
 	 */
-	long parseDateDiff(String time, boolean future) throws Exception;
+	long parseDateDiff(String time, boolean future) throws DateTimeException;
 
 	/**
 	 * Converts a unix timestamp to string format of time distance (1 years, 2 months etc)
