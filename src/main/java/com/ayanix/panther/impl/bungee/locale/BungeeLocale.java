@@ -26,13 +26,14 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.bukkit.locale;
+package com.ayanix.panther.impl.bungee.locale;
 
-import com.ayanix.panther.impl.bukkit.storage.BukkitYAMLStorage;
+import com.ayanix.panther.impl.bukkit.locale.BukkitMessage;
+import com.ayanix.panther.impl.common.storage.BungeeYAMLStorage;
 import com.ayanix.panther.impl.common.storage.Configuration;
 import com.ayanix.panther.locale.Locale;
 import com.ayanix.panther.storage.DefaultStorage;
-import org.bukkit.plugin.Plugin;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,10 +43,10 @@ import java.util.List;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitLocale extends BukkitYAMLStorage implements Locale
+public class BungeeLocale extends BungeeYAMLStorage implements Locale
 {
 
-	private final List<BukkitMessage> messages;
+	private List<BukkitMessage> messages;
 
 	/**
 	 * Initiate a Locale instance.
@@ -53,7 +54,7 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	 * @param plugin Plugin storing configuration.
 	 * @param name   Name of configuration.
 	 */
-	public BukkitLocale(final Plugin plugin, final String name)
+	public BungeeLocale(Plugin plugin, String name)
 	{
 		super(plugin, name);
 
@@ -63,13 +64,13 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	@Override
 	public void load()
 	{
-		for (final String key : getConfig().getKeys())
+		for (String key : getConfig().getKeys())
 		{
-			final Configuration section = getConfig().getSection(key);
+			Configuration section = getConfig().getSection(key);
 
 			if (section != null)
 			{
-				for (final String innerKey : section.getKeys())
+				for (String innerKey : section.getKeys())
 				{
 					loadMessage(key + "." + innerKey);
 				}
@@ -81,14 +82,14 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 		}
 	}
 
-	private void loadMessage(final String key)
+	private void loadMessage(String key)
 	{
 		if (key == null)
 		{
 			throw new IllegalArgumentException("Key cannot be null");
 		}
 
-		final BukkitMessage preExisting = get(key);
+		BukkitMessage preExisting = get(key);
 
 		if (preExisting != null)
 		{
@@ -114,14 +115,14 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	}
 
 	@Override
-	public BukkitMessage get(final String key)
+	public BukkitMessage get(String key)
 	{
 		if (key == null)
 		{
 			throw new IllegalArgumentException("Key cannot be null");
 		}
 
-		for (final BukkitMessage message : messages)
+		for (BukkitMessage message : messages)
 		{
 			if (message.getKey().equalsIgnoreCase(key))
 			{
@@ -133,11 +134,11 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	}
 
 	@Override
-	public void insertDefault(final DefaultStorage defaultStorage)
+	public void insertDefault(DefaultStorage defaultStorage)
 	{
 		super.insertDefault(defaultStorage);
 
-		for (final String key : defaultStorage.getDefaultValues().keySet())
+		for (String key : defaultStorage.getDefaultValues().keySet())
 		{
 			loadMessage(key);
 		}

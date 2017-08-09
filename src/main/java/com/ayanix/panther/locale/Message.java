@@ -28,8 +28,6 @@
  */
 package com.ayanix.panther.locale;
 
-import org.bukkit.command.CommandSender;
-
 import java.util.List;
 
 /**
@@ -62,7 +60,10 @@ public interface Message
 	 *
 	 * @return String version of message.
 	 */
-	String get();
+	default String get()
+	{
+		return get(true);
+	}
 
 	/**
 	 * Get the message in a String format.
@@ -73,14 +74,32 @@ public interface Message
 	 * @param formatted If true, colours are formatted.
 	 * @return String version of message.
 	 */
-	String get(boolean formatted);
+	default String get(boolean formatted)
+	{
+		StringBuilder builder = new StringBuilder();
+
+		for (String message : getList(formatted))
+		{
+			builder.append(message);
+			builder.append('\n');
+		}
+
+		String toString = builder.toString();
+
+		toString = toString.substring(0, toString.length() - 1);
+
+		return toString;
+	}
 
 	/**
 	 * Get the formatted message in a List format.
 	 *
 	 * @return List of string messages.
 	 */
-	List<String> getList();
+	default List<String> getList()
+	{
+		return getList(true);
+	}
 
 	/**
 	 * Get the message in a List format.
@@ -95,7 +114,7 @@ public interface Message
 	 *
 	 * @param sender Message to be sent to.
 	 */
-	void send(CommandSender sender);
+	void send(Object sender);
 
 	/**
 	 * Broadcast the formatted message to all players online and console.

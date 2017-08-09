@@ -70,7 +70,7 @@ public class YAMLStorageTest
 
 		storage.insertDefault(defaultStorage);
 
-		Assert.assertTrue("Default storage cannot be inserted", storage.getConfig().isSet("testKey"));
+		Assert.assertTrue("Default storage cannot be inserted", storage.getConfig().contains("testKey"));
 	}
 
 }

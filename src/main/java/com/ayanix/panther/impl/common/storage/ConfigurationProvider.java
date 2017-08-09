@@ -26,43 +26,51 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.storage;
+package com.ayanix.panther.impl.common.storage;
 
-import com.ayanix.panther.impl.common.storage.Configuration;
-
-import java.io.File;
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
+ * <p>
+ * This file was taken from SpigotMC#BungeeCord
  */
-public interface YAMLStorage
+public abstract class ConfigurationProvider
 {
 
-	/**
-	 * Save configuration to file.
-	 */
-	void save();
+	private static final Map<Class<? extends ConfigurationProvider>, ConfigurationProvider> providers = new HashMap<>();
 
-	/**
-	 * Get the corresponding file.
-	 *
-	 * @return The file the storage is saved and loaded from.
-	 */
-	File getFile();
+	static
+	{
+		providers.put(YamlConfiguration.class, new YamlConfiguration());
+	}
 
-	/**
-	 * The YamlConfiguration config.
-	 *
-	 * @return The configuration.
-	 */
-	Configuration getConfig();
+	public static ConfigurationProvider getProvider(Class<? extends ConfigurationProvider> provider)
+	{
+		return providers.get(provider);
+	}
 
-	/**
-	 * Insert default configuration to replace missing values.
-	 *
-	 * @param defaultStorage Default configuration.
-	 */
-	void insertDefault(DefaultStorage defaultStorage);
+	public abstract void save(Configuration config, File file) throws IOException;
+
+	public abstract void save(Configuration config, Writer writer);
+
+	public abstract Configuration load(File file) throws IOException;
+
+	public abstract Configuration load(File file, Configuration defaults) throws IOException;
+
+	public abstract Configuration load(Reader reader);
+
+	public abstract Configuration load(Reader reader, Configuration defaults);
+
+	public abstract Configuration load(InputStream is);
+
+	public abstract Configuration load(InputStream is, Configuration defaults);
+
+	public abstract Configuration load(String string);
+
+	public abstract Configuration load(String string, Configuration defaults);
 
 }

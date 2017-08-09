@@ -26,14 +26,11 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.bukkit.storage;
+package com.ayanix.panther.impl.common.storage;
 
-import com.ayanix.panther.impl.common.storage.Configuration;
-import com.ayanix.panther.impl.common.storage.ConfigurationProvider;
-import com.ayanix.panther.impl.common.storage.YamlConfiguration;
 import com.ayanix.panther.storage.DefaultStorage;
 import com.ayanix.panther.storage.YAMLStorage;
-import org.bukkit.plugin.Plugin;
+import net.md_5.bungee.api.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,7 +40,7 @@ import java.util.logging.Level;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitYAMLStorage implements YAMLStorage
+public class BungeeYAMLStorage implements YAMLStorage
 {
 
 	private String        name;
@@ -57,7 +54,7 @@ public class BukkitYAMLStorage implements YAMLStorage
 	 * @param plugin Plugin storing configuration.
 	 * @param name   Name of configuration.
 	 */
-	public BukkitYAMLStorage(Plugin plugin, String name)
+	public BungeeYAMLStorage(Plugin plugin, String name)
 	{
 		if (plugin == null)
 		{

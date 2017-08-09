@@ -26,14 +26,14 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.bukkit.locale;
+package com.ayanix.panther.impl.bungee.locale;
 
 import com.ayanix.panther.locale.Message;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ import java.util.List;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitMessage implements Message
+public class BungeeMessage implements Message
 {
 
 	private final String       key;
@@ -52,7 +52,7 @@ public class BukkitMessage implements Message
 	 * @param key    Key associated with message.
 	 * @param values Actual messages.
 	 */
-	public BukkitMessage(final String key, final List<String> values)
+	public BungeeMessage(final String key, final List<String> values)
 	{
 		if (key == null)
 		{
@@ -70,7 +70,7 @@ public class BukkitMessage implements Message
 	}
 
 	@Override
-	public BukkitMessage replace(final String key, final String value)
+	public BungeeMessage replace(final String key, final String value)
 	{
 		if (key == null)
 		{
@@ -84,7 +84,7 @@ public class BukkitMessage implements Message
 			newValues.add(message.replace("{" + key + "}", value == null ? "" : value));
 		}
 
-		return new BukkitMessage(key, newValues);
+		return new BungeeMessage(key, newValues);
 	}
 
 	@Override
@@ -108,12 +108,12 @@ public class BukkitMessage implements Message
 	@Override
 	public void broadcast()
 	{
-		for (final Player player : Bukkit.getOnlinePlayers())
+		for (final ProxiedPlayer player : ProxyServer.getInstance().getPlayers())
 		{
 			send(player);
 		}
 
-		send(Bukkit.getConsoleSender());
+		send(ProxyServer.getInstance().getConsole());
 	}
 
 	@Override
@@ -134,12 +134,12 @@ public class BukkitMessage implements Message
 
 		for (String message : getList())
 		{
-			if (cSender instanceof ConsoleCommandSender)
+			if (!(cSender instanceof ProxiedPlayer))
 			{
 				message = ChatColor.stripColor(message);
 			}
 
-			cSender.sendMessage(message);
+			cSender.sendMessage(new TextComponent(message));
 		}
 	}
 
