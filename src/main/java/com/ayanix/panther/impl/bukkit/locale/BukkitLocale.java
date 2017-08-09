@@ -65,19 +65,21 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	{
 		for (final String key : getConfig().getKeys())
 		{
-			final Configuration section = getConfig().getSection(key);
-
-			if (section != null)
+			if (getConfig().isList(key) || getConfig().isString(key))
 			{
-				for (final String innerKey : section.getKeys())
+				loadMessage(key);
+			} else
+			{
+				final Configuration section = getConfig().getSection(key);
+
+				if (section != null)
 				{
-					loadMessage(key + "." + innerKey);
+					for (final String innerKey : section.getKeys())
+					{
+						loadMessage(key + "." + innerKey);
+					}
 				}
-
-				continue;
 			}
-
-			loadMessage(key);
 		}
 	}
 

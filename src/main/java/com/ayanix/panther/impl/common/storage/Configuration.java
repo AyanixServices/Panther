@@ -444,12 +444,12 @@ public final class Configuration
 
 	public boolean isList(String path)
 	{
-		return getDefault(path) instanceof List<?>;
+		return get(path) instanceof List<?>;
 	}
 
 	public boolean isString(String path)
 	{
-		return getDefault(path) instanceof String;
+		return get(path) instanceof String;
 	}
 
 }
