@@ -26,40 +26,40 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.impl.common.utils;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import com.ayanix.panther.utils.IRandomUtils;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public class RandomUtils implements IRandomUtils
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	private static Random RANDOM;
 
-	@Theory
-	public void testRomanNumerals(int arabic)
+	static
 	{
-		RomanNumerals romanNumerals = new RomanNumerals();
-
-		try
+		if (RANDOM == null)
 		{
-			String roman = romanNumerals.toRoman(arabic);
-
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
+			RANDOM = new Random();
 		}
+	}
+
+	@Override
+	public int getInteger(int min, int max)
+	{
+		return RANDOM.nextInt((max - min) + 1) + min;
+	}
+
+	@Override
+	public <E> E getElement(List<E> list)
+	{
+		return list.get(RANDOM.nextInt(list.size()));
 	}
 
 }

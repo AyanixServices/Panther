@@ -26,40 +26,60 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.utils.item;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface ItemUtils
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * Return whether or not the given string is a material.
+	 * This is case-sensitive.
+	 *
+	 * @param materialName Material name.
+	 * @return If true, its a material.
+	 */
+	boolean isMaterial(String materialName);
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * Converts an ItemStack into a string for saving.
+	 *
+	 * @param item The item to generate as String.
+	 * @return A string compressed version of item.
+	 */
+	String itemToString(ItemStack item);
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * Converts a compressed item string into an ItemStack.
+	 *
+	 * @param item The string version of the item.
+	 * @return An ItemStack.
+	 */
+	ItemStack stringToItem(String item);
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * Checks whether or not the items match.
+	 * This only applies to names, types, data and lores.
+	 *
+	 * @param itemA The first item to check.
+	 * @param itemB The second item to compare with.
+	 */
+	boolean areItemsEqual(ItemStack itemA, ItemStack itemB);
+
+	/**
+	 * Get materials which contain the keywords, not case-sensitive.
+	 *
+	 * @param str The strings which identify the materials.
+	 * @return A list of materials which match.
+	 */
+	List<Material> getMaterialsContaining(String... str);
 
 }

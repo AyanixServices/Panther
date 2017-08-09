@@ -28,8 +28,8 @@
  */
 package com.ayanix.panther.locale;
 
-import com.ayanix.panther.impl.locale.Locale;
-import com.ayanix.panther.impl.storage.DefaultStorage;
+import com.ayanix.panther.impl.bukkit.locale.BukkitLocale;
+import com.ayanix.panther.impl.bukkit.storage.BukkitDefaultStorage;
 import org.bukkit.plugin.PluginBase;
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -52,16 +52,16 @@ public class LocaleTest
 {
 
 	@Test
-	public void testLocale()
+	public void testBukkitLocale()
 	{
 		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
 		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
 		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
 		PowerMockito.when(plugin.getDataFolder()).thenReturn(new File(System.getProperty("user.dir") + File.separator + "target"));
 
-		Locale locale = PowerMockito.spy(new Locale(plugin, "locale"));
+		BukkitLocale locale = PowerMockito.spy(new BukkitLocale(plugin, "locale"));
 
-		DefaultStorage defaultStorage = new DefaultStorage(null, null);
+		BukkitDefaultStorage defaultStorage = new BukkitDefaultStorage(null, null);
 		defaultStorage.insert("banana", "apple");
 
 		locale.insertDefault(defaultStorage);

@@ -28,38 +28,38 @@
  */
 package com.ayanix.panther.utils;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.Location;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface LocationUtils
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * Gets a string version of a location.
+	 *
+	 * @param location The location to turn into a string.
+	 * @return The string version.
+	 */
+	String toString(Location location);
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * Gets a Location from a #toString(Location) string.
+	 *
+	 * @param string String to get location from
+	 * @return The location.
+	 * @throws IllegalArgumentException If the location was invalid
+	 */
+	Location fromString(String string) throws IllegalArgumentException;
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
-
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * Gets the center position of a block.
+	 *
+	 * @param location The location to get the center position of.
+	 * @return The center position (0.5, 0.5) of the given location.
+	 */
+	Location getCenter(Location location);
 
 }

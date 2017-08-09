@@ -26,40 +26,43 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.storage;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.File;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface YAMLStorage
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * Save configuration to file.
+	 */
+	void save();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * Get the corresponding file.
+	 *
+	 * @return The file the storage is saved and loaded from.
+	 */
+	File getFile();
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * The YamlConfiguration config.
+	 *
+	 * @return The configuration.
+	 */
+	YamlConfiguration getConfig();
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * Insert default configuration to replace missing values.
+	 *
+	 * @param defaultStorage Default configuration.
+	 */
+	void insertDefault(DefaultStorage defaultStorage);
 
 }

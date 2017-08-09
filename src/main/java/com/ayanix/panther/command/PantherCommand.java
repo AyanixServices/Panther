@@ -26,40 +26,55 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.command;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import com.ayanix.panther.impl.bukkit.locale.BukkitMessage;
+import org.bukkit.command.CommandSender;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface PantherCommand
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * @return Permission required. Empty if all can use.
+	 */
+	String getPermission();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * @return Permission error message.
+	 */
+	BukkitMessage getPermissionError();
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * @return Minimum number of arguments required.
+	 */
+	int getMinArgs();
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * @return Usage message, shown when number of arguments is not met.
+	 */
+	BukkitMessage getArgsError();
+
+	/**
+	 * @return If true, command can only be run by a player.
+	 */
+	boolean isPlayerOnly();
+
+	/**
+	 * @return Identifying class of command.
+	 */
+	Class<?> getClazz();
+
+	/**
+	 * Runs when command is executed.
+	 *
+	 * @param sender Command sender.
+	 * @param label  Label of command used.
+	 * @param args   Arguments passed.
+	 */
+	void run(CommandSender sender, String label, String... args);
 
 }

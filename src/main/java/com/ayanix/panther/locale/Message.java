@@ -26,40 +26,80 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.locale;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface Message
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * Get the key identifying the message.
+	 *
+	 * @return Key.
+	 */
+	String getKey();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * Replace {key} in the message with the value given.
+	 *
+	 * @param key   Substring to replace, excluding { and }.
+	 * @param value Substring to replace with.
+	 */
+	Message replace(String key, String value);
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * Get the formatted message in a String format.
+	 * #toString() returns the same however unformatted.
+	 * <p>
+	 * If the message is a list, \n is appended to each line.
+	 *
+	 * @return String version of message.
+	 */
+	String get();
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * Get the message in a String format.
+	 * #toString() returns the same however unformatted.
+	 * <p>
+	 * If the message is a list, \n is appended to each line.
+	 *
+	 * @param formatted If true, colours are formatted.
+	 * @return String version of message.
+	 */
+	String get(boolean formatted);
+
+	/**
+	 * Get the formatted message in a List format.
+	 *
+	 * @return List of string messages.
+	 */
+	List<String> getList();
+
+	/**
+	 * Get the message in a List format.
+	 *
+	 * @param formatted If true, colours are formatted.
+	 * @return List of string messages.
+	 */
+	List<String> getList(boolean formatted);
+
+	/**
+	 * Send the formatted message to given player or console.
+	 *
+	 * @param sender Message to be sent to.
+	 */
+	void send(CommandSender sender);
+
+	/**
+	 * Broadcast the formatted message to all players online and console.
+	 */
+	void broadcast();
 
 }

@@ -26,40 +26,82 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.impl.bukkit.storage;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import com.ayanix.panther.storage.DefaultStorage;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public class BukkitDefaultStorage implements DefaultStorage
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	private HashMap<String, Object> defaultValues = new HashMap<>();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
+	/**
+	 * Initiate a configuration with default values.
+	 *
+	 * @param plugin Plugin where configuration is stored.
+	 * @param name   Name of default resource.
+	 */
+	public BukkitDefaultStorage(JavaPlugin plugin, String name)
 	{
-		RomanNumerals romanNumerals = new RomanNumerals();
-
-		try
+		if (plugin == null || name == null)
 		{
-			String roman = romanNumerals.toRoman(arabic);
-
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
+			return;
 		}
+
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource(name + ".yml"), Charset.forName("UTF-8")));
+
+		for (String key : configuration.getKeys(false))
+		{
+			ConfigurationSection section = configuration.getConfigurationSection(key);
+
+			if (section != null)
+			{
+				for (String innerKey : section.getKeys(false))
+				{
+					String totalKey = key + "." + innerKey;
+
+					defaultValues.put(totalKey, configuration.get(totalKey));
+				}
+
+				continue;
+			}
+
+			defaultValues.put(key, configuration.get(key));
+		}
+	}
+
+	@Override
+	public void insert(String key, Object object)
+	{
+		if (key == null)
+		{
+			throw new IllegalArgumentException("Default key cannot be null");
+		}
+
+		if (object == null)
+		{
+			throw new IllegalArgumentException("Default value cannot be null");
+		}
+
+		defaultValues.put(key, object);
+	}
+
+	@Override
+	public Map<String, Object> getDefaultValues()
+	{
+		return this.defaultValues;
 	}
 
 }

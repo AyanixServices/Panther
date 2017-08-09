@@ -26,40 +26,76 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.gui;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface InventoryGUI
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * An inventory type can be CHEST, HOPPER etc.
+	 *
+	 * @return The inventory type of the GUI.
+	 */
+	InventoryType getInventoryType();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * @return The number of rows.
+	 */
+	int getRows();
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * x9 of rows mostly however not at all times - anvils do not have rows.
+	 *
+	 * @return The number of slots.
+	 */
+	int getSlots();
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * @return The name of the inventory.
+	 */
+	String getName();
+
+	/**
+	 * Inserts an item into the GUI.
+	 *
+	 * @param slot The corresponding slot, starting from 0.
+	 * @param item The GUIItem with action and ItemStack.
+	 */
+	void insert(int slot, GUIItem item);
+
+	/**
+	 * Inserts an item into the GUI with no action.
+	 *
+	 * @param slot The corresponding slot, starting from 0.
+	 * @param item The ItemStack.
+	 */
+	void insert(int slot, ItemStack item);
+
+	/**
+	 * Remove all items from the GUI.
+	 */
+	void clear();
+
+	/**
+	 * Insert all GUIItems into the Bukkit inventory.
+	 */
+	void refresh();
+
+	/**
+	 * Open the inventory.
+	 */
+	void open();
+
+	/**
+	 * @return Whether or not the inventory is allowed to be closed.
+	 */
+	boolean canClose();
 
 }

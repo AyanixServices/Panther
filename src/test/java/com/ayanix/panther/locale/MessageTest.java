@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.locale;
 
-import com.ayanix.panther.impl.locale.Message;
+import com.ayanix.panther.impl.bukkit.locale.BukkitMessage;
 import org.bukkit.entity.Player;
 import org.junit.Assert;
 import org.junit.Test;
@@ -49,19 +49,19 @@ public class MessageTest
 {
 
 	@Test
-	public void testMessages()
+	public void testBukkitMessages()
 	{
 		Player player = PowerMockito.mock(Player.class);
 
 		/* Test a single line is received when formatted */
-		Message message = PowerMockito.spy(new Message("test", Collections.singletonList("Banana")));
+		BukkitMessage message = PowerMockito.spy(new BukkitMessage("test", Collections.singletonList("Banana")));
 		message.send(player);
 
 		Mockito.verify(player, Mockito.atLeastOnce()).sendMessage("Banana");
 		Mockito.reset(player);
 
 		/* Test if multiple lines are received */
-		message = PowerMockito.spy(new Message("test", Arrays.asList("Banana", "Apple")));
+		message = PowerMockito.spy(new BukkitMessage("test", Arrays.asList("Banana", "Apple")));
 		message.send(player);
 
 		Mockito.verify(player, Mockito.times(2)).sendMessage(Mockito.anyString());
@@ -70,7 +70,7 @@ public class MessageTest
 		/* Test if formatted lines are different from unformatted,
 		 * multiple lines in a single string contains new line code and
 		 * amount of lines is equal to amount of message lines */
-		message = PowerMockito.spy(new Message("test", Arrays.asList("&dBanana", "&1Apple")));
+		message = PowerMockito.spy(new BukkitMessage("test", Arrays.asList("&dBanana", "&1Apple")));
 
 		Assert.assertFalse("Formatted message cannot contain colour codes", message.get().contains("&d"));
 		Assert.assertTrue("Multiple lines in a single string must contain \\n", message.get().contains("\n"));

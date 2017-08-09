@@ -26,40 +26,78 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.utils.item;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.Color;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface ItemBuilder
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * Set the amount of the item.
+	 *
+	 * @param amount The amount to set, cannot be above 64 or below 1.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder amount(int amount);
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * Set the data (durability) of the item.
+	 *
+	 * @param data The data to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder data(short data);
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * Set the name of the item.
+	 * This can be unformatted or formatted; Panther will format it.
+	 *
+	 * @param name The name to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder name(String name);
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * Set the lore of the item.
+	 * This can be unformatted or formatted; Panther will format it.
+	 *
+	 * @param lore The lore to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder lore(List<String> lore);
+
+	/**
+	 * Apply an enchantment to the item with the specified level.
+	 *
+	 * @param enchantment An enchantment to apply.
+	 * @param level       The level to apply, cannot be 0 or below.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder enchant(Enchantment enchantment, int level);
+
+	/**
+	 * Set the colour of the item.
+	 * This only applies to leather armour, will fail silently otherwise.
+	 *
+	 * @param color The color to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder color(Color color);
+
+	/**
+	 * Build the finished version of the item.
+	 *
+	 * @return The ItemStack.
+	 */
+	ItemStack build();
 
 }

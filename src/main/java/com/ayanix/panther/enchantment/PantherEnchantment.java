@@ -26,40 +26,62 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.enchantment;
 
-import com.ayanix.panther.impl.common.utils.RomanNumerals;
-import org.junit.Assert;
-import org.junit.experimental.theories.DataPoints;
-import org.junit.experimental.theories.Theories;
-import org.junit.experimental.theories.Theory;
-import org.junit.runner.RunWith;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-@RunWith(Theories.class)
-public class RomanNumeralsTest
+public interface PantherEnchantment
 {
 
-	@DataPoints
-	public static int[] candidates = {0, 10, 100, -100, 1701, 123456};
+	/**
+	 * @return The display name of the enchantment.
+	 */
+	String getDisplayName();
 
-	@Theory
-	public void testRomanNumerals(int arabic)
-	{
-		RomanNumerals romanNumerals = new RomanNumerals();
+	/**
+	 * @return The minimum level of the enchantment, usually 1.
+	 */
+	int getStartLevel();
 
-		try
-		{
-			String roman = romanNumerals.toRoman(arabic);
+	/**
+	 * @return The maximum level of the enchantment.
+	 */
+	int getMaxLevel();
 
-			Assert.assertTrue("Roman numeral must match arabic in value", romanNumerals.toInt(roman) == arabic);
-		} catch (IllegalArgumentException ex)
-		{
-			Assert.assertTrue(arabic <= 0);
-		}
-	}
+	/**
+	 * @return The enchantable materials.
+	 */
+	List<Material> getEnchantable();
+
+	/**
+	 * @param item The item which wishes to be enchanted.
+	 * @return Whether or not the item can be enchanted.
+	 */
+	boolean canEnchantItem(ItemStack item);
+
+	/**
+	 * @param item  The item to be enchanted.
+	 * @param level The level of enchantment to apply.
+	 */
+	void apply(ItemStack item, int level);
+
+	/**
+	 * @param item The item to check.
+	 * @return The level of the enchantment applied to item, can be 0 if no enchantment.
+	 */
+	int getLevel(ItemStack item);
+
+	/**
+	 * @param item The item to check.
+	 * @return Whether or not the item has the specific enchantment.
+	 */
+	boolean isEnchanted(ItemStack item);
 
 }

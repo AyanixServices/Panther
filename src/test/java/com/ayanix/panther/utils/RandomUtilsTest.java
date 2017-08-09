@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.utils;
 
-import com.ayanix.panther.impl.utils.RandomUtils;
+import com.ayanix.panther.impl.common.utils.RandomUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

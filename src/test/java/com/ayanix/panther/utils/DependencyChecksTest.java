@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.utils;
 
-import com.ayanix.panther.impl.utils.DependencyChecks;
+import com.ayanix.panther.impl.bukkit.utils.BukkitDependencyChecks;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.plugin.PluginBase;
@@ -58,7 +58,7 @@ public class DependencyChecksTest
 	 * Setup Bukkit and plugin manager before hand.
 	 */
 	@Before
-	public void setupTest()
+	public void setupBukkitTest()
 	{
 		PowerMockito.mockStatic(Bukkit.class);
 		PowerMockito.when(Bukkit.getServer()).thenReturn(PowerMockito.mock(Server.class));
@@ -68,13 +68,13 @@ public class DependencyChecksTest
 	}
 
 	@Test
-	public void testDependencyCheck()
+	public void testBukkitDependencyCheck()
 	{
 		JavaPlugin   plugin = PowerMockito.mock(JavaPlugin.class);
 		PluginLogger logger = PowerMockito.mock(PluginLogger.class);
 		PowerMockito.when(plugin.getLogger()).thenReturn(logger);
 
-		DependencyChecks checks = PowerMockito.spy(new DependencyChecks(plugin));
+		BukkitDependencyChecks checks = PowerMockito.spy(new BukkitDependencyChecks(plugin));
 
 		HashMap<String, String> dependencies = new HashMap<>();
 
