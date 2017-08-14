@@ -51,7 +51,7 @@ public interface IDateUtils
 	 * @param time   The time string.
 	 * @param future If the date is in the future, as opposed to the past.
 	 * @return A unix timestamp.
-	 * @throws Exception if the date input was invalid.
+	 * @throws DateTimeException if the date input was invalid.
 	 */
 	long parseDateDiff(String time, boolean future) throws DateTimeException;
 

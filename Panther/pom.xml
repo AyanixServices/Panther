@@ -57,6 +57,7 @@
                 <configuration>
                     <minimizeJar>false</minimizeJar>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
+                    <shadeSourcesContent>true</shadeSourcesContent>
                     <relocations>
                         <relocation>
                             <pattern>org.sql2o</pattern>
@@ -82,6 +83,22 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <includeDependencySources>true</includeDependencySources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

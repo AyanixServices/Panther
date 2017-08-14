@@ -71,6 +71,7 @@ public interface ItemUtils
 	 *
 	 * @param itemA The first item to check.
 	 * @param itemB The second item to compare with.
+	 * @return Whether or not the items are equal.
 	 */
 	boolean areItemsEqual(ItemStack itemA, ItemStack itemB);
 

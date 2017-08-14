@@ -50,6 +50,7 @@ public interface IRandomUtils
 	 * Get a random element from a list.
 	 *
 	 * @param list List to grab element from.
+	 * @param <E> The type of list.
 	 * @return A random element from given list.
 	 */
 	<E> E getElement(List<E> list);

@@ -130,7 +130,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			@Override
 			public void run(Player player, ClickType type)
 			{
-				throw new UnsupportedOperationException("Cannot operate on abstract item");
+				// Do nothing
 			}
 		});
 	}

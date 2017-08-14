@@ -49,6 +49,7 @@ public interface Message
 	 *
 	 * @param key   Substring to replace, excluding { and }.
 	 * @param value Substring to replace with.
+	 * @return The message with replaced values.
 	 */
 	Message replace(String key, String value);
 

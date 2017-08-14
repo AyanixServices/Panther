@@ -168,7 +168,7 @@ public class BukkitItemUtils implements ItemUtils
 
 		for (int x = 1; x < itemWordList.size(); x++)
 		{
-			String[] parts = itemWordList.get(x).split(":");
+			String[] parts = itemWordList.get(x).split(":", 2);
 
 			switch (parts[0])
 			{
