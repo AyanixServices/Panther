@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.bukkit.utils.item;
 
 import com.ayanix.panther.utils.item.ItemBuilder;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -37,10 +38,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -138,15 +136,26 @@ public class BukkitItemBuilder implements ItemBuilder
 
 		if (!name.isEmpty())
 		{
-			meta.setDisplayName(name);
+			meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
 		}
 
-		meta.setLore(lore);
+		List<String> messages = new LinkedList<>();
 
-		LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
-		armorMeta.setColor(color);
+		for(String message : lore) {
+			messages.add(ChatColor.translateAlternateColorCodes('&', message));
+		}
 
-		item.setItemMeta(armorMeta);
+		meta.setLore(messages);
+
+		if(meta instanceof LeatherArmorMeta)
+		{
+			LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
+			armorMeta.setColor(color);
+
+			item.setItemMeta(armorMeta);
+		} else {
+			item.setItemMeta(meta);
+		}
 
 		for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet())
 		{

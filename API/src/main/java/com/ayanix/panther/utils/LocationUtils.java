@@ -46,6 +46,15 @@ public interface LocationUtils
 	String toString(Location location);
 
 	/**
+	 * Gets a string version of a location.
+	 *
+	 * @param location The location to turn into a string.
+	 * @param yawAndPitch Whether or not to return yaw and pitch.
+	 * @return The string version.
+	 */
+	String toString(Location location, boolean yawAndPitch);
+
+	/**
 	 * Gets a Location from a #toString(Location) string.
 	 *
 	 * @param string String to get location from

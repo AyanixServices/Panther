@@ -312,16 +312,24 @@ public class BukkitItemUtils implements ItemUtils
 		ItemMeta metaA = itemA.hasItemMeta() ? itemA.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemA.getType());
 		ItemMeta metaB = itemB.hasItemMeta() ? itemB.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemB.getType());
 
-		if (metaA.getLore().size() != metaB.getLore().size())
-		{
+		if(metaA.hasLore() && !metaB.hasLore() ||
+				!metaA.hasLore() && metaB.hasLore()) {
 			return false;
 		}
 
-		for (int x = 0; x < Math.max(metaA.getLore().size(), metaB.getLore().size()); x++)
+		if(metaA.hasLore() && metaB.hasLore())
 		{
-			if (!metaA.getLore().get(x).equals(metaB.getLore().get(x)))
+			if (metaA.getLore().size() != metaB.getLore().size())
 			{
 				return false;
+			}
+
+			for (int x = 0; x < Math.max(metaA.getLore().size(), metaB.getLore().size()); x++)
+			{
+				if (!metaA.getLore().get(x).equals(metaB.getLore().get(x)))
+				{
+					return false;
+				}
 			}
 		}
 

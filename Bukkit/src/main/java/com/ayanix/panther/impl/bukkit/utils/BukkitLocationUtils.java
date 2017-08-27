@@ -48,23 +48,35 @@ public class BukkitLocationUtils implements LocationUtils
 	@Override
 	public String toString(Location location)
 	{
+		return toString(location, true);
+	}
+
+	@Override
+	public String toString(Location location, boolean yawAndPitch)
+	{
 		if (location == null)
 		{
 			throw new IllegalArgumentException("Location cannot be null");
 		}
 
-		return new StringBuilder().append(location.getWorld().getName())
+		StringBuilder builder = new StringBuilder().append(location.getWorld().getName())
 				.append(':')
 				.append(location.getBlockX())
 				.append(':')
 				.append(location.getBlockY())
 				.append(':')
-				.append(location.getBlockZ())
-				.append(':')
-				.append(location.getYaw())
-				.append(':')
-				.append(location.getPitch())
-				.toString();
+				.append(location.getBlockZ());
+
+		if (yawAndPitch)
+		{
+			builder = builder
+					.append(':')
+					.append(location.getYaw())
+					.append(':')
+					.append(location.getPitch());
+		}
+
+		return builder.toString();
 	}
 
 	@Override
