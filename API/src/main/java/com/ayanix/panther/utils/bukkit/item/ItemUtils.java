@@ -26,49 +26,61 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.utils.bukkit.item;
 
-import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface LocationUtils
+public interface ItemUtils
 {
 
 	/**
-	 * Gets a string version of a location.
+	 * Return whether or not the given string is a material.
+	 * This is case-sensitive.
 	 *
-	 * @param location The location to turn into a string.
-	 * @return The string version.
+	 * @param materialName Material name.
+	 * @return If true, its a material.
 	 */
-	String toString(Location location);
+	boolean isMaterial(String materialName);
 
 	/**
-	 * Gets a string version of a location.
+	 * Converts an ItemStack into a string for saving.
 	 *
-	 * @param location The location to turn into a string.
-	 * @param yawAndPitch Whether or not to return yaw and pitch.
-	 * @return The string version.
+	 * @param item The item to generate as String.
+	 * @return A string compressed version of item.
 	 */
-	String toString(Location location, boolean yawAndPitch);
+	String itemToString(ItemStack item);
 
 	/**
-	 * Gets a Location from a #toString(Location) string.
+	 * Converts a compressed item string into an ItemStack.
 	 *
-	 * @param string String to get location from
-	 * @return The location.
-	 * @throws IllegalArgumentException If the location was invalid
+	 * @param item The string version of the item.
+	 * @return An ItemStack.
 	 */
-	Location fromString(String string) throws IllegalArgumentException;
+	ItemStack stringToItem(String item);
 
 	/**
-	 * Gets the center position of a block.
+	 * Checks whether or not the items match.
+	 * This only applies to names, types, data and lores.
 	 *
-	 * @param location The location to get the center position of.
-	 * @return The center position (0.5, 0.5) of the given location.
+	 * @param itemA The first item to check.
+	 * @param itemB The second item to compare with.
+	 * @return Whether or not the items are equal.
 	 */
-	Location getCenter(Location location);
+	boolean areItemsEqual(ItemStack itemA, ItemStack itemB);
+
+	/**
+	 * Get materials which contain the keywords, not case-sensitive.
+	 *
+	 * @param str The strings which identify the materials.
+	 * @return A list of materials which match.
+	 */
+	List<Material> getMaterialsContaining(String... str);
 
 }

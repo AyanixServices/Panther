@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.common.utils;
 
-import com.ayanix.panther.utils.IRomanNumerals;
+import com.ayanix.panther.utils.common.IRomanNumerals;
 
 import java.util.Map;
 import java.util.TreeMap;

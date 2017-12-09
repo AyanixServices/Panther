@@ -26,76 +26,62 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.gui;
+package com.ayanix.panther.enchantment.bukkit;
 
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface InventoryGUI
+public interface PantherEnchantment
 {
 
 	/**
-	 * An inventory type can be CHEST, HOPPER etc.
-	 *
-	 * @return The inventory type of the GUI.
+	 * @return The display name of the enchantment.
 	 */
-	InventoryType getInventoryType();
+	String getDisplayName();
 
 	/**
-	 * @return The number of rows.
+	 * @return The minimum level of the enchantment, usually 1.
 	 */
-	int getRows();
+	int getStartLevel();
 
 	/**
-	 * x9 of rows mostly however not at all times - anvils do not have rows.
-	 *
-	 * @return The number of slots.
+	 * @return The maximum level of the enchantment.
 	 */
-	int getSlots();
+	int getMaxLevel();
 
 	/**
-	 * @return The name of the inventory.
+	 * @return The enchantable materials.
 	 */
-	String getName();
+	List<Material> getEnchantable();
 
 	/**
-	 * Inserts an item into the GUI.
-	 *
-	 * @param slot The corresponding slot, starting from 0.
-	 * @param item The GUIItem with action and ItemStack.
+	 * @param item The item which wishes to be enchanted.
+	 * @return Whether or not the item can be enchanted.
 	 */
-	void insert(int slot, GUIItem item);
+	boolean canEnchantItem(ItemStack item);
 
 	/**
-	 * Inserts an item into the GUI with no action.
-	 *
-	 * @param slot The corresponding slot, starting from 0.
-	 * @param item The ItemStack.
+	 * @param item  The item to be enchanted.
+	 * @param level The level of enchantment to apply.
 	 */
-	void insert(int slot, ItemStack item);
+	void apply(ItemStack item, int level);
 
 	/**
-	 * Remove all items from the GUI.
+	 * @param item The item to check.
+	 * @return The level of the enchantment applied to item, can be 0 if no enchantment.
 	 */
-	void clear();
+	int getLevel(ItemStack item);
 
 	/**
-	 * Insert all GUIItems into the Bukkit inventory.
+	 * @param item The item to check.
+	 * @return Whether or not the item has the specific enchantment.
 	 */
-	void refresh();
-
-	/**
-	 * Open the inventory.
-	 */
-	void open();
-
-	/**
-	 * @return Whether or not the inventory is allowed to be closed.
-	 */
-	boolean canClose();
+	boolean isEnchanted(ItemStack item);
 
 }

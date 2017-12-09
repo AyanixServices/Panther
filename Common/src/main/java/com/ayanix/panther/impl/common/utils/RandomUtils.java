@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.common.utils;
 
-import com.ayanix.panther.utils.IRandomUtils;
+import com.ayanix.panther.utils.common.IRandomUtils;
 
 import java.util.List;
 import java.util.Random;

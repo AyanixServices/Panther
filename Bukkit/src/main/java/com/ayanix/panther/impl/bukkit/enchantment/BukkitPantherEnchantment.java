@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.enchantment;
 
-import com.ayanix.panther.enchantment.PantherEnchantment;
+import com.ayanix.panther.enchantment.bukkit.PantherEnchantment;
 import com.ayanix.panther.impl.common.utils.RomanNumerals;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

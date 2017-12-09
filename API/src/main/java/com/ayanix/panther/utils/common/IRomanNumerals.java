@@ -26,62 +26,29 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.enchantment;
-
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
+package com.ayanix.panther.utils.common;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface PantherEnchantment
+public interface IRomanNumerals
 {
 
 	/**
-	 * @return The display name of the enchantment.
+	 * Converts a given number into a roman numeral.
+	 *
+	 * @param num The number to convert to roman numerals.
+	 * @return Number as a roman numeral.
 	 */
-	String getDisplayName();
+	String toRoman(int num);
 
 	/**
-	 * @return The minimum level of the enchantment, usually 1.
+	 * Converts a given roman numeral into an integer.
+	 *
+	 * @param roman The roman numeral to restore as an Integer.
+	 * @return An integer associated with given roman numeral.
 	 */
-	int getStartLevel();
-
-	/**
-	 * @return The maximum level of the enchantment.
-	 */
-	int getMaxLevel();
-
-	/**
-	 * @return The enchantable materials.
-	 */
-	List<Material> getEnchantable();
-
-	/**
-	 * @param item The item which wishes to be enchanted.
-	 * @return Whether or not the item can be enchanted.
-	 */
-	boolean canEnchantItem(ItemStack item);
-
-	/**
-	 * @param item  The item to be enchanted.
-	 * @param level The level of enchantment to apply.
-	 */
-	void apply(ItemStack item, int level);
-
-	/**
-	 * @param item The item to check.
-	 * @return The level of the enchantment applied to item, can be 0 if no enchantment.
-	 */
-	int getLevel(ItemStack item);
-
-	/**
-	 * @param item The item to check.
-	 * @return Whether or not the item has the specific enchantment.
-	 */
-	boolean isEnchanted(ItemStack item);
+	int toInt(String roman);
 
 }

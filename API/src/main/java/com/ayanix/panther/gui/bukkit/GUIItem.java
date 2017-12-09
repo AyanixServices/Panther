@@ -26,41 +26,37 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.gui.bukkit;
 
-import java.time.DateTimeException;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IDateUtils
+public interface GUIItem
 {
 
 	/**
-	 * Get whether or not a unix timestamp is in the past.
-	 *
-	 * @param unixTime The unix timestamp.
-	 * @return If the timestamp has expired.
+	 * @return The ItemStack representing the GUIItem.
 	 */
-	boolean shouldExpire(long unixTime);
+	ItemStack getItemStack();
 
 	/**
-	 * Converts a time string to a unix timestamp.
+	 * Sets the ItemStack.
 	 *
-	 * @param time   The time string.
-	 * @param future If the date is in the future, as opposed to the past.
-	 * @return A unix timestamp.
-	 * @throws DateTimeException if the date input was invalid.
+	 * @param item The ItemStack representing the GUIItem.
 	 */
-	long parseDateDiff(String time, boolean future) throws DateTimeException;
+	void setItemStack(ItemStack item);
 
 	/**
-	 * Converts a unix timestamp to string format of time distance (1 years, 2 months etc)
+	 * Method ran when item is clicked.
 	 *
-	 * @param unixTime The unix timestamp in future or past.
-	 * @return A date difference between unixTime and current time.
+	 * @param player Player who clicked the item.
+	 * @param type   How the item is clicked.
 	 */
-	String formatDateDiff(long unixTime);
+	void run(Player player, ClickType type);
 
 }

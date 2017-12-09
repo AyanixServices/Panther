@@ -26,7 +26,11 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.utils.bukkit.item;
+
+import org.bukkit.Color;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -34,25 +38,66 @@ import java.util.List;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IRandomUtils
+public interface ItemBuilder
 {
 
 	/**
-	 * Get a random integer between min and max, inclusive of both.
+	 * Set the amount of the item.
 	 *
-	 * @param min The minimum range.
-	 * @param max The maximum range, inclusive.
-	 * @return A random integer betewen the two values.
+	 * @param amount The amount to set, cannot be above 64 or below 1.
+	 * @return The ItemBuilder object.
 	 */
-	int getInteger(int min, int max);
+	ItemBuilder amount(int amount);
 
 	/**
-	 * Get a random element from a list.
+	 * Set the data (durability) of the item.
 	 *
-	 * @param list List to grab element from.
-	 * @param <E> The type of list.
-	 * @return A random element from given list.
+	 * @param data The data to set.
+	 * @return The ItemBuilder object.
 	 */
-	<E> E getElement(List<E> list);
+	ItemBuilder data(short data);
+
+	/**
+	 * Set the name of the item.
+	 * This can be unformatted or formatted; Panther will format it.
+	 *
+	 * @param name The name to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder name(String name);
+
+	/**
+	 * Set the lore of the item.
+	 * This can be unformatted or formatted; Panther will format it.
+	 *
+	 * @param lore The lore to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder lore(List<String> lore);
+
+	/**
+	 * Apply an enchantment to the item with the specified level.
+	 *
+	 * @param enchantment An enchantment to apply.
+	 * @param level       The level to apply, cannot be 0 or below.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder enchant(Enchantment enchantment, int level);
+
+	/**
+	 * Set the colour of the item.
+	 * This only applies to leather armour, will fail silently otherwise.
+	 *
+	 * @param color The color to set.
+	 * @return The ItemBuilder object.
+	 */
+	ItemBuilder color(Color color);
+
+	/**
+	 * Build the finished version of the item.
+	 *
+	 * @return The ItemStack.
+	 */
+	ItemStack build();
 
 }

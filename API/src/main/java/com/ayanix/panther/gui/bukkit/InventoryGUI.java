@@ -26,29 +26,76 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils;
+package com.ayanix.panther.gui.bukkit;
+
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface IRomanNumerals
+public interface InventoryGUI
 {
 
 	/**
-	 * Converts a given number into a roman numeral.
+	 * An inventory type can be CHEST, HOPPER etc.
 	 *
-	 * @param num The number to convert to roman numerals.
-	 * @return Number as a roman numeral.
+	 * @return The inventory type of the GUI.
 	 */
-	String toRoman(int num);
+	InventoryType getInventoryType();
 
 	/**
-	 * Converts a given roman numeral into an integer.
-	 *
-	 * @param roman The roman numeral to restore as an Integer.
-	 * @return An integer associated with given roman numeral.
+	 * @return The number of rows.
 	 */
-	int toInt(String roman);
+	int getRows();
+
+	/**
+	 * x9 of rows mostly however not at all times - anvils do not have rows.
+	 *
+	 * @return The number of slots.
+	 */
+	int getSlots();
+
+	/**
+	 * @return The name of the inventory.
+	 */
+	String getName();
+
+	/**
+	 * Inserts an item into the GUI.
+	 *
+	 * @param slot The corresponding slot, starting from 0.
+	 * @param item The GUIItem with action and ItemStack.
+	 */
+	void insert(int slot, GUIItem item);
+
+	/**
+	 * Inserts an item into the GUI with no action.
+	 *
+	 * @param slot The corresponding slot, starting from 0.
+	 * @param item The ItemStack.
+	 */
+	void insert(int slot, ItemStack item);
+
+	/**
+	 * Remove all items from the GUI.
+	 */
+	void clear();
+
+	/**
+	 * Insert all GUIItems into the Bukkit inventory.
+	 */
+	void refresh();
+
+	/**
+	 * Open the inventory.
+	 */
+	void open();
+
+	/**
+	 * @return Whether or not the inventory is allowed to be closed.
+	 */
+	boolean canClose();
 
 }

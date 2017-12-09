@@ -28,8 +28,8 @@
  */
 package com.ayanix.panther.impl.bukkit.gui;
 
-import com.ayanix.panther.gui.GUIItem;
-import com.ayanix.panther.gui.InventoryGUI;
+import com.ayanix.panther.gui.bukkit.GUIItem;
+import com.ayanix.panther.gui.bukkit.InventoryGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

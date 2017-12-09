@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.common.utils;
 
-import com.ayanix.panther.utils.IDateUtils;
+import com.ayanix.panther.utils.common.IDateUtils;
 
 import java.time.DateTimeException;
 import java.util.Calendar;

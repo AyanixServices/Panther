@@ -28,8 +28,8 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.item;
 
-import com.ayanix.panther.utils.item.ItemBuilder;
-import com.ayanix.panther.utils.item.PotionBuilder;
+import com.ayanix.panther.utils.bukkit.item.ItemBuilder;
+import com.ayanix.panther.utils.bukkit.item.PotionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;

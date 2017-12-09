@@ -26,78 +26,37 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils.item;
-
-import org.bukkit.Color;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
+package com.ayanix.panther.utils.bukkit.item;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface ItemBuilder
+public interface PotionBuilder extends ItemBuilder
 {
 
 	/**
-	 * Set the amount of the item.
+	 * Set the amplifier of the potion effect;
 	 *
-	 * @param amount The amount to set, cannot be above 64 or below 1.
-	 * @return The ItemBuilder object.
+	 * @param amplifier The amplifier to set, cannot be negative.
+	 * @return The PotionBuilder object.
 	 */
-	ItemBuilder amount(int amount);
+	PotionBuilder amplifier(int amplifier);
 
 	/**
-	 * Set the data (durability) of the item.
+	 * Set whether or not the potion is splash.
 	 *
-	 * @param data The data to set.
-	 * @return The ItemBuilder object.
+	 * @param splash Set whether or not the potion is splash.
+	 * @return The PotionBuilder object.
 	 */
-	ItemBuilder data(short data);
+	PotionBuilder splash(boolean splash);
 
 	/**
-	 * Set the name of the item.
-	 * This can be unformatted or formatted; Panther will format it.
+	 * Set whether or not the potion is extended.
 	 *
-	 * @param name The name to set.
-	 * @return The ItemBuilder object.
+	 * @param extended Set whether or not the potion is extended.
+	 * @return The PotionBuilder object.
 	 */
-	ItemBuilder name(String name);
-
-	/**
-	 * Set the lore of the item.
-	 * This can be unformatted or formatted; Panther will format it.
-	 *
-	 * @param lore The lore to set.
-	 * @return The ItemBuilder object.
-	 */
-	ItemBuilder lore(List<String> lore);
-
-	/**
-	 * Apply an enchantment to the item with the specified level.
-	 *
-	 * @param enchantment An enchantment to apply.
-	 * @param level       The level to apply, cannot be 0 or below.
-	 * @return The ItemBuilder object.
-	 */
-	ItemBuilder enchant(Enchantment enchantment, int level);
-
-	/**
-	 * Set the colour of the item.
-	 * This only applies to leather armour, will fail silently otherwise.
-	 *
-	 * @param color The color to set.
-	 * @return The ItemBuilder object.
-	 */
-	ItemBuilder color(Color color);
-
-	/**
-	 * Build the finished version of the item.
-	 *
-	 * @return The ItemStack.
-	 */
-	ItemStack build();
+	PotionBuilder extended(boolean extended);
 
 }

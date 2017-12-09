@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.utils;
 
-import com.ayanix.panther.utils.LocationUtils;
+import com.ayanix.panther.utils.bukkit.IBukkitLocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -37,7 +37,7 @@ import org.bukkit.World;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitLocationUtils implements LocationUtils
+public class BukkitLocationUtils implements IBukkitLocationUtils
 {
 
 	public BukkitLocationUtils()

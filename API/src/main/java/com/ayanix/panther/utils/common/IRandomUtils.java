@@ -26,37 +26,33 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.utils.item;
+package com.ayanix.panther.utils.common;
+
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface PotionBuilder extends ItemBuilder
+public interface IRandomUtils
 {
 
 	/**
-	 * Set the amplifier of the potion effect;
+	 * Get a random integer between min and max, inclusive of both.
 	 *
-	 * @param amplifier The amplifier to set, cannot be negative.
-	 * @return The PotionBuilder object.
+	 * @param min The minimum range.
+	 * @param max The maximum range, inclusive.
+	 * @return A random integer betewen the two values.
 	 */
-	PotionBuilder amplifier(int amplifier);
+	int getInteger(int min, int max);
 
 	/**
-	 * Set whether or not the potion is splash.
+	 * Get a random element from a list.
 	 *
-	 * @param splash Set whether or not the potion is splash.
-	 * @return The PotionBuilder object.
+	 * @param list List to grab element from.
+	 * @param <E> The type of list.
+	 * @return A random element from given list.
 	 */
-	PotionBuilder splash(boolean splash);
-
-	/**
-	 * Set whether or not the potion is extended.
-	 *
-	 * @param extended Set whether or not the potion is extended.
-	 * @return The PotionBuilder object.
-	 */
-	PotionBuilder extended(boolean extended);
+	<E> E getElement(List<E> list);
 
 }

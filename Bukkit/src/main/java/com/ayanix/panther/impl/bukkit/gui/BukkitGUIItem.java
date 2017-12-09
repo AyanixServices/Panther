@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.gui;
 
-import com.ayanix.panther.gui.GUIItem;
+import com.ayanix.panther.gui.bukkit.GUIItem;
 import org.bukkit.inventory.ItemStack;
 
 /**
