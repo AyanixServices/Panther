@@ -40,7 +40,7 @@ public interface IBukkitPermissionUtils
 	/**
 	 * Register a permission, even if it already exists.
 	 * By default, OPs have this permission.
-	 *
+	 * <p>
 	 * If the permission already exists, it will be removed and re-registered.
 	 *
 	 * @param permission The permission to register.
@@ -52,7 +52,7 @@ public interface IBukkitPermissionUtils
 
 	/**
 	 * Register a permission, even if it already exists, with a specific default value.
-	 *
+	 * <p>
 	 * If the permission already exists, it will be removed and re-registered.
 	 *
 	 * @param permission   The permission to register.

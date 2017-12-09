@@ -48,7 +48,7 @@ public interface IBukkitLocationUtils
 	/**
 	 * Gets a string version of a location.
 	 *
-	 * @param location The location to turn into a string.
+	 * @param location    The location to turn into a string.
 	 * @param yawAndPitch Whether or not to return yaw and pitch.
 	 * @return The string version.
 	 */
