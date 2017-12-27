@@ -29,6 +29,7 @@
 package com.ayanix.panther.utils.bukkit;
 
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -58,10 +59,10 @@ public interface IBukkitLocationUtils
 	 * Gets a Location from a #toString(Location) string.
 	 *
 	 * @param string String to get location from
-	 * @return The location.
-	 * @throws IllegalArgumentException If the location was invalid
+	 * @return The location, or null the location could not be retrieved.
 	 */
-	Location fromString(String string) throws IllegalArgumentException;
+	@Nullable
+	Location fromString(@Nullable String string);
 
 	/**
 	 * Gets the center position of a block.
