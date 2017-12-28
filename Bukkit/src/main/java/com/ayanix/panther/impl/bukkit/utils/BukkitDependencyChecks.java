@@ -46,13 +46,14 @@ public class BukkitDependencyChecks implements DependencyChecks
 	private final Logger logger;
 
 	/**
-	 * @param plugin Plugin requesting dependencies.
+	 * @param plugin Plugin requesting dependencies. If null, there will be no output messages.
 	 */
 	public BukkitDependencyChecks(final JavaPlugin plugin)
 	{
-		if (plugin == null)
-		{
-			throw new IllegalArgumentException("Plugin cannot be null");
+		if(plugin == null) {
+			// Referencing plugin will throw a NPE
+			this.logger = null;
+			return;
 		}
 
 		this.logger = plugin.getLogger();

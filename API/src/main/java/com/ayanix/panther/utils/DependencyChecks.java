@@ -44,7 +44,7 @@ public interface DependencyChecks
 	 * <p>
 	 * The version checks the starting version, e.g. a parameter of 6 would work with 6.x.x versions.
 	 *
-	 * @param logger       The logger to log info and severe messages.
+	 * @param logger       The logger to log info and severe messages. If null, no output messages.
 	 * @param dependencies HashMap of dependencies - key is plugin, value is version.
 	 * @return If all dependencies are enabled.
 	 */
@@ -76,12 +76,18 @@ public interface DependencyChecks
 					error.append(" (v").append(version).append(')');
 				}
 
-				logger.severe(error::toString);
+				if (logger != null)
+				{
+					logger.severe(error::toString);
+				}
 
 				continue;
 			}
 
-			logger.info(() -> "\u2714 " + pluginName + " detected");
+			if (logger != null)
+			{
+				logger.info(() -> "\u2714 " + pluginName + " detected");
+			}
 		}
 
 		return allEnabled;
