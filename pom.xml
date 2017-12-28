@@ -68,6 +68,14 @@
             <version>1.7.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Annotations !-->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>15.0</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

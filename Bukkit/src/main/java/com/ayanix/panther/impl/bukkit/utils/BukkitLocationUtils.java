@@ -33,6 +33,7 @@ import com.ayanix.panther.utils.bukkit.IBukkitPermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -76,25 +77,33 @@ public class BukkitLocationUtils implements IBukkitLocationUtils
 	}
 
 	@Override
-	public Location fromString(String string) throws IllegalArgumentException
+	@Nullable
+	public Location fromString(@Nullable String string)
 	{
+		if(string == null){
+			return null;
+		}
+
 		if (!string.contains(":"))
 		{
-			throw new IllegalArgumentException("String is not location parsed");
+			// String is not location parsed.
+			return null;
 		}
 
 		String[] parts = string.split(":");
 
 		if (parts.length < 4)
 		{
-			throw new IllegalArgumentException("String parts is not equal to or above 4");
+			// String parts is not equal to or above 4.
+			return null;
 		}
 
 		World world = Bukkit.getWorld(parts[0]);
 
 		if (world == null)
 		{
-			throw new IllegalArgumentException(parts[0] + " world does not exist");
+			// World does not exist.
+			return null;
 		}
 
 		int x = Integer.parseInt(parts[1]);
