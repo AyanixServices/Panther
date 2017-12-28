@@ -29,7 +29,6 @@
 package com.ayanix.panther.impl.bukkit.utils;
 
 import com.ayanix.panther.utils.bukkit.IBukkitLocationUtils;
-import com.ayanix.panther.utils.bukkit.IBukkitPermissionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -80,7 +79,8 @@ public class BukkitLocationUtils implements IBukkitLocationUtils
 	@Nullable
 	public Location fromString(@Nullable String string)
 	{
-		if(string == null){
+		if (string == null)
+		{
 			return null;
 		}
 

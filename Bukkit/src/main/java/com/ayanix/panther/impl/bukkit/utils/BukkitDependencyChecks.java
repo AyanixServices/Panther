@@ -50,7 +50,8 @@ public class BukkitDependencyChecks implements DependencyChecks
 	 */
 	public BukkitDependencyChecks(final JavaPlugin plugin)
 	{
-		if(plugin == null) {
+		if (plugin == null)
+		{
 			// Referencing plugin will throw a NPE
 			this.logger = null;
 			return;

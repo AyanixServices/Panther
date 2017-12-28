@@ -53,7 +53,7 @@ public interface IDateUtils
 	 * @return A unix timestamp.
 	 * @throws DateTimeException if the date input was invalid.
 	 */
-	long parseDateDiff(String time, boolean future) throws DateTimeException;
+	long parseDateDiff(String time, boolean future) throws IllegalArgumentException;
 
 	/**
 	 * Converts a unix timestamp to string format of time distance (1 years, 2 months etc)

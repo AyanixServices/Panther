@@ -141,19 +141,21 @@ public class BukkitItemBuilder implements ItemBuilder
 
 		List<String> messages = new LinkedList<>();
 
-		for(String message : lore) {
+		for (String message : lore)
+		{
 			messages.add(ChatColor.translateAlternateColorCodes('&', message));
 		}
 
 		meta.setLore(messages);
 
-		if(meta instanceof LeatherArmorMeta)
+		if (meta instanceof LeatherArmorMeta)
 		{
 			LeatherArmorMeta armorMeta = (LeatherArmorMeta) meta;
 			armorMeta.setColor(color);
 
 			item.setItemMeta(armorMeta);
-		} else {
+		} else
+		{
 			item.setItemMeta(meta);
 		}
 

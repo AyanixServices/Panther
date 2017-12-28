@@ -40,15 +40,7 @@ import java.util.Random;
 public class RandomUtils implements IRandomUtils
 {
 
-	private static Random RANDOM;
-
-	static
-	{
-		if (RANDOM == null)
-		{
-			RANDOM = new Random();
-		}
-	}
+	private static final Random RANDOM = new Random();
 
 	@Override
 	public int getInteger(int min, int max)

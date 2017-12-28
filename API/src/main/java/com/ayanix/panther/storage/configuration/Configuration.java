@@ -430,16 +430,38 @@ public final class Configuration
 	}
 
 	/*------------------------------------------------------------------------*/
+
+	/**
+	 * @param path  The path of the list in the config.
+	 * @param clazz Entries in this list must match this class.
+	 * @return A list with matching entries
+	 */
+	public <T> List<T> getList(String path, Class<T> clazz)
+	{
+		List<?> list    = getList(path);
+		List<T> newList = new LinkedList<>();
+
+		for (Object entry : list)
+		{
+			if (entry.getClass() == clazz)
+			{
+				newList.add(clazz.cast(entry));
+			}
+		}
+
+		return newList;
+	}
+
 	public List<?> getList(String path)
 	{
 		Object def = getDefault(path);
-		return getList(path, (def instanceof List<?>) ? (List<?>) def : Collections.EMPTY_LIST);
+		return getList(path, (def instanceof List<?>) ? (List<?>) def : Collections.emptyList());
 	}
 
 	public List<?> getList(String path, List<?> def)
 	{
 		Object val = get(path, def);
-		return (val instanceof List<?>) ? (List<?>) val : def;
+		return (val != null) ? (List<?>) val : def;
 	}
 
 	public boolean isList(String path)

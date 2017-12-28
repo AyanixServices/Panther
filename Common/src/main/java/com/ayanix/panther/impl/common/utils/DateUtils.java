@@ -30,7 +30,6 @@ package com.ayanix.panther.impl.common.utils;
 
 import com.ayanix.panther.utils.common.IDateUtils;
 
-import java.time.DateTimeException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
@@ -60,7 +59,7 @@ public class DateUtils implements IDateUtils
 	}
 
 	@Override
-	public long parseDateDiff(String time, boolean future) throws DateTimeException
+	public long parseDateDiff(String time, boolean future) throws IllegalArgumentException
 	{
 		Matcher m       = TIME_PATTERN.matcher(time);
 		int     years   = 0;
@@ -131,7 +130,7 @@ public class DateUtils implements IDateUtils
 
 		if (!found)
 		{
-			throw new DateTimeException("Date is invalid");
+			throw new IllegalArgumentException("Date is invalid");
 		}
 
 		Calendar c = new GregorianCalendar();

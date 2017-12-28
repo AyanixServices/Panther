@@ -34,4 +34,9 @@ package com.ayanix.panther;
  */
 public class Panther
 {
+
+	/*
+	 * This class solely exists to verify that Panther is compiled correctly.
+	 */
+
 }
