@@ -54,4 +54,10 @@ public interface IMathsUtils
 	 */
 	String format(double value);
 
+	/**
+	 * @param string The string to check if applicable as a double.
+	 * @return Whether or not the given string is a double.
+	 */
+	boolean isDouble(String string);
+
 }

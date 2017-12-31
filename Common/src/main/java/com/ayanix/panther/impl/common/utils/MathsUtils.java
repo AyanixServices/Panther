@@ -53,4 +53,18 @@ public class MathsUtils implements IMathsUtils
 		return format.format(value);
 	}
 
+	@Override
+	public boolean isDouble(String string)
+	{
+		try
+		{
+			Double.parseDouble(string);
+		} catch (Exception e)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 }

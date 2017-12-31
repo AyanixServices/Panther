@@ -86,11 +86,13 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 			});
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI, true);
+
+			plugin.getLogger().info(() -> "Registered PlaceholderAPI placeholder: %" + plugin.getName().toLowerCase() + "_" + placeholder + "%");
 		}
 
 		if (dependencyChecks.isEnabled("MVdWPlaceholderAPI"))
 		{
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, placeholder, event -> runnable.run(event.getPlayer()));
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, plugin.getName().toLowerCase() + "_" + placeholder, event -> runnable.run(event.getPlayer()));
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.MVDW_PLACEHOLDER_API, true);
 		}
