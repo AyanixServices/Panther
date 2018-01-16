@@ -60,6 +60,18 @@ public interface IBukkitPlaceholder
 	PlaceholderRunnable getRunnable();
 
 	/**
+	 * @return Whether or not the placeholder must have a non-null player object.
+	 */
+	boolean isPlayerOnly();
+
+	/**
+	 * Set if a player is required to run the placeholder.
+	 *
+	 * @param value True if player is required, false if not.
+	 */
+	void setPlayerOnly(boolean value);
+
+	/**
 	 * The compatible plugin placeholders.
 	 */
 	enum PlaceholderType

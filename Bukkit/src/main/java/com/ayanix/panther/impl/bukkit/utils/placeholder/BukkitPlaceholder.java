@@ -43,12 +43,16 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 	private final String              name;
 	private final PlaceholderRunnable runnable;
 
+	private boolean playerOnly;
+
 	private final HashMap<PlaceholderType, Boolean> registered;
 
 	BukkitPlaceholder(String name, PlaceholderRunnable runnable)
 	{
 		this.name = name;
 		this.runnable = runnable;
+
+		this.playerOnly = true;
 
 		this.registered = new HashMap<>();
 	}
@@ -69,6 +73,18 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 	public PlaceholderRunnable getRunnable()
 	{
 		return this.runnable;
+	}
+
+	@Override
+	public boolean isPlayerOnly()
+	{
+		return playerOnly;
+	}
+
+	@Override
+	public void setPlayerOnly(boolean value)
+	{
+		this.playerOnly = value;
 	}
 
 	@Override

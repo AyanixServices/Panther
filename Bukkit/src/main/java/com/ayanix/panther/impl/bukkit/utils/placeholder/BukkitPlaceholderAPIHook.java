@@ -26,55 +26,58 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.bukkit.utils;
+package com.ayanix.panther.impl.bukkit.utils.placeholder;
 
-import com.ayanix.panther.utils.DependencyChecks;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
+import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitDependencyChecks implements DependencyChecks
+class BukkitPlaceholderAPIHook
 {
 
-	private final Logger logger;
+	private JavaPlugin             plugin;
+	private BukkitPlaceholderUtils utils;
 
-	/**
-	 * @param plugin Plugin requesting dependencies. If null, there will be no output messages.
-	 */
-	public BukkitDependencyChecks(final JavaPlugin plugin)
+	BukkitPlaceholderAPIHook(JavaPlugin plugin, BukkitPlaceholderUtils utils)
 	{
-		if (plugin == null)
+		this.plugin = plugin;
+		this.utils = utils;
+	}
+
+	protected void handlePlaceholderAPI()
+	{
+		PlaceholderAPI.registerPlaceholderHook(plugin, new PlaceholderHook()
 		{
-			// Referencing plugin will throw a NPE
-			this.logger = null;
-			return;
-		}
+			@Override
+			public String onPlaceholderRequest(Player player, String s)
+			{
+				for (BukkitPlaceholder placeholder : utils.getPlaceholders())
+				{
+					if (!placeholder.isRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI))
+					{
+						continue;
+					}
 
-		this.logger = plugin.getLogger();
-	}
+					if (placeholder.getName().equalsIgnoreCase(s))
+					{
+						if (placeholder.isPlayerOnly() && player == null)
+						{
+							return null;
+						}
 
-	public boolean runChecks(final Map<String, String> dependencies)
-	{
-		return runChecks(logger, dependencies);
-	}
+						return placeholder.getRunnable().run(player);
+					}
+				}
 
-	public boolean isEnabled(final String plugin, final String version)
-	{
-		final Plugin dependency = Bukkit.getPluginManager().getPlugin(plugin);
-
-		return dependency != null && dependency.getDescription().getVersion().startsWith(version);
-	}
-
-	public boolean isEnabled(final String plugin)
-	{
-		return isEnabled(plugin, "");
+				return null;
+			}
+		});
 	}
 
 }

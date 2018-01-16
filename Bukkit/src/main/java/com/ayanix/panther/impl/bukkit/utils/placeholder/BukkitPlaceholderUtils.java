@@ -33,10 +33,11 @@ import com.ayanix.panther.utils.DependencyChecks;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderUtils;
 import com.ayanix.panther.utils.bukkit.placeholder.PlaceholderRunnable;
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -45,11 +46,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 {
 
-	private final JavaPlugin plugin;
+	private final JavaPlugin              plugin;
+	private final List<BukkitPlaceholder> placeholders;
+	private       boolean                 papiInitialised;
 
 	public BukkitPlaceholderUtils(JavaPlugin plugin)
 	{
 		this.plugin = plugin;
+		this.placeholders = new ArrayList<>();
+
+		this.papiInitialised = false;
 	}
 
 	/**
@@ -69,21 +75,14 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 		BukkitPlaceholder bukkitPlaceholder = new BukkitPlaceholder(placeholder, runnable);
 		DependencyChecks  dependencyChecks  = new BukkitDependencyChecks(plugin);
 
+		placeholders.add(bukkitPlaceholder);
+
 		if (dependencyChecks.isEnabled("PlaceholderAPI"))
 		{
-			PlaceholderAPI.registerPlaceholderHook(plugin, new PlaceholderHook()
+			if (!papiInitialised)
 			{
-				@Override
-				public String onPlaceholderRequest(Player player, String s)
-				{
-					if (!s.equalsIgnoreCase(placeholder))
-					{
-						return null;
-					}
-
-					return runnable.run(player);
-				}
-			});
+				handlePlaceholderAPI();
+			}
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI, true);
 
@@ -92,12 +91,38 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 
 		if (dependencyChecks.isEnabled("MVdWPlaceholderAPI"))
 		{
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, plugin.getName().toLowerCase() + "_" + placeholder, event -> runnable.run(event.getPlayer()));
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, plugin.getName().toLowerCase() + "_" + placeholder, event -> {
+				if (bukkitPlaceholder.isPlayerOnly() && event.getPlayer() == null)
+				{
+					return null;
+				}
+
+				return bukkitPlaceholder.getRunnable().run(event.getPlayer());
+			});
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.MVDW_PLACEHOLDER_API, true);
 		}
 
 		return bukkitPlaceholder;
+	}
+
+	private void handlePlaceholderAPI()
+	{
+		if (!new BukkitDependencyChecks(plugin).isEnabled("PlaceholderAPI"))
+		{
+			Bukkit.getLogger().info("Handle PAPI disabled.");
+			return;
+		}
+
+		// This was moved to its own class to remove NoClass errors.
+		new BukkitPlaceholderAPIHook(plugin, this).handlePlaceholderAPI();
+
+		this.papiInitialised = true;
+	}
+
+	protected List<BukkitPlaceholder> getPlaceholders()
+	{
+		return placeholders;
 	}
 
 }
