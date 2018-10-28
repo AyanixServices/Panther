@@ -143,7 +143,7 @@ public class BukkitItemUtils implements ItemUtils
 			return new ItemStack(Material.AIR, 1);
 		}
 
-		Material mat = Material.valueOf(materialName.toUpperCase(Locale.US));
+		Material mat = Material.matchMaterial(materialName);
 
 		int amount = 1;
 
