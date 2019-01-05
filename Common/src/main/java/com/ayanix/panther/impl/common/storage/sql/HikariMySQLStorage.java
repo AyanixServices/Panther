@@ -88,6 +88,13 @@ public class HikariMySQLStorage implements SQLStorage
 		sql2o = new Sql2o(dataSource);
 	}
 
+	HikariMySQLStorage(HikariDataSource dataSource, String table) {
+		this.dataSource = dataSource;
+		this.table = table;
+
+		sql2o = new Sql2o(dataSource);
+	}
+
 	@Override
 	public DataSource getDataSource()
 	{
