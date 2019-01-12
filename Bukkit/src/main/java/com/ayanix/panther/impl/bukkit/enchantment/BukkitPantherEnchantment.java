@@ -29,6 +29,9 @@
 package com.ayanix.panther.impl.bukkit.enchantment;
 
 import com.ayanix.panther.enchantment.bukkit.PantherEnchantment;
+import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
+import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitPantherEnchantment;
+import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitPantherEnchantment;
 import com.ayanix.panther.impl.common.utils.RomanNumerals;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,13 +59,14 @@ import java.util.List;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public abstract class BukkitPantherEnchantment extends Enchantment implements PantherEnchantment, Listener
+public abstract class BukkitPantherEnchantment implements PantherEnchantment, Listener
 {
 
 	private static final RomanNumerals ROMAN_NUMERALS = new RomanNumerals();
-	private String     name;
-	private JavaPlugin plugin;
-	private BukkitTask task;
+	private              String        name;
+	private              JavaPlugin    plugin;
+	private              BukkitTask    task;
+	private              Enchantment   enchantment;
 
 	/**
 	 * @param id   Unique ID of the enchantment.
@@ -71,14 +75,24 @@ public abstract class BukkitPantherEnchantment extends Enchantment implements Pa
 	@SuppressWarnings({"argument.type.incompatible", "method.invocation.invalid"})
 	public BukkitPantherEnchantment(JavaPlugin plugin, int id, String name)
 	{
-		super(id);
-
 		this.plugin = plugin;
 		this.name = ChatColor.translateAlternateColorCodes('&', name);
+
+		this.enchantment = getEnchantment(id);
 
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 
 		runEquipTimer();
+	}
+
+	private Enchantment getEnchantment(int id)
+	{
+		if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
+		{
+			return new v1_12_BukkitPantherEnchantment(this, plugin, id);
+		}
+
+		return new v1_8_BukkitPantherEnchantment(this, id);
 	}
 
 	/* Listeners & enchantment methods */
@@ -136,9 +150,9 @@ public abstract class BukkitPantherEnchantment extends Enchantment implements Pa
 		}
 
 		// Use Bukkit first
-		if (item.getEnchantmentLevel(this) != 0)
+		if (item.getEnchantmentLevel(enchantment) != 0)
 		{
-			return item.getEnchantmentLevel(this);
+			return item.getEnchantmentLevel(enchantment);
 		}
 
 		// Check lore
@@ -200,10 +214,9 @@ public abstract class BukkitPantherEnchantment extends Enchantment implements Pa
 		lore.add(this.getDisplayName() + " " + ROMAN_NUMERALS.toRoman(level));
 		itemMeta.setLore(lore);
 		item.setItemMeta(itemMeta);
-		item.addUnsafeEnchantment(this, level);
+		item.addUnsafeEnchantment(enchantment, level);
 	}
 
-	@Override
 	public boolean conflictsWith(Enchantment enchantment)
 	{
 		return false;
@@ -227,7 +240,6 @@ public abstract class BukkitPantherEnchantment extends Enchantment implements Pa
 		return pEnchantment.getName().equals(this.getName());
 	}
 
-	@Override
 	public String getName()
 	{
 		return name;
@@ -261,7 +273,6 @@ public abstract class BukkitPantherEnchantment extends Enchantment implements Pa
 		return new ArrayList<>();
 	}
 
-	@Override
 	public EnchantmentTarget getItemTarget()
 	{
 		return EnchantmentTarget.ALL;

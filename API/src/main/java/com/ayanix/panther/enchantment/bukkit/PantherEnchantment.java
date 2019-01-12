@@ -29,6 +29,8 @@
 package com.ayanix.panther.enchantment.bukkit;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -83,5 +85,11 @@ public interface PantherEnchantment
 	 * @return Whether or not the item has the specific enchantment.
 	 */
 	boolean isEnchanted(ItemStack item);
+
+	boolean conflictsWith(Enchantment enchantment);
+
+	String getName();
+
+	EnchantmentTarget getItemTarget();
 
 }
