@@ -43,6 +43,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -278,7 +279,7 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 		return EnchantmentTarget.ALL;
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event)
 	{
 		Player damager = null;
@@ -355,7 +356,7 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 		// Do nothing.
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockPlace(BlockPlaceEvent event)
 	{
 		if (isEnchanted(event.getPlayer().getItemInHand()))
@@ -369,7 +370,7 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 		// Do nothing
 	}
 
-	@EventHandler(ignoreCancelled = true)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
 	public void onBlockDestroy(BlockBreakEvent event)
 	{
 		if (isEnchanted(event.getPlayer().getItemInHand()))
