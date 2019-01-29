@@ -92,4 +92,9 @@ public interface PantherEnchantment
 
 	EnchantmentTarget getItemTarget();
 
+	/**
+	 * @return The Bukkit Enchantment related to the PantherEnchantment.
+	 */
+	Enchantment getBukkitEnchantment();
+
 }

@@ -384,4 +384,8 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 		// Do nothing
 	}
 
+	public Enchantment getBukkitEnchantment() {
+		return this.enchantment;
+	}
+
 }
