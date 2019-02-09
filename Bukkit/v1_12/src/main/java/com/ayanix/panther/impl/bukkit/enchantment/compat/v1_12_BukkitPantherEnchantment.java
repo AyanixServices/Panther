@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * PantherParent - Developed by Lewes D. B. (Boomclaw).
+ * Panther - Developed by Lewes D. B.
  * All rights reserved 2019.
  */
 public class v1_12_BukkitPantherEnchantment extends Enchantment
