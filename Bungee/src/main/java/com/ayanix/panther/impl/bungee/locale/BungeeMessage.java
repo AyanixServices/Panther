@@ -32,6 +32,7 @@ import com.ayanix.panther.locale.Message;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.Title;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -141,6 +142,51 @@ public class BungeeMessage implements Message
 
 			cSender.sendMessage(new TextComponent(message));
 		}
+	}
+
+	@Override
+	public void sendTitle(Object sender, int fadeIn, int fadeOut, int stay)
+	{
+		if (!(sender instanceof ProxiedPlayer))
+		{
+			return;
+		}
+
+		List<String> messages = getList();
+
+		if (messages.isEmpty())
+		{
+			return;
+		}
+
+		Title title = ProxyServer.getInstance().createTitle()
+				.title(new TextComponent(messages.get(0)))
+				.fadeIn(fadeIn)
+				.fadeOut(fadeIn)
+				.stay(stay);
+
+		if (messages.size() > 1)
+		{
+			title = title.subTitle(new TextComponent(messages.get(1)));
+		}
+
+		title.send((ProxiedPlayer) sender);
+	}
+
+	@Override
+	public void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay)
+	{
+		if (!(sender instanceof ProxiedPlayer))
+		{
+			return;
+		}
+
+		ProxyServer.getInstance().createTitle()
+				.subTitle(new TextComponent(get()))
+				.fadeIn(fadeIn)
+				.fadeOut(fadeIn)
+				.stay(stay)
+				.send((ProxiedPlayer) sender);
 	}
 
 }

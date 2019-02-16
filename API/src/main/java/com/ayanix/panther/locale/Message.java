@@ -118,6 +118,54 @@ public interface Message
 	void send(Object sender);
 
 	/**
+	 * Send as title to player. If console, nothing will happen.
+	 * This will not remove the old subtitle.
+	 *
+	 * @param sender Message to be sent to.
+	 */
+	default void sendTitle(Object sender)
+	{
+		sendTitle(sender, 20, 20, 60);
+	}
+
+	/**
+	 * Send as title to player. If console, nothing will happen.
+	 * This will not remove the old subtitle.
+	 * <p>
+	 * If the message is a list, the first line will be the title and the second line a subtitle.
+	 *
+	 * @param sender  Message to be sent to.
+	 * @param fadeIn  Time in ticks to fade in.
+	 * @param fadeOut Time in ticks to fade out.
+	 * @param stay    Time in ticks to stay on screen.
+	 */
+	void sendTitle(Object sender, int fadeIn, int fadeOut, int stay);
+
+	/**
+	 * Send as subtitle to player. If console, nothing will happen.
+	 * This will not remove the old title.
+	 * <p>
+	 * If the message is a list, the first line will be the title and the second line a subtitle.
+	 *
+	 * @param sender Message to be sent to.
+	 */
+	default void sendSubtitle(Object sender)
+	{
+		sendSubtitle(sender, 20, 20, 60);
+	}
+
+	/**
+	 * Send as subtitle to player. If console, nothing will happen.
+	 * This will not remove the old title.
+	 *
+	 * @param sender  Message to be sent to.
+	 * @param fadeIn  Time in ticks to fade in.
+	 * @param fadeOut Time in ticks to fade out.
+	 * @param stay    Time in ticks to stay on screen.
+	 */
+	void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay);
+
+	/**
 	 * Broadcast the formatted message to all players online and console.
 	 */
 	void broadcast();

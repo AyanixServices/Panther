@@ -29,6 +29,9 @@
 package com.ayanix.panther.impl.bukkit.locale;
 
 import com.ayanix.panther.locale.Message;
+import com.comphenix.packetwrapper.WrapperPlayServerTitle;
+import com.comphenix.protocol.wrappers.EnumWrappers;
+import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -141,6 +144,86 @@ public class BukkitMessage implements Message
 
 			cSender.sendMessage(message);
 		}
+	}
+
+	private boolean isProtocolLibEnabled()
+	{
+		return Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib");
+	}
+
+	private void sendTitleTiming(Player player, int fadeIn, int fadeOut, int stay) {
+		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+		title.setAction(EnumWrappers.TitleAction.TIMES);
+		title.setFadeIn(fadeIn);
+		title.setFadeOut(fadeOut);
+		title.setStay(stay);
+		title.sendPacket(player);
+	}
+
+	@Override
+	public void sendTitle(Object sender, int fadeIn, int fadeOut, int stay)
+	{
+		if (!(sender instanceof Player))
+		{
+			return;
+		}
+
+		if (!isProtocolLibEnabled())
+		{
+			return;
+		}
+
+		List<String> message = getList();
+
+		if (message.isEmpty())
+		{
+			return;
+		}
+
+		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
+
+		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+		title.setAction(EnumWrappers.TitleAction.TITLE);
+		title.setTitle(WrappedChatComponent.fromText(message.get(0)));
+		title.sendPacket((Player) sender);
+
+		if (message.size() > 1)
+		{
+			sendSubtitle(sender, fadeIn, fadeOut, stay, true);
+		}
+	}
+
+	@Override
+	public void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay)
+	{
+		sendSubtitle(sender, fadeIn, fadeOut, stay, false);
+	}
+
+	private void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay, boolean useSecondMessage)
+	{
+		if (!(sender instanceof Player))
+		{
+			return;
+		}
+
+		if (!isProtocolLibEnabled())
+		{
+			return;
+		}
+
+		List<String> message = getList();
+
+		if (message.isEmpty())
+		{
+			return;
+		}
+
+		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
+
+		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+		title.setAction(EnumWrappers.TitleAction.SUBTITLE);
+		title.setTitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
+		title.sendPacket((Player) sender);
 	}
 
 }
