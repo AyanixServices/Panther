@@ -5,7 +5,7 @@
     <parent>
         <artifactId>PantherParent</artifactId>
         <groupId>com.ayanix</groupId>
-        <version>1.1.5-SNAPSHOT</version>
+        <version>1.1.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -25,19 +25,27 @@
             <id>mvdw-software</id>
             <url>http://repo.mvdw-software.be/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/nexus/repository/public/</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
             <groupId>com.ayanix.panther</groupId>
             <artifactId>API</artifactId>
-            <version>1.1.5-SNAPSHOT</version>
+            <version>1.1.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.ayanix.panther</groupId>
             <artifactId>Common</artifactId>
-            <version>1.1.5-SNAPSHOT</version>
+            <version>1.1.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -65,15 +73,33 @@
             </exclusions>
         </dependency>
         <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.comphenix.packetwrapper</groupId>
+            <artifactId>PacketWrapper</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.ayanix.panther.bukkit</groupId>
             <artifactId>v1_12</artifactId>
-            <version>1.1.5-SNAPSHOT</version>
+            <version>1.1.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.ayanix.panther.bukkit</groupId>
             <artifactId>v1_8</artifactId>
-            <version>1.1.5-SNAPSHOT</version>
+            <version>1.1.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
