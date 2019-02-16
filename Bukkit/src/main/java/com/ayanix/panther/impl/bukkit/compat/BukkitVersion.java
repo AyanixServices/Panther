@@ -47,12 +47,6 @@ public enum BukkitVersion implements IBukkitVersion
 	}
 
 	@Override
-	public String getPrefix()
-	{
-		return prefix;
-	}
-
-	@Override
 	public int getWeight()
 	{
 		return weight;
@@ -74,6 +68,12 @@ public enum BukkitVersion implements IBukkitVersion
 		}
 
 		return null;
+	}
+
+	@Override
+	public String getPrefix()
+	{
+		return prefix;
 	}
 
 }

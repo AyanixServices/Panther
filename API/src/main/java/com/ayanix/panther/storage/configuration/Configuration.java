@@ -41,9 +41,9 @@ import java.util.*;
 public final class Configuration
 {
 
-	private static final char SEPARATOR = '.';
-	final         Map<String, Object> self;
-	private final Configuration       defaults;
+	private static final char                SEPARATOR = '.';
+	final                Map<String, Object> self;
+	private final        Configuration       defaults;
 
 	public Configuration()
 	{

@@ -146,20 +146,6 @@ public class BukkitMessage implements Message
 		}
 	}
 
-	private boolean isProtocolLibEnabled()
-	{
-		return Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib");
-	}
-
-	private void sendTitleTiming(Player player, int fadeIn, int fadeOut, int stay) {
-		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
-		title.setAction(EnumWrappers.TitleAction.TIMES);
-		title.setFadeIn(fadeIn);
-		title.setFadeOut(fadeOut);
-		title.setStay(stay);
-		title.sendPacket(player);
-	}
-
 	@Override
 	public void sendTitle(Object sender, int fadeIn, int fadeOut, int stay)
 	{
@@ -193,10 +179,19 @@ public class BukkitMessage implements Message
 		}
 	}
 
-	@Override
-	public void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay)
+	private boolean isProtocolLibEnabled()
 	{
-		sendSubtitle(sender, fadeIn, fadeOut, stay, false);
+		return Bukkit.getServer().getPluginManager().isPluginEnabled("ProtocolLib");
+	}
+
+	private void sendTitleTiming(Player player, int fadeIn, int fadeOut, int stay)
+	{
+		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+		title.setAction(EnumWrappers.TitleAction.TIMES);
+		title.setFadeIn(fadeIn);
+		title.setFadeOut(fadeOut);
+		title.setStay(stay);
+		title.sendPacket(player);
 	}
 
 	private void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay, boolean useSecondMessage)
@@ -224,6 +219,12 @@ public class BukkitMessage implements Message
 		title.setAction(EnumWrappers.TitleAction.SUBTITLE);
 		title.setTitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
 		title.sendPacket((Player) sender);
+	}
+
+	@Override
+	public void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay)
+	{
+		sendSubtitle(sender, fadeIn, fadeOut, stay, false);
 	}
 
 }

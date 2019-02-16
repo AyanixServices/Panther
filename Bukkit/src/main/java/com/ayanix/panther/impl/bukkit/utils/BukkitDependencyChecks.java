@@ -65,16 +65,16 @@ public class BukkitDependencyChecks implements DependencyChecks
 		return runChecks(logger, dependencies);
 	}
 
+	public boolean isEnabled(final String plugin)
+	{
+		return isEnabled(plugin, "");
+	}
+
 	public boolean isEnabled(final String plugin, final String version)
 	{
 		final Plugin dependency = Bukkit.getPluginManager().getPlugin(plugin);
 
 		return dependency != null && dependency.getDescription().getVersion().startsWith(version);
-	}
-
-	public boolean isEnabled(final String plugin)
-	{
-		return isEnabled(plugin, "");
 	}
 
 }

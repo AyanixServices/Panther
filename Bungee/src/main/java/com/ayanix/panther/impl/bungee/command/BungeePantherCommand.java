@@ -117,9 +117,9 @@ public abstract class BungeePantherCommand extends Command implements PantherCom
 	}
 
 	@Override
-	public abstract String[] getAliases();
+	public abstract String getPermission();
 
 	@Override
-	public abstract String getPermission();
+	public abstract String[] getAliases();
 
 }

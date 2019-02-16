@@ -43,16 +43,6 @@ public interface IBukkitVaultEconomyUtils
 	boolean isEnabled();
 
 	/**
-	 * Gets the balance of a player.
-	 * <p>
-	 * If the player does not exist, a balance of 0 is returned.
-	 *
-	 * @param player The player to get the balance of.
-	 * @return The string version.
-	 */
-	double getBalance(OfflinePlayer player);
-
-	/**
 	 * Gets whether or not the player can afford a provided amount.
 	 *
 	 * @param player The player to check.
@@ -63,6 +53,16 @@ public interface IBukkitVaultEconomyUtils
 	{
 		return getBalance(player) >= amount;
 	}
+
+	/**
+	 * Gets the balance of a player.
+	 * <p>
+	 * If the player does not exist, a balance of 0 is returned.
+	 *
+	 * @param player The player to get the balance of.
+	 * @return The string version.
+	 */
+	double getBalance(OfflinePlayer player);
 
 	/**
 	 * Adds an amount to the player's balance.

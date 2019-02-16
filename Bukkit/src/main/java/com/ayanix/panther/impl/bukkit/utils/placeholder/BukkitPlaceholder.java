@@ -42,10 +42,8 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 
 	private final String              name;
 	private final PlaceholderRunnable runnable;
-
-	private boolean playerOnly;
-
 	private final HashMap<PlaceholderType, Boolean> registered;
+	private boolean playerOnly;
 
 	BukkitPlaceholder(String name, PlaceholderRunnable runnable)
 	{

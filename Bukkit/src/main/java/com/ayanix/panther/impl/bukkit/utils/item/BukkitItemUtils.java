@@ -55,8 +55,8 @@ import java.util.*;
 public class BukkitItemUtils implements ItemUtils
 {
 
-	private        JavaPlugin  plugin;
 	private static Enchantment glowEnchantment = null;
+	private        JavaPlugin  plugin;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.

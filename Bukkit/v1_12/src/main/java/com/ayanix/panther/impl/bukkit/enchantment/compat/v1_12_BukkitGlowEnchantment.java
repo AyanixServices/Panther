@@ -1,6 +1,5 @@
 package com.ayanix.panther.impl.bukkit.enchantment.compat;
 
-import com.ayanix.panther.enchantment.bukkit.PantherEnchantment;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;

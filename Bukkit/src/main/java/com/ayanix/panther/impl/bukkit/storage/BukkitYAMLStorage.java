@@ -62,8 +62,10 @@ public class BukkitYAMLStorage implements YAMLStorage
 		this(plugin, plugin.getDataFolder(), name);
 	}
 
-	public BukkitYAMLStorage(Plugin plugin, File folder, String name) {
-		if(folder == null) {
+	public BukkitYAMLStorage(Plugin plugin, File folder, String name)
+	{
+		if (folder == null)
+		{
 			throw new IllegalArgumentException("Folder cannot be null");
 		}
 

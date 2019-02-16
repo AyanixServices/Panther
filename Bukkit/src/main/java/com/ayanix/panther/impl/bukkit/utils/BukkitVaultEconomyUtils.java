@@ -60,12 +60,6 @@ public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 	}
 
 	@Override
-	public double getBalance(OfflinePlayer player)
-	{
-		return economy.getBalance(player);
-	}
-
-	@Override
 	public void deposit(OfflinePlayer player, double amount)
 	{
 		economy.depositPlayer(player, amount);
@@ -82,6 +76,12 @@ public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 	{
 		economy.withdrawPlayer(player, getBalance(player));
 		economy.depositPlayer(player, amount);
+	}
+
+	@Override
+	public double getBalance(OfflinePlayer player)
+	{
+		return economy.getBalance(player);
 	}
 
 }
