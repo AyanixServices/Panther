@@ -29,6 +29,7 @@
 package com.ayanix.panther.impl.bukkit.enchantment;
 
 import com.ayanix.panther.enchantment.bukkit.PantherEnchantment;
+import com.ayanix.panther.event.bukkit.ArmorEquipEvent;
 import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitPantherEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitPantherEnchantment;
@@ -123,7 +124,7 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 	}
 
 	/*
-	 * This method runs every 3 seconds.
+	 * This method runs every 5 seconds.
 	 */
 	protected void equipTask(Player player, int level)
 	{
@@ -180,6 +181,34 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 	public String getDisplayName()
 	{
 		return ChatColor.RESET + this.name;
+	}
+
+	@EventHandler
+	public void onArmorEquip(ArmorEquipEvent event)
+	{
+		int oldArmorLevel = getLevel(event.getOldArmor());
+
+		if (oldArmorLevel >= 1)
+		{
+			onUnequip(event.getPlayer(), event.getOldArmor(), oldArmorLevel);
+		}
+
+		int newArmorLevel = getLevel(event.getNewArmor());
+
+		if (newArmorLevel >= 1)
+		{
+			onEquip(event.getPlayer(), event.getNewArmor(), newArmorLevel);
+		}
+	}
+
+	protected void onEquip(Player player, ItemStack item, int level)
+	{
+
+	}
+
+	protected void onUnequip(Player player, ItemStack item, int level)
+	{
+
 	}
 
 	@Override
@@ -384,7 +413,8 @@ public abstract class BukkitPantherEnchantment implements PantherEnchantment, Li
 		// Do nothing
 	}
 
-	public Enchantment getBukkitEnchantment() {
+	public Enchantment getBukkitEnchantment()
+	{
 		return this.enchantment;
 	}
 
