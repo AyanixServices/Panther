@@ -28,6 +28,10 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.item;
 
+import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
+import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitGlowEnchantment;
+import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
+import com.ayanix.panther.impl.common.utils.RandomUtils;
 import com.ayanix.panther.utils.bukkit.item.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -36,6 +40,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -48,6 +54,52 @@ import java.util.*;
  */
 public class BukkitItemUtils implements ItemUtils
 {
+
+	private        JavaPlugin  plugin;
+	private static Enchantment glowEnchantment = null;
+
+	/**
+	 * Initiate a BukkitItemUtils instance.
+	 *
+	 * @param plugin Plugin.
+	 */
+	public BukkitItemUtils(JavaPlugin plugin)
+	{
+		this(plugin, new RandomUtils().getInteger(70, 200));
+	}
+
+	/**
+	 * Initiate a BukkitItemUtils instance.
+	 *
+	 * @param plugin Plugin.
+	 * @param glowId ID to use as glow, must be unique per plugin.
+	 */
+	public BukkitItemUtils(JavaPlugin plugin, int glowId)
+	{
+		this.plugin = plugin;
+
+		if (plugin != null && glowEnchantment == null)
+		{
+			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
+			{
+				glowEnchantment = new v1_12_BukkitGlowEnchantment(plugin);
+			} else
+			{
+				glowEnchantment = new v1_8_BukkitGlowEnchantment();
+			}
+		}
+	}
+
+	/**
+	 * Initiate a BukkitItemUtils instance.
+	 * <p>
+	 * This has no support for glow tags.
+	 */
+	@Deprecated
+	public BukkitItemUtils()
+	{
+
+	}
 
 	@Override
 	public String itemToString(ItemStack item)
@@ -128,22 +180,38 @@ public class BukkitItemUtils implements ItemUtils
 		String materialName = itemWordList.get(0);
 		int    durability   = 0;
 
-		if (materialName.contains(":"))
-		{
-			String[] materialData = materialName.split(":");
-			materialName = materialData[0];
-			durability = Integer.parseInt(materialData[1]);
-		} else if ("POTION".equalsIgnoreCase(materialName))
-		{
-			durability = (short) 24576;
-		}
+		Material mat;
 
-		if (!isMaterial(materialName))
-		{
-			return new ItemStack(Material.AIR, 1);
-		}
+		String skullName = "";
 
-		Material mat = Material.matchMaterial(materialName);
+		if (!materialName.toUpperCase().startsWith("PLAYER_HEAD"))
+		{
+			if (materialName.contains(":"))
+			{
+				String[] materialData = materialName.split(":");
+				materialName = materialData[0];
+				durability = Integer.parseInt(materialData[1]);
+			} else if ("POTION".equalsIgnoreCase(materialName))
+			{
+				durability = (short) 24576;
+			}
+
+			if (!isMaterial(materialName))
+			{
+				return new ItemStack(Material.AIR, 1);
+			}
+
+			mat = Material.matchMaterial(materialName);
+		} else
+		{
+			mat = Material.SKULL_ITEM;
+			durability = 3;
+
+			if (materialName.contains(":"))
+			{
+				skullName = materialName.split(":")[1];
+			}
+		}
 
 		int amount = 1;
 
@@ -237,6 +305,15 @@ public class BukkitItemUtils implements ItemUtils
 					}
 
 					continue;
+
+				case "glow":
+					if (glowEnchantment != null)
+					{
+						enchantments.put(glowEnchantment, 1);
+					}
+
+					continue;
+
 				default:
 					Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.US));
 
@@ -277,6 +354,15 @@ public class BukkitItemUtils implements ItemUtils
 			Potion potion = Potion.fromItemStack(itemStack);
 			potion.setSplash(splash);
 			potion.apply(itemStack);
+		}
+
+		if (!skullName.isEmpty())
+		{
+			SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
+
+			skullMeta.setOwner(skullName);
+
+			itemStack.setItemMeta(skullMeta);
 		}
 
 		itemStack.addUnsafeEnchantments(enchantments);
@@ -334,7 +420,12 @@ public class BukkitItemUtils implements ItemUtils
 			}
 		}
 
-		return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
+		if (metaA.hasDisplayName() && metaB.hasDisplayName())
+		{
+			return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
+		}
+
+		return !metaA.hasDisplayName() && !metaB.hasDisplayName();
 	}
 
 	@Override
