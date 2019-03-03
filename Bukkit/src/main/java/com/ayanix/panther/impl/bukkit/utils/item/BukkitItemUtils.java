@@ -37,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -165,6 +166,8 @@ public class BukkitItemUtils implements ItemUtils
 		return itemString.toString();
 	}
 
+	private Map<String, ItemStack> cache = new HashMap<>();
+
 	@Override
 	public ItemStack stringToItem(String item)
 	{
@@ -172,6 +175,11 @@ public class BukkitItemUtils implements ItemUtils
 				item.isEmpty())
 		{
 			return new ItemStack(Material.AIR, 1);
+		}
+
+		if (cache.containsKey(item))
+		{
+			return cache.get(item);
 		}
 
 		String[]     itemSplit    = item.split(" ");
@@ -231,6 +239,8 @@ public class BukkitItemUtils implements ItemUtils
 		boolean          extended  = false;
 		int              duration  = 10;
 		int              amplifier = 0;
+
+		boolean hideEnchants = false;
 
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
@@ -314,6 +324,11 @@ public class BukkitItemUtils implements ItemUtils
 
 					continue;
 
+				case "hideenchants":
+				case "hide_enchants":
+					hideEnchants = true;
+					continue;
+
 				default:
 					Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.US));
 
@@ -330,6 +345,11 @@ public class BukkitItemUtils implements ItemUtils
 
 		ItemStack itemStack = new ItemStack(mat, amount, (short) durability);
 		ItemMeta  itemMeta  = Bukkit.getItemFactory().getItemMeta(mat);
+
+		if (hideEnchants)
+		{
+			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		}
 
 		if (name != null)
 		{
@@ -366,6 +386,8 @@ public class BukkitItemUtils implements ItemUtils
 		}
 
 		itemStack.addUnsafeEnchantments(enchantments);
+
+		cache.put(item, itemStack);
 
 		return itemStack;
 	}
