@@ -25,7 +25,7 @@ import org.bukkit.inventory.ItemStack;
 public class ArmorEquipEventListener implements Listener
 {
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public final void onInventoryClick(InventoryClickEvent event)
 	{
 		boolean shift     = false;
@@ -185,7 +185,7 @@ public class ArmorEquipEventListener implements Listener
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onInventoryDrag(InventoryDragEvent event)
 	{
 		ArmorType type = ArmorType.matchType(event.getOldCursor());
@@ -208,7 +208,7 @@ public class ArmorEquipEventListener implements Listener
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onItemBreak(PlayerItemBreakEvent event)
 	{
 		ArmorType type = ArmorType.matchType(event.getBrokenItem());
@@ -245,7 +245,7 @@ public class ArmorEquipEventListener implements Listener
 		}
 	}
 
-	@EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.LOW)
 	public void onPlayerDeath(PlayerDeathEvent event)
 	{
 		Player player = event.getEntity();
