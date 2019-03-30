@@ -57,7 +57,9 @@ public class BukkitItemUtils implements ItemUtils
 {
 
 	private static Enchantment glowEnchantment = null;
+	private static BukkitItemUtils instance;
 	private        JavaPlugin  plugin;
+	private Map<String, ItemStack> cache = new HashMap<>();
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -100,6 +102,38 @@ public class BukkitItemUtils implements ItemUtils
 	public BukkitItemUtils()
 	{
 
+	}
+
+	/**
+	 * Declare the static version of BukkitItemUtils.
+	 *
+	 * @param plugin Plugin using BukkitItemUtils.
+	 * @param glowId The unique ID to identify glow enchantment.
+	 */
+	public static void init(JavaPlugin plugin, int glowId)
+	{
+		if (instance != null)
+		{
+			return;
+		}
+
+		instance = new BukkitItemUtils(plugin, glowId);
+	}
+
+	/**
+	 * Grab the static version of BukkitItemUtils after being declared in BukkitItemUtils#init.
+	 *
+	 * @return BukkitItemUtils.
+	 * @throws RuntimeException If BukkitItemUtils#init has not been called.
+	 */
+	public static BukkitItemUtils get()
+	{
+		if (instance == null)
+		{
+			throw new RuntimeException("BukkitItemUtils has not been initialised for static usage");
+		}
+
+		return instance;
 	}
 
 	@Override
@@ -165,8 +199,6 @@ public class BukkitItemUtils implements ItemUtils
 
 		return itemString.toString();
 	}
-
-	private Map<String, ItemStack> cache = new HashMap<>();
 
 	@Override
 	public ItemStack stringToItem(String item)
@@ -447,17 +479,21 @@ public class BukkitItemUtils implements ItemUtils
 			return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
 		}
 
-		if(itemA.getType() == Material.SKULL_ITEM && itemA.getDurability() == 3) {
+		if (itemA.getType() == Material.SKULL_ITEM && itemA.getDurability() == 3)
+		{
 			SkullMeta skullMetaA = (SkullMeta) itemA.getItemMeta();
 			SkullMeta skullMetaB = (SkullMeta) itemB.getItemMeta();
 
-			if(!skullMetaA.hasOwner() && skullMetaB.hasOwner()) {
+			if (!skullMetaA.hasOwner() && skullMetaB.hasOwner())
+			{
 				return false;
-			} else if(skullMetaA.hasOwner() && !skullMetaB.hasOwner()) {
+			} else if (skullMetaA.hasOwner() && !skullMetaB.hasOwner())
+			{
 				return false;
 			}
 
-			if(!skullMetaA.getOwner().equals(skullMetaB.getOwner())) {
+			if (!skullMetaA.getOwner().equals(skullMetaB.getOwner()))
+			{
 				return false;
 			}
 		}

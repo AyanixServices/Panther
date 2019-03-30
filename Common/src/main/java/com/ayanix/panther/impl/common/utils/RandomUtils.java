@@ -41,6 +41,22 @@ public class RandomUtils implements IRandomUtils
 {
 
 	private static final Random RANDOM = new Random();
+	private static RandomUtils instance;
+
+	/**
+	 * Grab the static version of RandomUtils.
+	 *
+	 * @return RandomUtils.
+	 */
+	public static RandomUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new RandomUtils();
+		}
+
+		return instance;
+	}
 
 	@Override
 	public int getInteger(int min, int max)

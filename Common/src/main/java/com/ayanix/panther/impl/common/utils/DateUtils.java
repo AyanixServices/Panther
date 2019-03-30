@@ -46,10 +46,26 @@ public class DateUtils implements IDateUtils
 
 	private static final Pattern TIME_PATTERN = Pattern.compile("(?:([0-9]+)\\s*y[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*mo[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*w[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*d[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*h[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*m[a-z]*[,\\s]*)?" + "(?:([0-9]+)\\s*(?:s[a-z]*)?)?", Pattern.CASE_INSENSITIVE);
 	private static final int     MAX_YEARS    = 100000;
+	private static DateUtils instance;
 
 	public DateUtils()
 	{
 		// DateUtils is an API.
+	}
+
+	/**
+	 * Grab the static version of DateUtils.
+	 *
+	 * @return DateUtils.
+	 */
+	public static DateUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new DateUtils();
+		}
+
+		return instance;
 	}
 
 	@Override

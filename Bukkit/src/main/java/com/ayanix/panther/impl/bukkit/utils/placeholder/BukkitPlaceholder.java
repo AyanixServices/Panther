@@ -40,10 +40,10 @@ import java.util.HashMap;
 public class BukkitPlaceholder implements IBukkitPlaceholder
 {
 
-	private final String              name;
-	private final PlaceholderRunnable runnable;
+	private final String                            name;
+	private final PlaceholderRunnable               runnable;
 	private final HashMap<PlaceholderType, Boolean> registered;
-	private boolean playerOnly;
+	private       boolean                           playerOnly;
 
 	BukkitPlaceholder(String name, PlaceholderRunnable runnable)
 	{

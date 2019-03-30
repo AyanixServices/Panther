@@ -41,6 +41,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 {
 
+	private static BukkitVaultEconomyUtils instance;
 	private Economy economy;
 
 	public BukkitVaultEconomyUtils()
@@ -51,6 +52,21 @@ public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 		{
 			economy = economyProvider.getProvider();
 		}
+	}
+
+	/**
+	 * Grab the static version of BukkitVaultEconomyUtils.
+	 *
+	 * @return BukkitVaultEconomyUtils.
+	 */
+	public static BukkitVaultEconomyUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new BukkitVaultEconomyUtils();
+		}
+
+		return instance;
 	}
 
 	@Override

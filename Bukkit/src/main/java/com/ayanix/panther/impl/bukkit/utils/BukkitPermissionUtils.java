@@ -40,6 +40,23 @@ import org.bukkit.permissions.PermissionDefault;
 public class BukkitPermissionUtils implements IBukkitPermissionUtils
 {
 
+	private static BukkitPermissionUtils instance;
+
+	/**
+	 * Grab the static version of BukkitPermissionUtils.
+	 *
+	 * @return BukkitPermissionUtils.
+	 */
+	public static BukkitPermissionUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new BukkitPermissionUtils();
+		}
+
+		return instance;
+	}
+
 	@Override
 	public void registerPermission(String permission, PermissionDefault defaultValue)
 	{

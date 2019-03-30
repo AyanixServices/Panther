@@ -46,6 +46,7 @@ import java.util.List;
 public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 {
 
+	private static BukkitPlaceholderUtils instance;
 	private final JavaPlugin              plugin;
 	private final List<BukkitPlaceholder> placeholders;
 	private       boolean                 papiInitialised;
@@ -56,6 +57,37 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 		this.placeholders = new ArrayList<>();
 
 		this.papiInitialised = false;
+	}
+
+	/**
+	 * Declare the static version of BukkitPlaceholderUtils.
+	 *
+	 * @param plugin Plugin using BukkitPlaceholderUtils.
+	 */
+	public static void init(JavaPlugin plugin)
+	{
+		if (instance != null)
+		{
+			return;
+		}
+
+		instance = new BukkitPlaceholderUtils(plugin);
+	}
+
+	/**
+	 * Grab the static version of BukkitPlaceholderUtils after being declared in BukkitPlaceholderUtils#init.
+	 *
+	 * @return BukkitPlaceholderUtils.
+	 * @throws RuntimeException If BukkitPlaceholderUtils#init has not been called.
+	 */
+	public static BukkitPlaceholderUtils get()
+	{
+		if (instance == null)
+		{
+			throw new RuntimeException("BukkitPlaceholderUtils has not been initialised for static usage");
+		}
+
+		return instance;
 	}
 
 	/**

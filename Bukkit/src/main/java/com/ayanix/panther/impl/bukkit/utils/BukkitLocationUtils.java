@@ -41,6 +41,23 @@ import org.jetbrains.annotations.Nullable;
 public class BukkitLocationUtils implements IBukkitLocationUtils
 {
 
+	private static BukkitLocationUtils instance;
+
+	/**
+	 * Grab the static version of BukkitLocationUtils.
+	 *
+	 * @return BukkitLocationUtils.
+	 */
+	public static BukkitLocationUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new BukkitLocationUtils();
+		}
+
+		return instance;
+	}
+
 	@Override
 	public String toString(Location location)
 	{

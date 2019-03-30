@@ -40,11 +40,27 @@ import java.util.Locale;
 public class MathsUtils implements IMathsUtils
 {
 
+	private static MathsUtils instance;
 	private final NumberFormat format;
 
 	public MathsUtils()
 	{
 		this.format = NumberFormat.getNumberInstance(Locale.US);
+	}
+
+	/**
+	 * Grab the static version of MathsUtils.
+	 *
+	 * @return MathsUtils.
+	 */
+	public static MathsUtils get()
+	{
+		if (instance == null)
+		{
+			instance = new MathsUtils();
+		}
+
+		return instance;
 	}
 
 	@Override

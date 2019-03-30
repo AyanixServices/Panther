@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 public class BungeeDependencyChecks implements DependencyChecks
 {
 
+	private static BungeeDependencyChecks instance;
 	private final Logger logger;
 
 	/**
@@ -55,6 +56,37 @@ public class BungeeDependencyChecks implements DependencyChecks
 		}
 
 		this.logger = plugin.getLogger();
+	}
+
+	/**
+	 * Declare the static version of BungeeDependencyChecks.
+	 *
+	 * @param plugin Plugin using BungeeDependencyChecks.
+	 */
+	public static void init(Plugin plugin)
+	{
+		if (instance != null)
+		{
+			return;
+		}
+
+		instance = new BungeeDependencyChecks(plugin);
+	}
+
+	/**
+	 * Grab the static version of BungeeDependencyChecks after being declared in BungeeDependencyChecks#init.
+	 *
+	 * @return BungeeDependencyChecks.
+	 * @throws RuntimeException If BungeeDependencyChecks#init has not been called.
+	 */
+	public static BungeeDependencyChecks get()
+	{
+		if (instance == null)
+		{
+			throw new RuntimeException("BungeeDependencyChecks has not been initialised for static usage");
+		}
+
+		return instance;
 	}
 
 	public boolean runChecks(final Map<String, String> dependencies)

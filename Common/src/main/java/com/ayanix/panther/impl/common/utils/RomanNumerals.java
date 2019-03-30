@@ -41,6 +41,7 @@ public class RomanNumerals implements IRomanNumerals
 {
 
 	private static TreeMap<Integer, String> map = new TreeMap<>();
+	private static RomanNumerals instance;
 
 	public RomanNumerals()
 	{
@@ -57,6 +58,21 @@ public class RomanNumerals implements IRomanNumerals
 		map.put(5, "V");
 		map.put(4, "IV");
 		map.put(1, "I");
+	}
+
+	/**
+	 * Grab the static version of RomanNumerals.
+	 *
+	 * @return RomanNumerals.
+	 */
+	public static RomanNumerals get()
+	{
+		if (instance == null)
+		{
+			instance = new RomanNumerals();
+		}
+
+		return instance;
 	}
 
 	@Override

@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 public class BukkitDependencyChecks implements DependencyChecks
 {
 
+	private static BukkitDependencyChecks instance;
 	private final Logger logger;
 
 	/**
@@ -58,6 +59,37 @@ public class BukkitDependencyChecks implements DependencyChecks
 		}
 
 		this.logger = plugin.getLogger();
+	}
+
+	/**
+	 * Declare the static version of BukkitDependencyChecks.
+	 *
+	 * @param plugin Plugin using BukkitDependencyChecks.
+	 */
+	public static void init(JavaPlugin plugin)
+	{
+		if (instance != null)
+		{
+			return;
+		}
+
+		instance = new BukkitDependencyChecks(plugin);
+	}
+
+	/**
+	 * Grab the static version of BukkitDependencyChecks after being declared in BukkitDependencyChecks#init.
+	 *
+	 * @return BukkitDependencyChecks.
+	 * @throws RuntimeException If BukkitDependencyChecks#init has not been called.
+	 */
+	public static BukkitDependencyChecks get()
+	{
+		if (instance == null)
+		{
+			throw new RuntimeException("BukkitDependencyChecks has not been initialised for static usage");
+		}
+
+		return instance;
 	}
 
 	public boolean runChecks(final Map<String, String> dependencies)
