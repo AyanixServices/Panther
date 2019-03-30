@@ -447,6 +447,21 @@ public class BukkitItemUtils implements ItemUtils
 			return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
 		}
 
+		if(itemA.getType() == Material.SKULL_ITEM && itemA.getDurability() == 3) {
+			SkullMeta skullMetaA = (SkullMeta) itemA.getItemMeta();
+			SkullMeta skullMetaB = (SkullMeta) itemB.getItemMeta();
+
+			if(!skullMetaA.hasOwner() && skullMetaB.hasOwner()) {
+				return false;
+			} else if(skullMetaA.hasOwner() && !skullMetaB.hasOwner()) {
+				return false;
+			}
+
+			if(!skullMetaA.getOwner().equals(skullMetaB.getOwner())) {
+				return false;
+			}
+		}
+
 		return !metaA.hasDisplayName() && !metaB.hasDisplayName();
 	}
 

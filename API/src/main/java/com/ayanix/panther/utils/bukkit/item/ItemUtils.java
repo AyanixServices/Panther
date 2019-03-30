@@ -69,6 +69,8 @@ public interface ItemUtils
 	 * Checks whether or not the items match.
 	 * This only applies to names, types, data and lores.
 	 *
+	 * If the item is a player skull, the owners are compared.
+	 *
 	 * @param itemA The first item to check.
 	 * @param itemB The second item to compare with.
 	 * @return Whether or not the items are equal.
