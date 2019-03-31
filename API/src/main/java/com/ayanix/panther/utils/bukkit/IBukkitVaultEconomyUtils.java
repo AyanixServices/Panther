@@ -69,23 +69,26 @@ public interface IBukkitVaultEconomyUtils
 	 *
 	 * @param player The player to add to.
 	 * @param amount The amount to add.
+	 * @return If transaction was successful.
 	 */
-	void deposit(OfflinePlayer player, double amount);
+	boolean deposit(OfflinePlayer player, double amount);
 
 	/**
 	 * Removes an amount to the player's balance.
 	 *
 	 * @param player The player to remove from.
 	 * @param amount The amount to remove.
+	 * @return If transaction was successful.
 	 */
-	void withdraw(OfflinePlayer player, double amount);
+	boolean withdraw(OfflinePlayer player, double amount);
 
 	/**
 	 * Set the player's balance to a specified amount.
 	 *
 	 * @param player The player to modify.
 	 * @param amount The new balance.
+	 * @return If transaction was successful.
 	 */
-	void set(OfflinePlayer player, double amount);
+	boolean set(OfflinePlayer player, double amount);
 
 }

@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.bukkit.utils;
 
 import com.ayanix.panther.utils.bukkit.IBukkitVaultEconomyUtils;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -76,22 +77,21 @@ public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 	}
 
 	@Override
-	public void deposit(OfflinePlayer player, double amount)
+	public boolean deposit(OfflinePlayer player, double amount)
 	{
-		economy.depositPlayer(player, amount);
+		return economy.depositPlayer(player, amount).transactionSuccess();
 	}
 
 	@Override
-	public void withdraw(OfflinePlayer player, double amount)
+	public boolean withdraw(OfflinePlayer player, double amount)
 	{
-		economy.withdrawPlayer(player, amount);
+		return economy.withdrawPlayer(player, amount).transactionSuccess();
 	}
 
 	@Override
-	public void set(OfflinePlayer player, double amount)
+	public boolean set(OfflinePlayer player, double amount)
 	{
-		economy.withdrawPlayer(player, getBalance(player));
-		economy.depositPlayer(player, amount);
+		return economy.withdrawPlayer(player, getBalance(player)).transactionSuccess() && economy.depositPlayer(player, amount).transactionSuccess();
 	}
 
 	@Override
