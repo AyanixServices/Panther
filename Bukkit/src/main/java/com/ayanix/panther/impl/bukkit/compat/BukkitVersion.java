@@ -43,7 +43,7 @@ public enum BukkitVersion implements IBukkitVersion
 			return false;
 		}
 
-		return version.getWeight() >= currentVersion.getWeight();
+		return version.getWeight() <= currentVersion.getWeight();
 	}
 
 	@Override
@@ -57,7 +57,7 @@ public enum BukkitVersion implements IBukkitVersion
 	 */
 	public static BukkitVersion getVersion()
 	{
-		String serverVersion = Bukkit.getVersion();
+		String serverVersion = Bukkit.getBukkitVersion();
 
 		for (BukkitVersion bukkitVersion : BukkitVersion.values())
 		{
