@@ -56,10 +56,11 @@ import java.util.*;
 public class BukkitItemUtils implements ItemUtils
 {
 
-	private static Enchantment glowEnchantment = null;
-	private static BukkitItemUtils instance;
-	private        JavaPlugin  plugin;
-	private Map<String, ItemStack> cache = new HashMap<>();
+	private static Enchantment            glowEnchantment = null;
+	private static BukkitItemUtils        instance;
+	private        JavaPlugin             plugin;
+	private        Map<String, ItemStack> cache = new HashMap<>();
+	private static Material               SKULL_ITEM_MATERIAL;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -91,6 +92,12 @@ public class BukkitItemUtils implements ItemUtils
 				glowEnchantment = new v1_8_BukkitGlowEnchantment();
 			}
 		}
+
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13)) {
+			SKULL_ITEM_MATERIAL = Material.valueOf("PLAYER_HEAD");
+		} else {
+			SKULL_ITEM_MATERIAL = Material.SKULL_ITEM;
+		}
 	}
 
 	/**
@@ -101,7 +108,7 @@ public class BukkitItemUtils implements ItemUtils
 	@Deprecated
 	public BukkitItemUtils()
 	{
-
+		this(null);
 	}
 
 	/**
@@ -244,7 +251,7 @@ public class BukkitItemUtils implements ItemUtils
 			mat = Material.matchMaterial(materialName);
 		} else
 		{
-			mat = Material.SKULL_ITEM;
+			mat = SKULL_ITEM_MATERIAL;
 			durability = 3;
 
 			if (materialName.contains(":"))
@@ -479,7 +486,7 @@ public class BukkitItemUtils implements ItemUtils
 			return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
 		}
 
-		if (itemA.getType() == Material.SKULL_ITEM && itemA.getDurability() == 3)
+		if (itemA.getType() == SKULL_ITEM_MATERIAL && itemA.getDurability() == 3)
 		{
 			SkullMeta skullMetaA = (SkullMeta) itemA.getItemMeta();
 			SkullMeta skullMetaB = (SkullMeta) itemB.getItemMeta();
