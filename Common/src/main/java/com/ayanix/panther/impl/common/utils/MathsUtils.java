@@ -40,8 +40,8 @@ import java.util.Locale;
 public class MathsUtils implements IMathsUtils
 {
 
-	private static MathsUtils instance;
-	private final NumberFormat format;
+	private static MathsUtils   instance;
+	private final  NumberFormat format;
 
 	public MathsUtils()
 	{
@@ -82,5 +82,20 @@ public class MathsUtils implements IMathsUtils
 
 		return true;
 	}
+
+	@Override
+	public boolean isInteger(String string)
+	{
+		try
+		{
+			Integer.parseInt(string);
+		} catch (Exception e)
+		{
+			return false;
+		}
+
+		return true;
+	}
+
 
 }

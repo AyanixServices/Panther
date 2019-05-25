@@ -60,4 +60,10 @@ public interface IMathsUtils
 	 */
 	boolean isDouble(String string);
 
+	/**
+	 * @param string The string to check if applicable as an integer.
+	 * @return Whether or not the given string is an integer.
+	 */
+	boolean isInteger(String string);
+
 }
