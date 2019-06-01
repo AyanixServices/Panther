@@ -10,12 +10,12 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2019.
  */
-public class v1_12_BukkitGlowEnchantment extends Enchantment
+public class v1_13_BukkitGlowEnchantment extends Enchantment
 {
 
-	public v1_12_BukkitGlowEnchantment(JavaPlugin plugin)
+	public v1_13_BukkitGlowEnchantment(JavaPlugin plugin)
 	{
-		super(199);
+		super(new NamespacedKey(plugin, "glow"));
 	}
 
 	@Override

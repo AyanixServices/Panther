@@ -11,9 +11,9 @@ import org.bukkit.inventory.ItemStack;
 public class v1_8_BukkitGlowEnchantment extends Enchantment
 {
 
-	public v1_8_BukkitGlowEnchantment()
+	public v1_8_BukkitGlowEnchantment(int id)
 	{
-		super(199);
+		super(id);
 	}
 
 	@Override

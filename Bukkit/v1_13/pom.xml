@@ -13,7 +13,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ayanix.panther.bukkit</groupId>
-    <artifactId>v1_12</artifactId>
+    <artifactId>v1_13</artifactId>
     <version>1.1.6-SNAPSHOT</version>
 
     <repositories>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -11,14 +11,14 @@ import org.bukkit.plugin.java.JavaPlugin;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2019.
  */
-public class v1_12_BukkitPantherEnchantment extends Enchantment
+public class v1_13_BukkitPantherEnchantment extends Enchantment
 {
 
 	private final PantherEnchantment enchantment;
 
-	public v1_12_BukkitPantherEnchantment(PantherEnchantment enchantment, JavaPlugin plugin, int id)
+	public v1_13_BukkitPantherEnchantment(PantherEnchantment enchantment, JavaPlugin plugin, int id)
 	{
-		super(id);
+		super(new NamespacedKey(plugin, String.valueOf(id)));
 
 		this.enchantment = enchantment;
 	}

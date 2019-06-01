@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.bukkit.utils.item;
 
 import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitGlowEnchantment;
+import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_13_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.common.utils.RandomUtils;
 import com.ayanix.panther.utils.bukkit.item.ItemUtils;
@@ -84,12 +85,15 @@ public class BukkitItemUtils implements ItemUtils
 
 		if (plugin != null && glowEnchantment == null)
 		{
-			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
+			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13)) {
+				glowEnchantment = new v1_13_BukkitGlowEnchantment(plugin);
+			}
+			else if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
 			{
 				glowEnchantment = new v1_12_BukkitGlowEnchantment(plugin);
 			} else
 			{
-				glowEnchantment = new v1_8_BukkitGlowEnchantment();
+				glowEnchantment = new v1_8_BukkitGlowEnchantment(glowId);
 			}
 		}
 

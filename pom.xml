@@ -36,6 +36,7 @@
         <module>Bukkit</module>
         <module>Bukkit/v1_8</module>
         <module>Bukkit/v1_12</module>
+        <module>Bukkit/v1_13</module>
         <module>Bungee</module>
         <module>Panther</module>
     </modules>
