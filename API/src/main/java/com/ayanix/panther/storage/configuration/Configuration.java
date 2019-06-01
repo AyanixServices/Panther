@@ -86,7 +86,7 @@ public final class Configuration
 		Object section = self.get(root);
 		if (section == null)
 		{
-			section = new Configuration((defaults == null) ? null : defaults.getSection(path));
+			section = new Configuration((defaults == null) ? null : defaults.getSection(root));
 			self.put(root, section);
 		}
 
@@ -173,7 +173,7 @@ public final class Configuration
 	 */
 	public Collection<String> getKeys()
 	{
-		return Sets.newLinkedHashSet(self.keySet());
+		return new LinkedHashSet<>(self.keySet());
 	}
 
 	/*------------------------------------------------------------------------*/

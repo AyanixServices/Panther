@@ -28,6 +28,7 @@
  */
 package com.ayanix.panther.storage.configuration;
 
+import com.google.common.base.Charsets;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -64,7 +65,7 @@ public class YamlConfiguration extends ConfigurationProvider
 	@Override
 	public void save(Configuration config, File file) throws IOException
 	{
-		try (FileWriter writer = new FileWriter(file))
+		try (Writer writer = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8))
 		{
 			save(config, writer);
 		}
@@ -85,9 +86,9 @@ public class YamlConfiguration extends ConfigurationProvider
 	@Override
 	public Configuration load(File file, Configuration defaults) throws IOException
 	{
-		try (FileReader reader = new FileReader(file))
+		try (FileInputStream is = new FileInputStream(file))
 		{
-			return load(reader, defaults);
+			return load(is, defaults);
 		}
 	}
 
