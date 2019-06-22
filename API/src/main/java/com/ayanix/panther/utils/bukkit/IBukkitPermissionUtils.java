@@ -28,6 +28,7 @@
  */
 package com.ayanix.panther.utils.bukkit;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.PermissionDefault;
 
 /**
@@ -59,5 +60,14 @@ public interface IBukkitPermissionUtils
 	 * @param defaultValue The default value of the permission.
 	 */
 	void registerPermission(String permission, PermissionDefault defaultValue);
+
+	/**
+	 * Check if an OfflinePlayer has a permission.
+	 * This is only supported if Vault is enabled.
+	 *
+	 * @param player     The player to check.
+	 * @param permission The permission to check.
+	 */
+	boolean hasPermission(OfflinePlayer player, String permission);
 
 }
