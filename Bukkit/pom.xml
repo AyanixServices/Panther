@@ -23,7 +23,7 @@
         </repository>
         <repository>
             <id>mvdw-software</id>
-            <url>https://repo.mvdw-software.be/content/groups/public/</url>
+            <url>http://repo.mvdw-software.be/content/groups/public/</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
