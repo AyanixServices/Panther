@@ -49,6 +49,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -209,6 +210,12 @@ public class BukkitItemUtils implements ItemUtils
 		}
 
 		return itemString.toString();
+	}
+
+	@Override
+	public List<String> itemsToStrings(List<ItemStack> list)
+	{
+		return list.stream().map(this::itemToString).collect(Collectors.toList());
 	}
 
 	@Override
@@ -433,6 +440,12 @@ public class BukkitItemUtils implements ItemUtils
 		cache.put(item, itemStack);
 
 		return itemStack;
+	}
+
+	@Override
+	public List<ItemStack> stringsToItems(List<String> list)
+	{
+		return list.stream().map(this::stringToItem).collect(Collectors.toList());
 	}
 
 	@Override

@@ -58,12 +58,30 @@ public interface ItemUtils
 	String itemToString(ItemStack item);
 
 	/**
+	 * Converts a list of ItemStacks into a list of converted strings in order.
+	 * If an item cannot be converted, it will be replaced by air.
+	 *
+	 * @param list The list of items to convert to strings.
+	 * @return A list of converted string compressed versions.
+	 */
+	List<String> itemsToStrings(List<ItemStack> list);
+
+	/**
 	 * Converts a compressed item string into an ItemStack.
 	 *
 	 * @param item The string version of the item.
 	 * @return An ItemStack.
 	 */
 	ItemStack stringToItem(String item);
+
+	/**
+	 * Converts a list of compressed item strings into a list of ItemStacks in order.
+	 * If an item cannot be converted, air is returned.
+	 *
+	 * @param list The list of string versions to convert to items.
+	 * @return A list of ItemStacks.
+	 */
+	List<ItemStack> stringsToItems(List<String> list);
 
 	/**
 	 * Checks whether or not the items match.
