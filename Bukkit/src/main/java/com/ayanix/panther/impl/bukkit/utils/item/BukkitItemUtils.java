@@ -394,7 +394,7 @@ public class BukkitItemUtils implements ItemUtils
 		}
 
 		ItemStack itemStack = new ItemStack(mat, amount, (short) durability);
-		ItemMeta  itemMeta  = Bukkit.getItemFactory().getItemMeta(mat);
+		ItemMeta  itemMeta  = itemStack.hasItemMeta() ? itemStack.getItemMeta() : Bukkit.getItemFactory().getItemMeta(mat);
 
 		if (hideEnchants)
 		{
