@@ -194,7 +194,8 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 
 		if (event.getWhoClicked().getName().equals(player.getName()))
 		{
-			if (event.getView().getTitle().equalsIgnoreCase(name))
+			if (event.getView().getTitle().equalsIgnoreCase(name) &&
+				event.getView().getTopInventory().equals(event.getClickedInventory()))
 			{
 				int slot = event.getSlot();
 
