@@ -39,6 +39,7 @@ public interface IRandomUtils
 
 	/**
 	 * Get a random integer between min and max, inclusive of both.
+	 * The min/max values can be switched around as Panther will calculate what value is largest.
 	 *
 	 * @param min The minimum range.
 	 * @param max The maximum range, inclusive.

@@ -48,12 +48,44 @@ public class RandomUtilsTest
 {
 
 	@Test
-	public void testInteger()
+	public void testPositiveIntegers()
 	{
 		RandomUtils randomUtils = new RandomUtils();
 
 		int min = 100;
 		int max = 200;
+
+		int random = randomUtils.getInteger(min, max);
+
+		if (random < min || random > max)
+		{
+			fail("Random integer cannot be larger or smaller than range");
+		}
+	}
+
+	@Test
+	public void testNegativeIntegers()
+	{
+		RandomUtils randomUtils = new RandomUtils();
+
+		int min = -200;
+		int max = -100;
+
+		int random = randomUtils.getInteger(min, max);
+
+		if (random < min || random > max)
+		{
+			fail("Random integer cannot be larger or smaller than range");
+		}
+	}
+
+	@Test
+	public void testMixedIntegers()
+	{
+		RandomUtils randomUtils = new RandomUtils();
+
+		int min = -500;
+		int max = 500;
 
 		int random = randomUtils.getInteger(min, max);
 

@@ -61,7 +61,17 @@ public class RandomUtils implements IRandomUtils
 	@Override
 	public int getInteger(int min, int max)
 	{
-		return RANDOM.nextInt((max - min) + 1) + min;
+		min = Math.min(min, max);
+		max = Math.max(min, max);
+
+		if(min < 0 && max < 0) {
+			int newMin = max * -1;
+			int newMax = min * -1;
+
+			return (RANDOM.nextInt(newMax - newMin + 1) + newMin) * -1;
+		}
+
+		return RANDOM.nextInt(max - min + 1) + min;
 	}
 
 	@Override
