@@ -36,8 +36,7 @@ import com.ayanix.panther.utils.bukkit.placeholder.PlaceholderRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -46,17 +45,17 @@ import java.util.List;
 public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 {
 
-	private static BukkitPlaceholderUtils instance;
-	private final JavaPlugin              plugin;
-	private final List<BukkitPlaceholder> placeholders;
-	private       boolean                 papiInitialised;
+	private static BukkitPlaceholderUtils         instance;
+	private final  JavaPlugin                     plugin;
+	private final  Map<String, BukkitPlaceholder> placeholders;
+	private        BukkitPlaceholderAPIHook       placeholderAPIHook;
 
 	public BukkitPlaceholderUtils(JavaPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.placeholders = new ArrayList<>();
+		this.placeholders = new HashMap<>();
 
-		this.papiInitialised = false;
+		this.placeholderAPIHook = null;
 	}
 
 	/**
@@ -99,26 +98,29 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	 */
 	public BukkitPlaceholder registerPlaceholder(String placeholder, PlaceholderRunnable runnable)
 	{
-		return registerPlaceholder(plugin, placeholder, runnable);
+		return registerPlaceholder(plugin, placeholder, runnable, false);
 	}
 
-	public BukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, PlaceholderRunnable runnable)
+	public BukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, PlaceholderRunnable runnable, boolean silent)
 	{
 		BukkitPlaceholder bukkitPlaceholder = new BukkitPlaceholder(placeholder, runnable);
 		DependencyChecks  dependencyChecks  = new BukkitDependencyChecks(plugin);
 
-		placeholders.add(bukkitPlaceholder);
+		placeholders.put(placeholder, bukkitPlaceholder);
 
 		if (dependencyChecks.isEnabled("PlaceholderAPI"))
 		{
-			if (!papiInitialised)
+			if (placeholderAPIHook == null)
 			{
 				handlePlaceholderAPI();
 			}
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI, true);
 
-			plugin.getLogger().info(() -> "Registered PlaceholderAPI placeholder: %" + plugin.getName().toLowerCase() + "_" + placeholder + "%");
+			if (!silent)
+			{
+				plugin.getLogger().info(() -> "Registered PlaceholderAPI placeholder: %" + plugin.getName().toLowerCase() + "_" + placeholder + "%");
+			}
 		}
 
 		if (dependencyChecks.isEnabled("MVdWPlaceholderAPI"))
@@ -142,19 +144,39 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	{
 		if (!new BukkitDependencyChecks(plugin).isEnabled("PlaceholderAPI"))
 		{
-			Bukkit.getLogger().info("Handle PAPI disabled.");
 			return;
 		}
 
 		// This was moved to its own class to remove NoClass errors.
-		new BukkitPlaceholderAPIHook(plugin, this).handlePlaceholderAPI();
+		placeholderAPIHook = new BukkitPlaceholderAPIHook(plugin, this);
+		placeholderAPIHook.handlePlaceholderAPI();
+	}
 
-		this.papiInitialised = true;
+	@Override
+	public void unregisterAll()
+	{
+		placeholders.values().forEach(IBukkitPlaceholder::unregister);
+
+		placeholderAPIHook.unregisterPlaceholderAPI();
+		placeholderAPIHook = null;
+	}
+
+	/**
+	 * Register a placeholder in all located compatible plugins.
+	 *
+	 * @param placeholder The identifier of the placeholder - do not include % or {}.
+	 * @param runnable    The code executed when the placeholder is called.
+	 * @param silent      If true, Panther will not output a message verifying the placeholder has been registered.
+	 * @return BukkitPlaceholder object containing registered status.
+	 */
+	public BukkitPlaceholder registerPlaceholder(String placeholder, PlaceholderRunnable runnable, boolean silent)
+	{
+		return registerPlaceholder(plugin, placeholder, runnable, silent);
 	}
 
 	protected List<BukkitPlaceholder> getPlaceholders()
 	{
-		return placeholders;
+		return new ArrayList<>(placeholders.values());
 	}
 
 }

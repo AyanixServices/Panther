@@ -28,6 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.placeholder;
 
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
 import com.ayanix.panther.utils.bukkit.placeholder.PlaceholderRunnable;
 
@@ -83,6 +84,19 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 	public void setPlayerOnly(boolean value)
 	{
 		this.playerOnly = value;
+	}
+
+	@Override
+	public void unregister()
+	{
+		if(registered.getOrDefault(PlaceholderType.PLACEHOLDERAPI, false)) {
+			setRegistered(PlaceholderType.PLACEHOLDERAPI, false);
+		}
+
+		if(registered.getOrDefault(PlaceholderType.MVDW_PLACEHOLDER_API, false)) {
+			// it is not possible to unregister MVDW placeholders
+			setRegistered(PlaceholderType.MVDW_PLACEHOLDER_API, false);
+		}
 	}
 
 	@Override

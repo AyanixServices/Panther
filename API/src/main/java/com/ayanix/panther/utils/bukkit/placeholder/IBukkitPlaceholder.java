@@ -72,6 +72,11 @@ public interface IBukkitPlaceholder
 	void setPlayerOnly(boolean value);
 
 	/**
+	 * Unregisters the placeholder.
+	 */
+	void unregister();
+
+	/**
 	 * The compatible plugin placeholders.
 	 */
 	enum PlaceholderType

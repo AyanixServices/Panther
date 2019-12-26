@@ -80,4 +80,8 @@ class BukkitPlaceholderAPIHook
 		});
 	}
 
+	protected void unregisterPlaceholderAPI() {
+		PlaceholderAPI.unregisterPlaceholderHook(plugin);
+	}
+
 }
