@@ -33,10 +33,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -60,25 +63,40 @@ public class BukkitDefaultStorage implements DefaultStorage
 			return;
 		}
 
-		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(new InputStreamReader(plugin.getResource(name + ".yml"), Charset.forName("UTF-8")));
+		InputStream resource = plugin.getResource(name + ".yml");
 
-		for (String key : configuration.getKeys(false))
+		if(resource == null) {
+			plugin.getLogger().log(Level.WARNING, "Unable to load default storage " + name + ".yml due to possible reload.");
+			return;
+		}
+
+		try (InputStreamReader reader = new InputStreamReader(resource, Charset.forName("UTF-8")))
 		{
-			ConfigurationSection section = configuration.getConfigurationSection(key);
+			YamlConfiguration configuration = YamlConfiguration.loadConfiguration(reader);
 
-			if (section != null)
+			for (String key : configuration.getKeys(false))
 			{
-				for (String innerKey : section.getKeys(false))
-				{
-					String totalKey = key + "." + innerKey;
+				ConfigurationSection section = configuration.getConfigurationSection(key);
 
-					defaultValues.put(totalKey, configuration.get(totalKey));
+				if (section != null)
+				{
+					for (String innerKey : section.getKeys(false))
+					{
+						String totalKey = key + "." + innerKey;
+
+						defaultValues.put(totalKey, configuration.get(totalKey));
+					}
+
+					continue;
 				}
 
-				continue;
+				defaultValues.put(key, configuration.get(key));
 			}
-
-			defaultValues.put(key, configuration.get(key));
+		} catch (IOException e)
+		{
+			plugin.getLogger().log(Level.SEVERE, "Unable to load default storage " + name + ".yml", e);
+		} catch (NullPointerException e) {
+			plugin.getLogger().log(Level.WARNING, "Unable to load default storage " + name + ".yml due to possible reload.");
 		}
 	}
 
