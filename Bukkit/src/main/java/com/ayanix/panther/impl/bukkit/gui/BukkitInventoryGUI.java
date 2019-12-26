@@ -61,6 +61,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	private HashMap<Integer, GUIItem> items;
 	private Plugin                    plugin;
 	private Player                    player;
+	private int taskId;
 
 	/**
 	 * Initiate a ChestGUI instance.
@@ -177,6 +178,8 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 
 		player.openInventory(inventory);
 		Bukkit.getPluginManager().registerEvents(this, plugin);
+
+		runSecondTask();
 	}
 
 	/**
@@ -195,7 +198,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		if (event.getWhoClicked().getName().equals(player.getName()))
 		{
 			if (event.getView().getTitle().equalsIgnoreCase(name) &&
-				event.getView().getTopInventory().equals(event.getClickedInventory()))
+					event.getView().getTopInventory().equals(event.getClickedInventory()))
 			{
 				int slot = event.getSlot();
 
@@ -243,6 +246,36 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	public boolean canClose()
 	{
 		return true;
+	}
+
+	private void runSecondTask()
+	{
+		taskId = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+			if (!player.isOnline())
+			{
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			if(player.getOpenInventory() == null) {
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			if (!player.getOpenInventory().getTitle().equalsIgnoreCase(name) ||
+					!player.getOpenInventory().getTopInventory().equals(inventory)) {
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			for(int slot : items.keySet()) {
+				GUIItem guiItem = items.get(slot);
+
+				if(guiItem.shouldUpdateItem()) {
+					inventory.setItem(slot, guiItem.getItemStack());
+				}
+			}
+		}, 1L, 20L).getTaskId();
 	}
 
 }

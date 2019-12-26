@@ -59,4 +59,15 @@ public interface GUIItem
 	 */
 	void run(Player player, ClickType type);
 
+	/**
+	 * Every second, this method is run by Panther.
+	 * If the method returns true, Panther will update the inventory icon.
+	 * If false, no changes occur.
+	 *
+	 * @return Whether or not to update the ItemStack in the GUI.
+	 */
+	default boolean shouldUpdateItem() {
+		return false;
+	}
+
 }
