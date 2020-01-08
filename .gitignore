@@ -46,3 +46,4 @@ buildNumber.properties
 Panther/out/
 
 *.log
+/.project

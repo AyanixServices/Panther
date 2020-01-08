@@ -55,7 +55,7 @@ public final class Configuration
 		this(new LinkedHashMap<String, Object>(), defaults);
 	}
 
-	Configuration(Map<?, ?> map, Configuration defaults)
+	public Configuration(Map<?, ?> map, Configuration defaults)
 	{
 		this.self = new LinkedHashMap<>();
 		this.defaults = defaults;
