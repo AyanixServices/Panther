@@ -32,6 +32,8 @@ import com.ayanix.panther.storage.sql.SQLStorage;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.sql2o.Sql2o;
+import org.sql2o.quirks.Quirks;
+import org.sql2o.quirks.QuirksDetector;
 
 import javax.sql.DataSource;
 import java.util.concurrent.ThreadFactory;
@@ -53,6 +55,7 @@ public class HikariMySQLStorage implements SQLStorage
 	                   String password,
 	                   String database,
 	                   String table,
+	                   Quirks quirks,
 	                   ThreadFactory factory)
 	{
 		if (host == null ||
@@ -85,7 +88,12 @@ public class HikariMySQLStorage implements SQLStorage
 		}
 
 		dataSource = new HikariDataSource(config);
-		sql2o = new Sql2o(dataSource);
+
+		if (quirks == null) {
+			quirks = QuirksDetector.forObject(dataSource);
+		}
+
+		sql2o = new Sql2o(dataSource, quirks);
 	}
 
 	HikariMySQLStorage(HikariDataSource dataSource, String table)
@@ -130,6 +138,7 @@ public class HikariMySQLStorage implements SQLStorage
 		private String        password;
 		private String        database;
 		private String        table;
+		private Quirks        quirks;
 		private ThreadFactory factory;
 
 		public HikariSQLStorageBuilder()
@@ -140,6 +149,7 @@ public class HikariMySQLStorage implements SQLStorage
 			this.username = "root";
 			this.database = "minecraft";
 			this.table = "minecraft";
+			this.quirks = null;
 			this.factory = null;
 		}
 
@@ -192,6 +202,13 @@ public class HikariMySQLStorage implements SQLStorage
 			return this;
 		}
 
+		public HikariSQLStorageBuilder quirks(Quirks quirks)
+		{
+			this.quirks = quirks;
+
+			return this;
+		}
+
 		public HikariMySQLStorage build()
 		{
 			if (password == null)
@@ -199,7 +216,7 @@ public class HikariMySQLStorage implements SQLStorage
 				throw new IllegalArgumentException("Password is not defined");
 			}
 
-			return new HikariMySQLStorage(host, port, username, password, database, table, factory);
+			return new HikariMySQLStorage(host, port, username, password, database, table, quirks, factory);
 		}
 
 	}
