@@ -92,8 +92,8 @@ public class BukkitLocationUtils implements IBukkitLocationUtils
 		return builder.toString();
 	}
 
-	@Override
 	@Nullable
+	@Override
 	public Location fromString(@Nullable String string)
 	{
 		if (string == null)
