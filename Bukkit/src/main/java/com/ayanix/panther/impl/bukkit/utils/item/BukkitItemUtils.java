@@ -271,7 +271,7 @@ public class BukkitItemUtils implements ItemUtils
 
 		if (cache.containsKey(item))
 		{
-			return cache.get(item);
+			return cache.get(item).clone();
 		}
 
 		String[]     itemSplit    = item.split(" ");
