@@ -332,7 +332,8 @@ public class BukkitItemUtils implements ItemUtils
 		int              duration  = 10;
 		int              amplifier = 0;
 
-		boolean hideEnchants = false;
+		boolean hideEnchants   = false;
+		boolean hideAttributes = false;
 
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
@@ -421,6 +422,13 @@ public class BukkitItemUtils implements ItemUtils
 					hideEnchants = true;
 					continue;
 
+				case "hideattribute":
+				case "hide_attribute":
+				case "hideattributes":
+				case "hide_attributes":
+					hideAttributes = true;
+					continue;
+
 				default:
 					Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.US));
 
@@ -441,6 +449,11 @@ public class BukkitItemUtils implements ItemUtils
 		if (hideEnchants)
 		{
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+		}
+
+		if (hideAttributes)
+		{
+			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
 		}
 
 		if (name != null)
