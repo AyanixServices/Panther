@@ -13,9 +13,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class v1_12_BukkitGlowEnchantment extends Enchantment
 {
 
-	public v1_12_BukkitGlowEnchantment(JavaPlugin plugin)
+	public v1_12_BukkitGlowEnchantment(int glowId)
 	{
-		super(199);
+		super(glowId);
 	}
 
 	@Override

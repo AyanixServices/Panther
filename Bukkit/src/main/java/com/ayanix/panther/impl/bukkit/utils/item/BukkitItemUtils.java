@@ -60,9 +60,20 @@ public class BukkitItemUtils implements ItemUtils
 
 	private static Enchantment            glowEnchantment = null;
 	private static BukkitItemUtils        instance;
-	private        JavaPlugin             plugin;
-	private        Map<String, ItemStack> cache = new HashMap<>();
 	private static Material               SKULL_ITEM_MATERIAL;
+	private        JavaPlugin             plugin;
+	private        Map<String, ItemStack> cache           = new HashMap<>();
+
+	/**
+	 * Initiate a BukkitItemUtils instance.
+	 * <p>
+	 * This has no support for glow tags.
+	 */
+	@Deprecated
+	public BukkitItemUtils()
+	{
+		this(null);
+	}
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -86,34 +97,54 @@ public class BukkitItemUtils implements ItemUtils
 
 		if (plugin != null && glowEnchantment == null)
 		{
-			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13)) {
-				glowEnchantment = new v1_13_BukkitGlowEnchantment(plugin);
-			}
-			else if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
+			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
 			{
-				glowEnchantment = new v1_12_BukkitGlowEnchantment(plugin);
+				glowEnchantment = new v1_13_BukkitGlowEnchantment(plugin);
+			} else if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_12))
+			{
+				glowEnchantment = new v1_12_BukkitGlowEnchantment(glowId);
 			} else
 			{
 				glowEnchantment = new v1_8_BukkitGlowEnchantment(glowId);
 			}
+
+			registerGlow();
 		}
 
-		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13)) {
+		if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
+		{
 			SKULL_ITEM_MATERIAL = Material.valueOf("PLAYER_HEAD");
-		} else {
+		} else
+		{
 			SKULL_ITEM_MATERIAL = Material.SKULL_ITEM;
 		}
 	}
 
 	/**
-	 * Initiate a BukkitItemUtils instance.
-	 * <p>
-	 * This has no support for glow tags.
+	 * Registers the glow enchantment to Bukkit so it can be used.
 	 */
-	@Deprecated
-	public BukkitItemUtils()
+	private void registerGlow()
 	{
-		this(null);
+		// reflection to allow new enchantments
+		try
+		{
+			Field f = Enchantment.class.getDeclaredField("acceptingNew");
+			f.setAccessible(true);
+			f.set(null, true);
+			f.setAccessible(false);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		// register glow enchantment
+		try
+		{
+			Enchantment.registerEnchantment(glowEnchantment);
+		} catch (Exception e)
+		{
+			// already registered
+		}
 	}
 
 	/**
