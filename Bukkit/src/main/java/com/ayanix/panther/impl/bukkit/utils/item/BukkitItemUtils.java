@@ -211,9 +211,11 @@ public class BukkitItemUtils implements ItemUtils
 			try
 			{
 				String displayName = item.getItemMeta().getDisplayName();
-				displayName = displayName.replace(" ", "_");
+				displayName = displayName.replace(ChatColor.COLOR_CHAR, '&')
+						.replace(" ", "_");
+				displayName = stripResetFromBeginning(displayName);
 
-				itemString.append(' ').append(displayName);
+				itemString.append(" name:").append(displayName);
 			} catch (NullPointerException ignored)
 			{
 			}
@@ -591,6 +593,22 @@ public class BukkitItemUtils implements ItemUtils
 		}
 
 		return matching;
+	}
+
+	/**
+	 * Removes all &r from the beginning of an item name.
+	 *
+	 * @param name Item name to strip.
+	 */
+	private String stripResetFromBeginning(String name)
+	{
+		if (name.startsWith("&r"))
+		{
+			return stripResetFromBeginning(name.replaceFirst("&r", ""));
+		} else
+		{
+			return name;
+		}
 	}
 
 }
