@@ -180,6 +180,12 @@ public class BukkitItemUtils implements ItemUtils
 	}
 
 	@Override
+	public List<String> itemsToStrings(List<ItemStack> list)
+	{
+		return new LinkedList<>(list).stream().map(this::itemToString).collect(Collectors.toList());
+	}
+
+	@Override
 	public String itemToString(ItemStack item)
 	{
 		if (item == null)
@@ -244,9 +250,9 @@ public class BukkitItemUtils implements ItemUtils
 	}
 
 	@Override
-	public List<String> itemsToStrings(List<ItemStack> list)
+	public List<ItemStack> stringsToItems(List<String> list)
 	{
-		return list.stream().map(this::itemToString).collect(Collectors.toList());
+		return new LinkedList<>(list).stream().map(this::stringToItem).collect(Collectors.toList());
 	}
 
 	@Override
