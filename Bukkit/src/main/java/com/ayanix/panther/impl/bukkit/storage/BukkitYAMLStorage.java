@@ -64,47 +64,45 @@ public class BukkitYAMLStorage implements YAMLStorage
 
 	public BukkitYAMLStorage(Plugin plugin, File folder, String name)
 	{
-		if (folder == null)
+		this(plugin, new File(folder, name + ".yml"));
+	}
+
+	public BukkitYAMLStorage(Plugin plugin, File file)
+	{
+		if (file == null)
 		{
-			throw new IllegalArgumentException("Folder cannot be null");
+			throw new IllegalArgumentException("File cannot be null");
 		}
 
-		if (name == null)
-		{
-			throw new IllegalArgumentException("File name cannot be null");
-		}
-
+		this.file = file;
 		this.plugin = plugin;
-		this.name = name;
-		String fullName = name + ".yml";
+		this.name = this.file.getName();
 
-		this.file = new File(folder, fullName);
-
-		if (!file.exists())
+		if (!this.file.exists())
 		{
-			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
+			if (!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs())
 			{
-				plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
+				plugin.getLogger().severe("Unable to create parent file: " + this.file.getParentFile().getName());
 			}
 
 			try
 			{
-				if (!file.createNewFile())
+				if (!this.file.createNewFile())
 				{
 					throw new IOException();
 				}
 			} catch (IOException e)
 			{
-				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + fullName, e);
+				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + this.file.getName(), e);
 			}
 		}
 
 		try
 		{
-			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
 		} catch (IOException e)
 		{
-			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + fullName, e);
+			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + this.file.getName(), e);
 		}
 	}
 
