@@ -498,12 +498,6 @@ public class BukkitItemUtils implements ItemUtils
 	}
 
 	@Override
-	public List<ItemStack> stringsToItems(List<String> list)
-	{
-		return list.stream().map(this::stringToItem).collect(Collectors.toList());
-	}
-
-	@Override
 	public boolean isMaterial(String materialName)
 	{
 		return materialName != null && Material.matchMaterial(materialName) != null;
