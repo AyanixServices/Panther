@@ -157,8 +157,11 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	{
 		placeholders.values().forEach(IBukkitPlaceholder::unregister);
 
-		placeholderAPIHook.unregisterPlaceholderAPI();
-		placeholderAPIHook = null;
+		if(placeholderAPIHook != null)
+		{
+			placeholderAPIHook.unregisterPlaceholderAPI();
+			placeholderAPIHook = null;
+		}
 	}
 
 	/**
