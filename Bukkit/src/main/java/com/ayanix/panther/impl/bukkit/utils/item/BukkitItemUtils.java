@@ -412,6 +412,7 @@ public class BukkitItemUtils implements ItemUtils
 					continue;
 
 				case "glow":
+				case "glowing":
 					if (glowEnchantment != null)
 					{
 						enchantments.put(glowEnchantment, 1);
