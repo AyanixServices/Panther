@@ -197,7 +197,7 @@ public class BukkitItemUtils implements ItemUtils
 		String                    mat                   = item.getType().toString();
 		short                     durability            = item.getDurability();
 		String                    amount                = Integer.toString(item.getAmount());
-		Map<Enchantment, Integer> enchants              = item.getEnchantments();
+		Map<Enchantment, Integer> enchants              = item.hasItemMeta() ? item.getItemMeta().getEnchants() : item.getEnchantments();
 		StringBuilder             fullEnchantmentString = new StringBuilder();
 		StringBuilder             itemString            = new StringBuilder(mat).append(' ').append(amount);
 
@@ -239,7 +239,11 @@ public class BukkitItemUtils implements ItemUtils
 			int         level    = e.getValue();
 			String      enchName = ench.getName();
 
-			fullEnchantmentString.append(' ').append(enchName).append(':').append(level);
+			if(!enchName.equalsIgnoreCase("glow")) {
+				fullEnchantmentString.append(' ').append(enchName).append(':').append(level);
+			} else {
+				fullEnchantmentString.append(' ').append(enchName);
+			}
 		}
 
 		if (fullEnchantmentString.length() != 0)
