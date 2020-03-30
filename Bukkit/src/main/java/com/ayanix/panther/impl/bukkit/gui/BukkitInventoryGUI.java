@@ -156,7 +156,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	{
 		this.items.clear();
 
-		for (int x = 0; x < slots - 1; x++)
+		for (int x = 0; x < slots; x++)
 		{
 			inventory.setItem(x, new ItemStack(Material.AIR));
 		}
