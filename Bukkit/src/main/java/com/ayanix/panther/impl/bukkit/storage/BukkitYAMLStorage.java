@@ -76,7 +76,7 @@ public class BukkitYAMLStorage implements YAMLStorage
 
 		this.file = file;
 		this.plugin = plugin;
-		this.name = this.file.getName();
+		this.name = this.file.getName().replaceFirst("[.][^.]+$", "");
 
 		if (!this.file.exists())
 		{
