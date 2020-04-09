@@ -37,7 +37,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -46,14 +48,26 @@ import java.util.List;
 public class BungeeMessage implements Message
 {
 
-	private final String       key;
-	private final List<String> values;
+	private final String            key;
+	private final List<String>      values;
+	private final BungeeMessage     original;
+	private final Map<String, Long> lastSent;
 
 	/**
 	 * @param key    Key associated with message.
 	 * @param values Actual messages.
 	 */
 	public BungeeMessage(final String key, final List<String> values)
+	{
+		this(key, values, null);
+	}
+
+	/**
+	 * @param key      Key associated with message.
+	 * @param values   Actual messages.
+	 * @param original The original unaltered message.
+	 */
+	public BungeeMessage(final String key, final List<String> values, BungeeMessage original)
 	{
 		if (key == null)
 		{
@@ -62,6 +76,8 @@ public class BungeeMessage implements Message
 
 		this.key = key;
 		this.values = values == null ? new ArrayList<>() : values;
+		this.original = original;
+		this.lastSent = original == null ? new HashMap<>() : original.lastSent;
 	}
 
 	@Override
@@ -85,7 +101,7 @@ public class BungeeMessage implements Message
 			newValues.add(message.replace("{" + key + "}", value == null ? "" : value));
 		}
 
-		return new BungeeMessage(key, newValues);
+		return new BungeeMessage(key, newValues, original == null ? this : original);
 	}
 
 	@Override
@@ -142,6 +158,33 @@ public class BungeeMessage implements Message
 
 			cSender.sendMessage(new TextComponent(message));
 		}
+	}
+
+	@Override
+	public void sendOnce(Object sender, long milliseconds)
+	{
+		if (sender == null)
+		{
+			throw new IllegalArgumentException("Sender/player cannot be null");
+		}
+
+		if (!(sender instanceof CommandSender))
+		{
+			throw new UnsupportedOperationException("Sender must be an implementation of CommandSender");
+		}
+
+		final CommandSender cSender = (CommandSender) sender;
+
+		long lastSent = this.lastSent.getOrDefault(cSender.getName(), 0L);
+
+		if (lastSent > System.currentTimeMillis() - milliseconds)
+		{
+			return;
+		}
+
+		this.lastSent.put(cSender.getName(), System.currentTimeMillis());
+
+		send(sender);
 	}
 
 	@Override

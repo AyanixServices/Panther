@@ -118,6 +118,32 @@ public interface Message
 	void send(Object sender);
 
 	/**
+	 * Send the formatted message to given player or console.
+	 * If the original message has already been sent to the player or console within the last second, it won't be sent again.
+	 * <p>
+	 * This will not take into account messages where the placeholders have been modified.
+	 * (e.g. sending the same message but with different placeholder values within 1 second will still be blocked).
+	 *
+	 * @param sender Message to be sent to.
+	 */
+	default void sendOnce(Object sender)
+	{
+		sendOnce(sender, 1000);
+	}
+
+	/**
+	 * Send the formatted message to given player or console.
+	 * If the original message has already been sent to the player or console within the specified time, it won't be sent again.
+	 * <p>
+	 * This will not take into account messages where the placeholders have been modified.
+	 * (e.g. sending the same message but with different placeholder values within the specified time will still be blocked).
+	 *
+	 * @param sender       Message to be sent to.
+	 * @param milliseconds The time span to ignore duplicate messages, in milliseconds.
+	 */
+	void sendOnce(Object sender, long milliseconds);
+
+	/**
 	 * Send as title to player. If console, nothing will happen.
 	 * This will not remove the old subtitle.
 	 *
