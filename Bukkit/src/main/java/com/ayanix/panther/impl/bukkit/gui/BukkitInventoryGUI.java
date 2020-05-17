@@ -250,9 +250,12 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			return;
 		}
 
+		String unformattedName     = ChatColor.stripColor(name);
+		String unformattedViewName = ChatColor.stripColor(event.getView().getTitle());
+
 		if (event.getWhoClicked().getName().equals(player.getName()))
 		{
-			if (event.getView().getTitle().equalsIgnoreCase(name) &&
+			if (unformattedViewName.equalsIgnoreCase(unformattedName) &&
 					event.getView().getTopInventory().equals(event.getClickedInventory()))
 			{
 				int slot = event.getSlot();
