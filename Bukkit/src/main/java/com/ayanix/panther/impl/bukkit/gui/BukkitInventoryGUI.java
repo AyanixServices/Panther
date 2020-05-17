@@ -46,7 +46,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -55,13 +55,14 @@ import java.util.Map;
 public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 {
 
-	private Inventory                 inventory;
-	private String                    name;
-	private int                       slots;
-	private HashMap<Integer, GUIItem> items;
-	private Plugin                    plugin;
-	private Player                    player;
-	private int taskId;
+	protected HashMap<Integer, GUIItem> items;
+	protected Plugin                    plugin;
+	protected Player                    player;
+	private   Inventory                 inventory;
+	private   String                    name;
+	private   int                       slots;
+	private   boolean                   closed;
+	private   int                       taskId;
 
 	/**
 	 * Initiate a ChestGUI instance.
@@ -84,6 +85,8 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		this.player = player;
 
 		this.items = new HashMap<>();
+
+		this.closed = true;
 
 		if (type != InventoryType.CHEST)
 		{
@@ -165,10 +168,24 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	@Override
 	public void refresh()
 	{
-		for (Map.Entry<Integer, GUIItem> entry : items.entrySet())
+		for (int slot : items.keySet())
 		{
-			inventory.setItem(entry.getKey(), entry.getValue().getItemStack());
+			refresh(slot);
 		}
+	}
+
+	@Override
+	public void refresh(int slot)
+	{
+		getItem(slot).ifPresent(item -> {
+			inventory.setItem(slot, item.getItemStack());
+		});
+	}
+
+	@Override
+	public Optional<GUIItem> getItem(int slot)
+	{
+		return Optional.ofNullable(items.get(slot));
 	}
 
 	@Override
@@ -179,6 +196,8 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		player.openInventory(inventory);
 		Bukkit.getPluginManager().registerEvents(this, plugin);
 
+		this.closed = false;
+
 		runSecondTask();
 	}
 
@@ -186,6 +205,42 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	 * Used for item initiation.
 	 */
 	protected abstract void init();
+
+	private void runSecondTask()
+	{
+		taskId = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+			if (!player.isOnline())
+			{
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			if (player.getOpenInventory() == null)
+			{
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			if (!player.getOpenInventory().getTitle().equalsIgnoreCase(name) ||
+					!player.getOpenInventory().getTopInventory().equals(inventory))
+			{
+				Bukkit.getScheduler().cancelTask(taskId);
+				return;
+			}
+
+			for (int slot : items.keySet())
+			{
+				GUIItem guiItem = items.get(slot);
+
+				if (guiItem.shouldUpdateItem())
+				{
+					refresh(slot);
+
+					player.updateInventory();
+				}
+			}
+		}, 1L, 20L).getTaskId();
+	}
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event)
@@ -229,6 +284,8 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			HandlerList.unregisterAll(this);
 
 			close();
+
+			this.closed = true;
 		}
 	}
 
@@ -248,34 +305,10 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		return true;
 	}
 
-	private void runSecondTask()
+	@Override
+	public boolean isClosed()
 	{
-		taskId = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
-			if (!player.isOnline())
-			{
-				Bukkit.getScheduler().cancelTask(taskId);
-				return;
-			}
-
-			if(player.getOpenInventory() == null) {
-				Bukkit.getScheduler().cancelTask(taskId);
-				return;
-			}
-
-			if (!player.getOpenInventory().getTitle().equalsIgnoreCase(name) ||
-					!player.getOpenInventory().getTopInventory().equals(inventory)) {
-				Bukkit.getScheduler().cancelTask(taskId);
-				return;
-			}
-
-			for(int slot : items.keySet()) {
-				GUIItem guiItem = items.get(slot);
-
-				if(guiItem.shouldUpdateItem()) {
-					inventory.setItem(slot, guiItem.getItemStack());
-				}
-			}
-		}, 1L, 20L).getTaskId();
+		return closed;
 	}
 
 }

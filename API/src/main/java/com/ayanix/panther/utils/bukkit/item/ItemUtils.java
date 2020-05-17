@@ -32,6 +32,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -73,6 +74,21 @@ public interface ItemUtils
 	 * @return An ItemStack.
 	 */
 	ItemStack stringToItem(String item);
+
+	/**
+	 * Converts a compressed item string into an ItemStack.
+	 * Additionally, it will convert another compressed item string on an async thread
+	 * and return the ItemStack version on the primary thread once converted.
+	 * <p>
+	 * This is useful for skulls which, if not loaded, have to be called on the main thread and can
+	 * cause server lag spikes.
+	 *
+	 * @param item      The string version of the item.
+	 * @param asyncItem The string version of the item to be returned in the consumer.
+	 * @param consumer  The consumer which will deal with the converted async item.
+	 * @return An ItemStack.
+	 */
+	ItemStack stringToItem(String item, String asyncItem, Consumer<ItemStack> consumer);
 
 	/**
 	 * Converts a list of compressed item strings into a list of ItemStacks in order.

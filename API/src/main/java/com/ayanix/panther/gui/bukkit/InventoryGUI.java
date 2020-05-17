@@ -31,6 +31,8 @@ package com.ayanix.panther.gui.bukkit;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Optional;
+
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
@@ -89,6 +91,11 @@ public interface InventoryGUI
 	void refresh();
 
 	/**
+	 * Re-inserts a specific GUIItem in the slot into the Bukkit inventory.
+	 */
+	void refresh(int slot);
+
+	/**
 	 * Open the inventory.
 	 */
 	void open();
@@ -97,5 +104,18 @@ public interface InventoryGUI
 	 * @return Whether or not the inventory is allowed to be closed.
 	 */
 	boolean canClose();
+
+	/**
+	 * @return Whether or not the inventory has been closed.
+	 */
+	boolean isClosed();
+
+	/**
+	 * Fetch the GUIItem in the specified slot.
+	 *
+	 * @param slot The slot containing the GUIItem (starting from 0)
+	 * @return An optional containing the GUIItem in the slot, or an empty optional.
+	 */
+	Optional<GUIItem> getItem(int slot);
 
 }

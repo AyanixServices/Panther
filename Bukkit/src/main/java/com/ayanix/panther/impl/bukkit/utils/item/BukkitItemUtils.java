@@ -34,10 +34,12 @@ import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_13_BukkitGlowEnchant
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.common.utils.RandomUtils;
 import com.ayanix.panther.utils.bukkit.item.ItemUtils;
+import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -50,6 +52,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -63,7 +67,7 @@ public class BukkitItemUtils implements ItemUtils
 	private static BukkitItemUtils        instance;
 	private static Material               SKULL_ITEM_MATERIAL;
 	private        JavaPlugin             plugin;
-	private        Map<String, ItemStack> cache           = new HashMap<>();
+	private        Map<String, ItemStack> cache           = new ConcurrentHashMap<>();
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -504,6 +508,27 @@ public class BukkitItemUtils implements ItemUtils
 	public boolean isMaterial(String materialName)
 	{
 		return materialName != null && Material.matchMaterial(materialName) != null;
+	}
+
+	@Override
+	public ItemStack stringToItem(String item, String asyncItem, Consumer<ItemStack> consumer)
+	{
+		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+			ItemStack result = stringToItem(asyncItem);
+
+			// forces Spigot to load the item (e.g. skull texture) and caches it
+			try
+			{
+				Bukkit.createInventory(null, InventoryType.CHEST).addItem(result);
+			} catch (UncheckedExecutionException | IllegalArgumentException exception)
+			{
+				// this exception is thrown when the name is invalid or the session/skin servers are down
+			}
+
+			plugin.getServer().getScheduler().runTaskLater(plugin, () -> consumer.accept(result), 1L);
+		});
+
+		return stringToItem(item);
 	}
 
 	@Override
