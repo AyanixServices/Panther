@@ -245,9 +245,11 @@ public class BukkitItemUtils implements ItemUtils
 			int         level    = e.getValue();
 			String      enchName = ench.getName();
 
-			if(!enchName.equalsIgnoreCase("glow")) {
+			if (!enchName.equalsIgnoreCase("glow"))
+			{
 				fullEnchantmentString.append(' ').append(enchName).append(':').append(level);
-			} else {
+			} else
+			{
 				fullEnchantmentString.append(' ').append(enchName);
 			}
 		}
