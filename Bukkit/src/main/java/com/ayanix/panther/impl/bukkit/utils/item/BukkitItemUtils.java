@@ -315,7 +315,12 @@ public class BukkitItemUtils implements ItemUtils
 
 			if (materialName.contains(":"))
 			{
-				skullName = materialName.split(":")[1];
+				String[] parts = materialName.split(":");
+
+				if (parts.length >= 2)
+				{
+					skullName = parts[1];
+				}
 			}
 		}
 
