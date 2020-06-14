@@ -156,7 +156,7 @@ public class BungeeMessage implements Message
 				message = ChatColor.stripColor(message);
 			}
 
-			cSender.sendMessage(new TextComponent(message));
+			cSender.sendMessage(TextComponent.fromLegacyText(message));
 		}
 	}
 
@@ -203,14 +203,14 @@ public class BungeeMessage implements Message
 		}
 
 		Title title = ProxyServer.getInstance().createTitle()
-				.title(new TextComponent(messages.get(0)))
+				.title(TextComponent.fromLegacyText(messages.get(0)))
 				.fadeIn(fadeIn)
 				.fadeOut(fadeIn)
 				.stay(stay);
 
 		if (messages.size() > 1)
 		{
-			title = title.subTitle(new TextComponent(messages.get(1)));
+			title = title.subTitle(TextComponent.fromLegacyText(messages.get(1)));
 		}
 
 		title.send((ProxiedPlayer) sender);
@@ -225,7 +225,7 @@ public class BungeeMessage implements Message
 		}
 
 		ProxyServer.getInstance().createTitle()
-				.subTitle(new TextComponent(get()))
+				.subTitle(TextComponent.fromLegacyText(get()))
 				.fadeIn(fadeIn)
 				.fadeOut(fadeIn)
 				.stay(stay)
