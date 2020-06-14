@@ -32,6 +32,7 @@ import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_13_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
+import com.ayanix.panther.impl.bukkit.enchantment.utils.item.compat.v1_13_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.common.utils.RandomUtils;
 import com.ayanix.panther.utils.bukkit.item.ItemUtils;
 import com.google.common.util.concurrent.UncheckedExecutionException;
@@ -346,6 +347,7 @@ public class BukkitItemUtils implements ItemUtils
 		int              amplifier = 0;
 
 		boolean hideEnchants   = false;
+		boolean unbreakable    = false;
 		boolean hideAttributes = false;
 
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
@@ -436,6 +438,10 @@ public class BukkitItemUtils implements ItemUtils
 					hideEnchants = true;
 					continue;
 
+				case "unbreakable":
+					unbreakable = true;
+					continue;
+
 				case "hideattribute":
 				case "hide_attribute":
 				case "hideattributes":
@@ -468,6 +474,17 @@ public class BukkitItemUtils implements ItemUtils
 		if (hideAttributes)
 		{
 			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		}
+
+		if (unbreakable)
+		{
+			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
+			{
+				v1_13_BukkitItemUtilsCompat.setUnbreakable(itemMeta, true, hideAttributes);
+			} else
+			{
+				itemMeta.spigot().setUnbreakable(true);
+			}
 		}
 
 		if (name != null)
