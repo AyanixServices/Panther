@@ -123,9 +123,9 @@ public class BukkitLocationUtils implements IBukkitLocationUtils
 			return null;
 		}
 
-		int x = Integer.parseInt(parts[1]);
-		int y = Integer.parseInt(parts[2]);
-		int z = Integer.parseInt(parts[3]);
+		double x = Double.parseDouble(parts[1]);
+		double y = Double.parseDouble(parts[2]);
+		double z = Double.parseDouble(parts[3]);
 
 		if (parts.length != 6)
 		{
