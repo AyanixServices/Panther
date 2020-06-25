@@ -250,7 +250,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			return;
 		}
 
-		String unformattedName     = ChatColor.stripColor(name);
+		String unformattedName     = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', name));
 		String unformattedViewName = ChatColor.stripColor(event.getView().getTitle());
 
 		if (event.getWhoClicked().getName().equals(player.getName()))
