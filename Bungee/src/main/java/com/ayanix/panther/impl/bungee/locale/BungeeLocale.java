@@ -65,19 +65,21 @@ public class BungeeLocale extends BungeeYAMLStorage implements Locale
 	{
 		for (String key : getConfig().getKeys())
 		{
-			Configuration section = getConfig().getSection(key);
-
-			if (section != null)
+			if (getConfig().isList(key) || getConfig().isString(key))
 			{
-				for (String innerKey : section.getKeys())
-				{
-					loadMessage(key + "." + innerKey);
-				}
-
-				continue;
+				loadMessage(key);
+			} else
+			{
+    			Configuration section = getConfig().getSection(key);
+    
+    			if (section != null)
+    			{
+    				for (String innerKey : section.getKeys())
+    				{
+    					loadMessage(key + "." + innerKey);
+    				}
+    			}
 			}
-
-			loadMessage(key);
 		}
 	}
 
