@@ -34,7 +34,7 @@ import org.bukkit.entity.Player;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface PlaceholderRunnable
+public interface IBukkitPlaceholderRunnable
 {
 
 	/**

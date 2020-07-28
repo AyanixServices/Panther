@@ -45,7 +45,7 @@ public interface IBukkitPlaceholderUtils
 	 * @param runnable    The code executed when the placeholder is called.
 	 * @return IBukkitPlaceholder object containing registered status.
 	 */
-	default IBukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, PlaceholderRunnable runnable)
+	default IBukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, IBukkitPlaceholderRunnable runnable)
 	{
 		return registerPlaceholder(plugin, placeholder, runnable, false);
 	}
@@ -59,7 +59,7 @@ public interface IBukkitPlaceholderUtils
 	 * @param silent      If true, Panther will not output a message verifying the placeholder has been registered.
 	 * @return IBukkitPlaceholder object containing registered status.
 	 */
-	IBukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, PlaceholderRunnable runnable, boolean silent);
+	IBukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, IBukkitPlaceholderRunnable runnable, boolean silent);
 
 	/**
 	 * Unregisters all placeholders registered by the plugin.

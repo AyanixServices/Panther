@@ -28,9 +28,8 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.placeholder;
 
-import be.maximvdw.placeholderapi.PlaceholderAPI;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
-import com.ayanix.panther.utils.bukkit.placeholder.PlaceholderRunnable;
+import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderRunnable;
 
 import java.util.HashMap;
 
@@ -42,11 +41,11 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 {
 
 	private final String                            name;
-	private final PlaceholderRunnable               runnable;
+	private final IBukkitPlaceholderRunnable        runnable;
 	private final HashMap<PlaceholderType, Boolean> registered;
 	private       boolean                           playerOnly;
 
-	BukkitPlaceholder(String name, PlaceholderRunnable runnable)
+	BukkitPlaceholder(String name, IBukkitPlaceholderRunnable runnable)
 	{
 		this.name = name;
 		this.runnable = runnable;
@@ -69,7 +68,7 @@ public class BukkitPlaceholder implements IBukkitPlaceholder
 	}
 
 	@Override
-	public PlaceholderRunnable getRunnable()
+	public IBukkitPlaceholderRunnable getRunnable()
 	{
 		return this.runnable;
 	}

@@ -57,7 +57,7 @@ public interface IBukkitPlaceholder
 	/**
 	 * @return The code executed when the placeholder is called.
 	 */
-	PlaceholderRunnable getRunnable();
+	IBukkitPlaceholderRunnable getRunnable();
 
 	/**
 	 * @return Whether or not the placeholder must have a non-null player object.

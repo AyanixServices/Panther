@@ -32,8 +32,7 @@ import com.ayanix.panther.impl.bukkit.utils.BukkitDependencyChecks;
 import com.ayanix.panther.utils.DependencyChecks;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderUtils;
-import com.ayanix.panther.utils.bukkit.placeholder.PlaceholderRunnable;
-import org.bukkit.Bukkit;
+import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderRunnable;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
@@ -96,12 +95,12 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	 * @param runnable    The code executed when the placeholder is called.
 	 * @return BukkitPlaceholder object containing registered status.
 	 */
-	public BukkitPlaceholder registerPlaceholder(String placeholder, PlaceholderRunnable runnable)
+	public BukkitPlaceholder registerPlaceholder(String placeholder, IBukkitPlaceholderRunnable runnable)
 	{
 		return registerPlaceholder(plugin, placeholder, runnable, false);
 	}
 
-	public BukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, PlaceholderRunnable runnable, boolean silent)
+	public BukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, IBukkitPlaceholderRunnable runnable, boolean silent)
 	{
 		BukkitPlaceholder bukkitPlaceholder = new BukkitPlaceholder(placeholder, runnable);
 		DependencyChecks  dependencyChecks  = new BukkitDependencyChecks(plugin);
@@ -172,7 +171,7 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	 * @param silent      If true, Panther will not output a message verifying the placeholder has been registered.
 	 * @return BukkitPlaceholder object containing registered status.
 	 */
-	public BukkitPlaceholder registerPlaceholder(String placeholder, PlaceholderRunnable runnable, boolean silent)
+	public BukkitPlaceholder registerPlaceholder(String placeholder, IBukkitPlaceholderRunnable runnable, boolean silent)
 	{
 		return registerPlaceholder(plugin, placeholder, runnable, silent);
 	}
