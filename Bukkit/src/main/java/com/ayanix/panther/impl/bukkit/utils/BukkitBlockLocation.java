@@ -178,7 +178,7 @@ public class BukkitBlockLocation implements IBukkitBlockLocation
 			return blockLocation.getX() == getX() &&
 					blockLocation.getY() == getY() &&
 					blockLocation.getZ() == getZ() &&
-					blockLocation.getWorld().equals(world);
+					blockLocation.getWorld().getName().equals(world.getName());
 		}
 
 		return false;
