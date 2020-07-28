@@ -28,8 +28,8 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.item;
 
-import com.ayanix.panther.utils.bukkit.item.ItemBuilder;
-import com.ayanix.panther.utils.bukkit.item.PotionBuilder;
+import com.ayanix.panther.utils.bukkit.item.IBukkitItemBuilder;
+import com.ayanix.panther.utils.bukkit.item.IBukkitPotionBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -45,7 +45,7 @@ import java.util.List;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuilder
+public class BukkitPotionBuilder extends BukkitItemBuilder implements IBukkitPotionBuilder
 {
 
 	private PotionEffectType type;
@@ -64,7 +64,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public PotionBuilder amount(int amount)
+	public IBukkitPotionBuilder amount(int amount)
 	{
 		super.amount(amount);
 
@@ -72,7 +72,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public ItemBuilder data(short data)
+	public IBukkitItemBuilder data(short data)
 	{
 		super.data(data);
 
@@ -80,7 +80,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public ItemBuilder name(String name)
+	public IBukkitItemBuilder name(String name)
 	{
 		super.name(name);
 
@@ -88,7 +88,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public ItemBuilder lore(List<String> lore)
+	public IBukkitItemBuilder lore(List<String> lore)
 	{
 		super.lore(lore);
 
@@ -96,7 +96,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public ItemBuilder enchant(Enchantment enchantment, int level)
+	public IBukkitItemBuilder enchant(Enchantment enchantment, int level)
 	{
 		super.enchant(enchantment, level);
 
@@ -104,7 +104,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public ItemBuilder color(Color color)
+	public IBukkitItemBuilder color(Color color)
 	{
 		super.color(color);
 
@@ -139,7 +139,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public PotionBuilder amplifier(int amplifier)
+	public IBukkitPotionBuilder amplifier(int amplifier)
 	{
 		if (amplifier < 0)
 		{
@@ -152,7 +152,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public PotionBuilder splash(boolean splash)
+	public IBukkitPotionBuilder splash(boolean splash)
 	{
 		this.splash = splash;
 
@@ -160,7 +160,7 @@ public class BukkitPotionBuilder extends BukkitItemBuilder implements PotionBuil
 	}
 
 	@Override
-	public PotionBuilder extended(boolean extended)
+	public IBukkitPotionBuilder extended(boolean extended)
 	{
 		this.extended = extended;
 

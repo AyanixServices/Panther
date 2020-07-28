@@ -32,7 +32,7 @@ package com.ayanix.panther.utils.bukkit.item;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public interface PotionBuilder extends ItemBuilder
+public interface IBukkitPotionBuilder extends IBukkitItemBuilder
 {
 
 	/**
@@ -41,7 +41,7 @@ public interface PotionBuilder extends ItemBuilder
 	 * @param amplifier The amplifier to set, cannot be negative.
 	 * @return The PotionBuilder object.
 	 */
-	PotionBuilder amplifier(int amplifier);
+	IBukkitPotionBuilder amplifier(int amplifier);
 
 	/**
 	 * Set whether or not the potion is splash.
@@ -49,7 +49,7 @@ public interface PotionBuilder extends ItemBuilder
 	 * @param splash Set whether or not the potion is splash.
 	 * @return The PotionBuilder object.
 	 */
-	PotionBuilder splash(boolean splash);
+	IBukkitPotionBuilder splash(boolean splash);
 
 	/**
 	 * Set whether or not the potion is extended.
@@ -57,6 +57,6 @@ public interface PotionBuilder extends ItemBuilder
 	 * @param extended Set whether or not the potion is extended.
 	 * @return The PotionBuilder object.
 	 */
-	PotionBuilder extended(boolean extended);
+	IBukkitPotionBuilder extended(boolean extended);
 
 }
