@@ -33,7 +33,10 @@ import org.bukkit.OfflinePlayer;
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2019.
+ *
+ * The class is deprecated because BukkitCurrency now includes a Vault option.
  */
+@Deprecated
 public interface IBukkitVaultEconomyUtils
 {
 
