@@ -360,9 +360,10 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		int              duration  = 10;
 		int              amplifier = 0;
 
-		boolean hideEnchants   = false;
-		boolean unbreakable    = false;
-		boolean hideAttributes = false;
+		boolean hideEnchants      = false;
+		boolean unbreakable       = false;
+		boolean hideAttributes    = false;
+		boolean hidePotionEffects = false;
 
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
@@ -463,6 +464,13 @@ public class BukkitItemUtils implements IBukkitItemUtils
 					hideAttributes = true;
 					continue;
 
+				case "hide_potion_effects":
+				case "hidepotioneffects":
+				case "hide_potion_effect":
+				case "hidepotioneffect":
+					hidePotionEffects = true;
+					continue;
+
 				default:
 					Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.US));
 
@@ -488,6 +496,11 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		if (hideAttributes)
 		{
 			itemMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+		}
+
+		if (hidePotionEffects)
+		{
+			itemMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
 		}
 
 		if (unbreakable)
