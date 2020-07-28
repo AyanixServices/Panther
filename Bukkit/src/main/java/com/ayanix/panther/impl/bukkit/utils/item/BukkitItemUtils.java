@@ -32,18 +32,23 @@ import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_13_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
-import com.ayanix.panther.impl.bukkit.enchantment.utils.item.compat.v1_13_BukkitItemUtilsCompat;
+import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_12_BukkitItemUtilsCompat;
+import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_13_BukkitItemUtilsCompat;
+import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_8_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.common.utils.RandomUtils;
-import com.ayanix.panther.utils.bukkit.item.ItemUtils;
+import com.ayanix.panther.utils.bukkit.item.BukkitItemUtilsCompat;
+import com.ayanix.panther.utils.bukkit.item.IBukkitItemUtils;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -365,6 +370,9 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		boolean hideAttributes    = false;
 		boolean hidePotionEffects = false;
 
+		// Leather
+		Color leatherColor = null;
+
 		Map<Enchantment, Integer> enchantments = new HashMap<>();
 
 		for (int x = 1; x < itemWordList.size(); x++)
@@ -471,6 +479,20 @@ public class BukkitItemUtils implements IBukkitItemUtils
 					hidePotionEffects = true;
 					continue;
 
+				case "color":
+				case "colour":
+					try
+					{
+						int r = Integer.valueOf(parts[1].substring(0, 2), 16);
+						int g = Integer.valueOf(parts[1].substring(2, 4), 16);
+						int b = Integer.valueOf(parts[1].substring(4, 6), 16);
+
+						leatherColor = Color.fromRGB(r, g, b);
+					} catch (Exception ignored)
+					{
+					}
+					continue;
+
 				default:
 					Enchantment enchantment = Enchantment.getByName(parts[0].toUpperCase(Locale.US));
 
@@ -531,6 +553,15 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			Potion potion = Potion.fromItemStack(itemStack);
 			potion.setSplash(splash);
 			potion.apply(itemStack);
+		}
+
+		if (mat.name().contains("LEATHER") && leatherColor != null)
+		{
+			LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+
+			leatherArmorMeta.setColor(leatherColor);
+
+			itemStack.setItemMeta(leatherArmorMeta);
 		}
 
 		if (!skullName.isEmpty())
