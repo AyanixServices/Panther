@@ -626,56 +626,66 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			return false;
 		}
 
-		ItemMeta metaA = itemA.hasItemMeta() ? itemA.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemA.getType());
-		ItemMeta metaB = itemB.hasItemMeta() ? itemB.getItemMeta() : Bukkit.getItemFactory().getItemMeta(itemB.getType());
-
-		if (metaA.hasLore() && !metaB.hasLore() ||
-				!metaA.hasLore() && metaB.hasLore())
+		if (itemA.hasItemMeta() != itemB.hasItemMeta())
 		{
 			return false;
 		}
 
-		if (metaA.hasLore() && metaB.hasLore())
+		if (itemA.hasItemMeta() && itemB.hasItemMeta())
 		{
-			if (metaA.getLore().size() != metaB.getLore().size())
+			ItemMeta metaA = itemA.getItemMeta();
+			ItemMeta metaB = itemB.getItemMeta();
+
+			if (metaA.hasLore() && !metaB.hasLore() ||
+					!metaA.hasLore() && metaB.hasLore())
 			{
 				return false;
 			}
 
-			for (int x = 0; x < Math.max(metaA.getLore().size(), metaB.getLore().size()); x++)
+			if (metaA.hasLore() && metaB.hasLore())
 			{
-				if (!metaA.getLore().get(x).equals(metaB.getLore().get(x)))
+				if (metaA.getLore().size() != metaB.getLore().size())
+				{
+					return false;
+				}
+
+				for (int x = 0; x < Math.max(metaA.getLore().size(), metaB.getLore().size()); x++)
+				{
+					if (!metaA.getLore().get(x).equals(metaB.getLore().get(x)))
+					{
+						return false;
+					}
+				}
+			}
+
+			if (metaA.hasDisplayName() && metaB.hasDisplayName())
+			{
+				return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
+			}
+
+			if (itemA.getType() == SKULL_ITEM_MATERIAL && itemA.getDurability() == 3)
+			{
+				SkullMeta skullMetaA = (SkullMeta) itemA.getItemMeta();
+				SkullMeta skullMetaB = (SkullMeta) itemB.getItemMeta();
+
+				if (!skullMetaA.hasOwner() && skullMetaB.hasOwner())
+				{
+					return false;
+				} else if (skullMetaA.hasOwner() && !skullMetaB.hasOwner())
+				{
+					return false;
+				}
+
+				if (!skullMetaA.getOwner().equals(skullMetaB.getOwner()))
 				{
 					return false;
 				}
 			}
+
+			return !metaA.hasDisplayName() && !metaB.hasDisplayName();
 		}
 
-		if (metaA.hasDisplayName() && metaB.hasDisplayName())
-		{
-			return metaA.getDisplayName().equalsIgnoreCase(metaB.getDisplayName());
-		}
-
-		if (itemA.getType() == SKULL_ITEM_MATERIAL && itemA.getDurability() == 3)
-		{
-			SkullMeta skullMetaA = (SkullMeta) itemA.getItemMeta();
-			SkullMeta skullMetaB = (SkullMeta) itemB.getItemMeta();
-
-			if (!skullMetaA.hasOwner() && skullMetaB.hasOwner())
-			{
-				return false;
-			} else if (skullMetaA.hasOwner() && !skullMetaB.hasOwner())
-			{
-				return false;
-			}
-
-			if (!skullMetaA.getOwner().equals(skullMetaB.getOwner()))
-			{
-				return false;
-			}
-		}
-
-		return !metaA.hasDisplayName() && !metaB.hasDisplayName();
+		return true;
 	}
 
 	@Override
