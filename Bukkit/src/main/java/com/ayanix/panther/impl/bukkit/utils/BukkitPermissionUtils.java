@@ -29,7 +29,6 @@
 package com.ayanix.panther.impl.bukkit.utils;
 
 import com.ayanix.panther.utils.bukkit.IBukkitPermissionUtils;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.permissions.Permission;
@@ -43,15 +42,18 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 public class BukkitPermissionUtils implements IBukkitPermissionUtils
 {
 
-	private static BukkitPermissionUtils instance;
-	private BukkitVaultPermissionUtils vaultPermissionUtils = null;
+	private static BukkitPermissionUtils      instance;
+	private        BukkitVaultPermissionUtils vaultPermissionUtils = null;
 
-	public BukkitPermissionUtils() {
+	public BukkitPermissionUtils()
+	{
 		// not outputting to logger therefore null plugin is acceptable.
-		if(new BukkitDependencyChecks(null).isEnabled("Vault")) {
+		if (new BukkitDependencyChecks(null).isEnabled("Vault"))
+		{
 			vaultPermissionUtils = new BukkitVaultPermissionUtils();
 
-			if(!vaultPermissionUtils.isEnabled()) {
+			if (!vaultPermissionUtils.isEnabled())
+			{
 				// remove support, permission is not setup even though Vault is enabled.
 				vaultPermissionUtils = null;
 			}
@@ -94,18 +96,21 @@ public class BukkitPermissionUtils implements IBukkitPermissionUtils
 	@Override
 	public boolean hasPermission(OfflinePlayer player, String permission)
 	{
-		if(vaultPermissionUtils == null) {
+		if (vaultPermissionUtils == null)
+		{
 			return false;
 		}
 
 		return vaultPermissionUtils.getPermission().playerHas(null, player, permission);
 	}
 
-	private class BukkitVaultPermissionUtils {
+	private class BukkitVaultPermissionUtils
+	{
 
 		private net.milkbowl.vault.permission.Permission permission;
 
-		BukkitVaultPermissionUtils() {
+		BukkitVaultPermissionUtils()
+		{
 			RegisteredServiceProvider<net.milkbowl.vault.permission.Permission> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
 
 			if (economyProvider != null)
@@ -114,11 +119,13 @@ public class BukkitPermissionUtils implements IBukkitPermissionUtils
 			}
 		}
 
-		public boolean isEnabled() {
+		public boolean isEnabled()
+		{
 			return permission != null;
 		}
 
-		public net.milkbowl.vault.permission.Permission getPermission() {
+		public net.milkbowl.vault.permission.Permission getPermission()
+		{
 			return permission;
 		}
 
