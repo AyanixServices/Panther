@@ -28,7 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.utils.item;
 
-import com.ayanix.panther.utils.bukkit.item.ItemBuilder;
+import com.ayanix.panther.utils.bukkit.item.IBukkitItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -44,7 +44,7 @@ import java.util.*;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitItemBuilder implements ItemBuilder
+public class BukkitItemBuilder implements IBukkitItemBuilder
 {
 
 	protected Material                      material;
@@ -67,7 +67,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder amount(int amount)
+	public IBukkitItemBuilder amount(int amount)
 	{
 		if (amount < 1 || amount > 64)
 		{
@@ -80,7 +80,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder data(short data)
+	public IBukkitItemBuilder data(short data)
 	{
 		if (data < 0)
 		{
@@ -93,7 +93,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder name(String name)
+	public IBukkitItemBuilder name(String name)
 	{
 		this.name = name;
 
@@ -101,7 +101,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder lore(List<String> lore)
+	public IBukkitItemBuilder lore(List<String> lore)
 	{
 		this.lore = lore;
 
@@ -109,7 +109,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder enchant(Enchantment enchantment, int level)
+	public IBukkitItemBuilder enchant(Enchantment enchantment, int level)
 	{
 		this.enchants.put(enchantment, level);
 
@@ -117,7 +117,7 @@ public class BukkitItemBuilder implements ItemBuilder
 	}
 
 	@Override
-	public ItemBuilder color(Color color)
+	public IBukkitItemBuilder color(Color color)
 	{
 		this.color = color;
 

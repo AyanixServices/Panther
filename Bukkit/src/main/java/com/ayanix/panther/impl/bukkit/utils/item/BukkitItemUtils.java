@@ -61,7 +61,7 @@ import java.util.stream.Collectors;
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public class BukkitItemUtils implements ItemUtils
+public class BukkitItemUtils implements IBukkitItemUtils
 {
 
 	private static Enchantment            glowEnchantment = null;
@@ -69,6 +69,7 @@ public class BukkitItemUtils implements ItemUtils
 	private static Material               SKULL_ITEM_MATERIAL;
 	private        JavaPlugin             plugin;
 	private        Map<String, ItemStack> cache           = new ConcurrentHashMap<>();
+	private        BukkitItemUtilsCompat  compat;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -123,6 +124,19 @@ public class BukkitItemUtils implements ItemUtils
 		} else
 		{
 			SKULL_ITEM_MATERIAL = Material.SKULL_ITEM;
+		}
+
+		switch (BukkitVersion.getVersion()) {
+			case v1_8:
+				compat = new v1_8_BukkitItemUtilsCompat();
+				break;
+			case v1_12:
+				compat = new v1_12_BukkitItemUtilsCompat();
+				break;
+			case v1_13:
+			default:
+				compat = new v1_13_BukkitItemUtilsCompat();
+				break;
 		}
 	}
 
@@ -478,13 +492,7 @@ public class BukkitItemUtils implements ItemUtils
 
 		if (unbreakable)
 		{
-			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
-			{
-				v1_13_BukkitItemUtilsCompat.setUnbreakable(itemMeta, true, hideAttributes);
-			} else
-			{
-				itemMeta.spigot().setUnbreakable(true);
-			}
+			setUnbreakable(itemMeta, true, hideAttributes);
 		}
 
 		if (name != null)
@@ -643,6 +651,28 @@ public class BukkitItemUtils implements ItemUtils
 		}
 
 		return matching;
+	}
+
+	@Override
+	public boolean isUnbreakable(ItemMeta itemMeta)
+	{
+		if (itemMeta == null)
+		{
+			return false;
+		}
+
+		return compat.isUnbreakable(itemMeta);
+	}
+
+	@Override
+	public void setUnbreakable(ItemMeta itemMeta, boolean unbreakable, boolean hidden)
+	{
+		if (itemMeta == null)
+		{
+			throw new IllegalArgumentException("ItemMeta cannot be null");
+		}
+
+		compat.setUnbreakable(itemMeta, unbreakable, hidden);
 	}
 
 	/**

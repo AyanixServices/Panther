@@ -91,19 +91,19 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.ayanix.panther.bukkit</groupId>
+            <groupId>com.ayanix.panther.bukkit.compat</groupId>
             <artifactId>v1_13</artifactId>
             <version>1.1.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.ayanix.panther.bukkit</groupId>
+            <groupId>com.ayanix.panther.bukkit.compat</groupId>
             <artifactId>v1_12</artifactId>
             <version>1.1.6-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.ayanix.panther.bukkit</groupId>
+            <groupId>com.ayanix.panther.bukkit.compat</groupId>
             <artifactId>v1_8</artifactId>
             <version>1.1.6-SNAPSHOT</version>
             <scope>compile</scope>
