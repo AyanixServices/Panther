@@ -30,7 +30,6 @@ package com.ayanix.panther.impl.bukkit.utils;
 
 import com.ayanix.panther.utils.bukkit.IBukkitVaultEconomyUtils;
 import net.milkbowl.vault.economy.Economy;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -43,7 +42,7 @@ public class BukkitVaultEconomyUtils implements IBukkitVaultEconomyUtils
 {
 
 	private static BukkitVaultEconomyUtils instance;
-	private Economy economy;
+	private        Economy                 economy;
 
 	public BukkitVaultEconomyUtils()
 	{
