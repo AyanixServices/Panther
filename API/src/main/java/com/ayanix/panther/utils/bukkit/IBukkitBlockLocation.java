@@ -115,4 +115,9 @@ public interface IBukkitBlockLocation
 	 */
 	Location toBukkit();
 
+	/**
+	 * @return Whether or not the chunk is loaded.
+	 */
+	boolean isChunkLoaded();
+
 }

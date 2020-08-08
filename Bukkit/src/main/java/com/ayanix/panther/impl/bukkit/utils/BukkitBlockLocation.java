@@ -158,6 +158,12 @@ public class BukkitBlockLocation implements IBukkitBlockLocation
 	}
 
 	@Override
+	public boolean isChunkLoaded()
+	{
+		return world.isChunkLoaded(x >> 4, z >> 4);
+	}
+
+	@Override
 	public int hashCode()
 	{
 		return world.getName().hashCode() + x + y + z;
