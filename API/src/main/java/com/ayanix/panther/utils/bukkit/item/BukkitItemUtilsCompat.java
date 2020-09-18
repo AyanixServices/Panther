@@ -29,6 +29,7 @@
 package com.ayanix.panther.utils.bukkit.item;
 
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 /**
  * Panther - Developed by Lewes D. B. (Boomclaw).
@@ -51,5 +52,9 @@ public abstract class BukkitItemUtilsCompat
 	 * @param hidden      If true, HIDE_UNBREAKABLE is also applied to the item meta. If false, nothing will change (it will not remove the flag).
 	 */
 	public abstract void setUnbreakable(ItemMeta itemMeta, boolean unbreakable, boolean hidden);
+
+	public abstract void setSkullOwner(SkullMeta meta, String playerName);
+
+	public abstract boolean isSkullCached(String playerName);
 
 }

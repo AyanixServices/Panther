@@ -38,6 +38,7 @@ import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_8_BukkitItemUtilsComp
 import com.ayanix.panther.impl.common.utils.RandomUtils;
 import com.ayanix.panther.utils.bukkit.item.BukkitItemUtilsCompat;
 import com.ayanix.panther.utils.bukkit.item.IBukkitItemUtils;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -59,6 +60,8 @@ import org.bukkit.potion.PotionEffectType;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -75,6 +78,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	private        JavaPlugin             plugin;
 	private        Map<String, ItemStack> cache           = new ConcurrentHashMap<>();
 	private        BukkitItemUtilsCompat  compat;
+	private        ExecutorService        executorService;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -112,7 +116,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			registerGlow();
 		}
 
-		if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
+		executorService = Executors.newSingleThreadExecutor(new ThreadFactoryBuilder().setNameFormat(plugin.getName() + "-ItemUtils").build());
 
 		if (!BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13) || plugin.getDescription().getAPIVersion() == null)
 		{
@@ -560,7 +564,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		{
 			SkullMeta skullMeta = (SkullMeta) itemStack.getItemMeta();
 
-			skullMeta.setOwner(skullName);
+			compat.setSkullOwner(skullMeta, skullName);
 
 			itemStack.setItemMeta(skullMeta);
 		}
@@ -581,10 +585,11 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	@Override
 	public ItemStack stringToItem(String item, String asyncItem, Consumer<ItemStack> consumer)
 	{
-		plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+		Runnable runnable = () -> {
 			ItemStack result = stringToItem(asyncItem);
 
 			// forces Spigot to load the item (e.g. skull texture) and caches it
+			// although this isn't necessary with paper's player profiles, it is for older versions
 			try
 			{
 				Bukkit.createInventory(null, InventoryType.CHEST).addItem(result);
@@ -594,7 +599,15 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			}
 
 			plugin.getServer().getScheduler().runTaskLater(plugin, () -> consumer.accept(result), 1L);
-		});
+		};
+
+		if (executorService != null)
+		{
+			executorService.execute(runnable);
+		} else
+		{
+			plugin.getServer().getScheduler().runTaskAsynchronously(plugin, runnable);
+		}
 
 		return stringToItem(item);
 	}
@@ -719,6 +732,18 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		}
 
 		compat.setUnbreakable(itemMeta, unbreakable, hidden);
+	}
+
+	@Override
+	public void shutdown()
+	{
+		executorService.shutdownNow();
+	}
+
+	@Override
+	public boolean isSkullCached(String playerName)
+	{
+		return compat.isSkullCached(playerName);
 	}
 
 	/**
