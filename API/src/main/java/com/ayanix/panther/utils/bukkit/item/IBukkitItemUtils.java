@@ -110,7 +110,26 @@ public interface IBukkitItemUtils
 	 * @param itemB The second item to compare with.
 	 * @return Whether or not the items are equal.
 	 */
-	boolean areItemsEqual(ItemStack itemA, ItemStack itemB);
+	default boolean areItemsEqual(ItemStack itemA, ItemStack itemB)
+	{
+		return areItemsEqual(itemA, itemB, null, null);
+	}
+
+	/**
+	 * Checks whether or not the items match.
+	 * This only applies to names, types, data and lores.
+	 * <p>
+	 * If the item is a player skull, the owners are compared.
+	 * <p>
+	 * metaA and metaB are passed for performance reasons as fetching an item's ItemMeta may have performance impacts on some Minecraft versions.
+	 *
+	 * @param itemA The first item to check.
+	 * @param itemB The second item to compare with.
+	 * @param metaA The first item's meta, if already fetched. If null, Panther will fetch the meta itself.
+	 * @param metaB The second item's meta, if already fetched. If null, Panther will fetch the meta itself.
+	 * @return Whether or not the items are equal.
+	 */
+	boolean areItemsEqual(ItemStack itemA, ItemStack itemB, ItemMeta metaA, ItemMeta metaB);
 
 	/**
 	 * Get materials which contain the keywords, not case-sensitive.
@@ -145,5 +164,12 @@ public interface IBukkitItemUtils
 	 * @param hidden      If true, HIDE_UNBREAKABLE is also applied to the item meta. If false, nothing will change (it will not remove the flag).
 	 */
 	void setUnbreakable(ItemMeta itemMeta, boolean unbreakable, boolean hidden);
+
+	/**
+	 * Shutdown the executor service.
+ 	 */
+	void shutdown();
+
+	boolean isSkullCached(String playerName);
 
 }

@@ -608,7 +608,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	}
 
 	@Override
-	public boolean areItemsEqual(ItemStack itemA, ItemStack itemB)
+	public boolean areItemsEqual(ItemStack itemA, ItemStack itemB, ItemMeta metaA, ItemMeta metaB)
 	{
 		if (itemA == null ||
 				itemB == null)
@@ -633,8 +633,8 @@ public class BukkitItemUtils implements IBukkitItemUtils
 
 		if (itemA.hasItemMeta() && itemB.hasItemMeta())
 		{
-			ItemMeta metaA = itemA.getItemMeta();
-			ItemMeta metaB = itemB.getItemMeta();
+			if (metaA == null) metaA = itemA.getItemMeta();
+			if (metaB == null) metaB = itemB.getItemMeta();
 
 			if (metaA.hasLore() && !metaB.hasLore() ||
 					!metaA.hasLore() && metaB.hasLore())
