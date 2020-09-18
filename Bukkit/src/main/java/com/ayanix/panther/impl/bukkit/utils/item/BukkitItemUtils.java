@@ -366,6 +366,8 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		boolean hideAttributes    = false;
 		boolean hidePotionEffects = false;
 
+		int customModelData = -1;
+
 		// Leather
 		Color leatherColor = null;
 
@@ -387,6 +389,16 @@ public class BukkitItemUtils implements IBukkitItemUtils
 					String loreString = ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', parts[1]);
 					loreString = loreString.replaceAll("_", " ");
 					lore.add(loreString);
+
+					continue;
+
+				case "custommodeldata":
+					try
+					{
+						customModelData = Integer.parseInt(parts[1]);
+					} catch (Exception ignored)
+					{
+					}
 
 					continue;
 
@@ -534,6 +546,11 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		if (!lore.isEmpty())
 		{
 			itemMeta.setLore(lore);
+		}
+
+		if (customModelData != -1 && BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_14))
+		{
+			itemMeta.setCustomModelData(customModelData);
 		}
 
 		itemStack.setItemMeta(itemMeta);
