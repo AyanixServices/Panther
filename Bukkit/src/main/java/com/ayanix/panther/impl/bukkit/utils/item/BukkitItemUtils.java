@@ -377,7 +377,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		{
 			String[] parts = itemWordList.get(x).split(":", 2);
 
-			switch (parts[0])
+			switch (parts[0].toLowerCase())
 			{
 				case "name":
 					name = ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', parts[1]);
