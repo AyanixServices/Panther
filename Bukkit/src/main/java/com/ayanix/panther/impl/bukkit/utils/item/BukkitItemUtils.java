@@ -78,17 +78,6 @@ public class BukkitItemUtils implements IBukkitItemUtils
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
-	 * <p>
-	 * This has no support for glow tags.
-	 */
-	@Deprecated
-	public BukkitItemUtils()
-	{
-		this(null);
-	}
-
-	/**
-	 * Initiate a BukkitItemUtils instance.
 	 *
 	 * @param plugin Plugin.
 	 */
@@ -107,7 +96,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	{
 		this.plugin = plugin;
 
-		if (plugin != null && glowEnchantment == null)
+		if (glowEnchantment == null)
 		{
 			if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
 			{
@@ -124,14 +113,17 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		}
 
 		if (BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
+
+		if (!BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13) || plugin.getDescription().getAPIVersion() == null)
 		{
-			SKULL_ITEM_MATERIAL = Material.valueOf("PLAYER_HEAD");
+			SKULL_ITEM_MATERIAL = Material.valueOf("SKULL_ITEM");
 		} else
 		{
-			SKULL_ITEM_MATERIAL = Material.SKULL_ITEM;
+			SKULL_ITEM_MATERIAL = Material.valueOf("PLAYER_HEAD");
 		}
 
-		switch (BukkitVersion.getVersion()) {
+		switch (BukkitVersion.getVersion())
+		{
 			case v1_8:
 				compat = new v1_8_BukkitItemUtilsCompat();
 				break;
