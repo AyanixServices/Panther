@@ -57,22 +57,26 @@ class BukkitPlaceholderAPIHook
 			@Override
 			public String onPlaceholderRequest(Player player, String s)
 			{
-				for (BukkitPlaceholder placeholder : utils.getPlaceholders())
+				BukkitPlaceholder placeholder = utils.getPlaceholders().get(s.toLowerCase());
+
+				if (placeholder == null)
 				{
-					if (!placeholder.isRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI))
+					return null;
+				}
+
+				if (!placeholder.isRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI))
+				{
+					return null;
+				}
+
+				if (placeholder.getName().equalsIgnoreCase(s) && placeholder.isRegistered(IBukkitPlaceholder.PlaceholderType.PLACEHOLDERAPI))
+				{
+					if (placeholder.isPlayerOnly() && player == null)
 					{
-						continue;
+						return null;
 					}
 
-					if (placeholder.getName().equalsIgnoreCase(s))
-					{
-						if (placeholder.isPlayerOnly() && player == null)
-						{
-							return null;
-						}
-
-						return placeholder.getRunnable().run(player);
-					}
+					return placeholder.getRunnable().run(player);
 				}
 
 				return null;
@@ -80,7 +84,8 @@ class BukkitPlaceholderAPIHook
 		});
 	}
 
-	protected void unregisterPlaceholderAPI() {
+	protected void unregisterPlaceholderAPI()
+	{
 		PlaceholderAPI.unregisterPlaceholderHook(plugin);
 	}
 

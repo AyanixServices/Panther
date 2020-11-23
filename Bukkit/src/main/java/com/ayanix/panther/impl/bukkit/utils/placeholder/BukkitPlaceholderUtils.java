@@ -31,11 +31,12 @@ package com.ayanix.panther.impl.bukkit.utils.placeholder;
 import com.ayanix.panther.impl.bukkit.utils.BukkitDependencyChecks;
 import com.ayanix.panther.utils.DependencyChecks;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholder;
-import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderUtils;
 import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderRunnable;
+import com.ayanix.panther.utils.bukkit.placeholder.IBukkitPlaceholderUtils;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -52,7 +53,7 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	public BukkitPlaceholderUtils(JavaPlugin plugin)
 	{
 		this.plugin = plugin;
-		this.placeholders = new HashMap<>();
+		this.placeholders = new ConcurrentHashMap<>();
 
 		this.placeholderAPIHook = null;
 	}
@@ -102,6 +103,8 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 
 	public BukkitPlaceholder registerPlaceholder(JavaPlugin plugin, String placeholder, IBukkitPlaceholderRunnable runnable, boolean silent)
 	{
+		placeholder = placeholder.toLowerCase();
+
 		BukkitPlaceholder bukkitPlaceholder = new BukkitPlaceholder(placeholder, runnable);
 		DependencyChecks  dependencyChecks  = new BukkitDependencyChecks(plugin);
 
@@ -118,7 +121,8 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 
 			if (!silent)
 			{
-				plugin.getLogger().info(() -> "Registered PlaceholderAPI placeholder: %" + plugin.getName().toLowerCase() + "_" + placeholder + "%");
+				String finalPlaceholder = placeholder;
+				plugin.getLogger().info(() -> "Registered PlaceholderAPI placeholder: %" + plugin.getName().toLowerCase() + "_" + finalPlaceholder + "%");
 			}
 		}
 
@@ -156,7 +160,7 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	{
 		placeholders.values().forEach(IBukkitPlaceholder::unregister);
 
-		if(placeholderAPIHook != null)
+		if (placeholderAPIHook != null)
 		{
 			placeholderAPIHook.unregisterPlaceholderAPI();
 			placeholderAPIHook = null;
@@ -176,9 +180,9 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 		return registerPlaceholder(plugin, placeholder, runnable, silent);
 	}
 
-	protected List<BukkitPlaceholder> getPlaceholders()
+	protected Map<String, BukkitPlaceholder> getPlaceholders()
 	{
-		return new ArrayList<>(placeholders.values());
+		return placeholders;
 	}
 
 }
