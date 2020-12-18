@@ -246,7 +246,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 
 				for (String message : lore)
 				{
-					itemString.append(" lore:").append(message);
+					itemString.append(" lore:").append(message.replace(" ", "_"));
 				}
 			} catch (NullPointerException ignored)
 			{
