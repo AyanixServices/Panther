@@ -79,6 +79,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	private        Map<String, ItemStack> cache           = new ConcurrentHashMap<>();
 	private        BukkitItemUtilsCompat  compat;
 	private        ExecutorService        executorService;
+	private        boolean                includeResetChars;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -90,6 +91,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		this(plugin, new RandomUtils().getInteger(70, 200));
 	}
 
+
 	/**
 	 * Initiate a BukkitItemUtils instance.
 	 *
@@ -98,7 +100,20 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	 */
 	public BukkitItemUtils(JavaPlugin plugin, int glowId)
 	{
+		this(plugin, glowId, true);
+	}
+
+	/**
+	 * Initiate a BukkitItemUtils instance.
+	 *
+	 * @param plugin Plugin.
+	 * @param glowId ID to use as glow, must be unique per plugin.
+	 * @param includeResetChars Whether or not reset chars be appended to the start of lores and names automatically.
+	 */
+	public BukkitItemUtils(JavaPlugin plugin, int glowId, boolean includeResetChars)
+	{
 		this.plugin = plugin;
+		this.includeResetChars = includeResetChars;
 
 		if (glowEnchantment == null)
 		{
@@ -380,13 +395,13 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			switch (parts[0].toLowerCase())
 			{
 				case "name":
-					name = ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', parts[1]);
+					name = (includeResetChars ? ChatColor.RESET : "") + ChatColor.translateAlternateColorCodes('&', parts[1]);
 					name = name.replaceAll("_", " ");
 
 					continue;
 
 				case "lore":
-					String loreString = ChatColor.RESET + ChatColor.translateAlternateColorCodes('&', parts[1]);
+					String loreString = (includeResetChars ? ChatColor.RESET : "") + ChatColor.translateAlternateColorCodes('&', parts[1]);
 					loreString = loreString.replaceAll("_", " ");
 					lore.add(loreString);
 
