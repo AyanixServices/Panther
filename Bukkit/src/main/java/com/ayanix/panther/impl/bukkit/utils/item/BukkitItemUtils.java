@@ -603,7 +603,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 
 		itemStack.addUnsafeEnchantments(enchantments);
 
-		cache.put(item, itemStack);
+		cache.put(item, itemStack.clone());
 
 		return itemStack;
 	}
