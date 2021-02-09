@@ -39,6 +39,8 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -48,6 +50,8 @@ import java.util.logging.Level;
 public abstract class BukkitPantherCommand extends Command implements PantherCommand, CommandExecutor
 {
 
+	private Map<String, Method> subCommands = new LinkedHashMap<>();
+
 	/**
 	 * Initiate a Panther command.
 	 *
@@ -56,6 +60,47 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 	public BukkitPantherCommand(final String name)
 	{
 		super(name);
+
+		orderSubcommands();
+	}
+
+	private void orderSubcommands()
+	{
+		if (getClazz() == null)
+		{
+			return;
+		}
+
+		Map<String, Method> subCommands = new LinkedHashMap<>();
+
+		for (Method method : getClazz().getDeclaredMethods())
+		{
+			if (!method.isAnnotationPresent(PantherSubCommand.class))
+			{
+				continue;
+			}
+
+			PantherSubCommand subCommand = method.getAnnotation(PantherSubCommand.class);
+
+			for (String alias : subCommand.aliases())
+			{
+				subCommands.put(alias, method);
+			}
+		}
+
+		subCommands.entrySet().stream().sorted((o1, o2) -> {
+			if (!o1.getKey().contains(" ") && o2.getKey().contains(" "))
+			{
+				return 1;
+			} else if (o1.getKey().contains(" ") && !o2.getKey().contains(" "))
+			{
+				return -1;
+			}
+
+			return Integer.compare(o2.getKey().split(" ").length, o1.getKey().split(" ").length);
+		}).forEach(entry -> {
+			this.subCommands.put(entry.getKey(), entry.getValue());
+		});
 	}
 
 	@Override
@@ -90,18 +135,41 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 
 		if (args.length != 0)
 		{
-			for (Method method : getClazz().getDeclaredMethods())
+			outer:
+			for (Map.Entry<String, Method> entry : subCommands.entrySet())
 			{
-				if (!method.isAnnotationPresent(PantherSubCommand.class))
-				{
-					continue;
-				}
+				String alias  = entry.getKey();
+				Method method = entry.getValue();
 
 				PantherSubCommand subCommand = method.getAnnotation(PantherSubCommand.class);
 
+				int argsFrom = 1;
+
 				String name = "";
 
-				for (String alias : subCommand.aliases())
+				if (alias.contains(" "))
+				{
+					String[] parts = alias.split(" ");
+
+					boolean completeMatch = false;
+
+					for (int x = 0; x < parts.length; x++)
+					{
+						if (!parts[x].equalsIgnoreCase(args[x]))
+						{
+							continue outer;
+						}
+
+						completeMatch = true;
+					}
+
+					if (completeMatch)
+					{
+						name = alias;
+
+						argsFrom = parts.length;
+					}
+				} else
 				{
 					if (alias.equalsIgnoreCase(args[0]))
 					{
@@ -127,7 +195,7 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 					return true;
 				}
 
-				String[] newArgs = Arrays.copyOfRange(args, 1, args.length);
+				String[] newArgs = Arrays.copyOfRange(args, argsFrom, args.length);
 
 				if (newArgs.length < subCommand.minArgs())
 				{
