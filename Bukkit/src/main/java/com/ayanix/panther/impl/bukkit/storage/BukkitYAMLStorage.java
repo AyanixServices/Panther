@@ -78,32 +78,7 @@ public class BukkitYAMLStorage implements YAMLStorage
 		this.plugin = plugin;
 		this.name = this.file.getName().replaceFirst("[.][^.]+$", "");
 
-		if (!this.file.exists())
-		{
-			if (!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs())
-			{
-				plugin.getLogger().severe("Unable to create parent file: " + this.file.getParentFile().getName());
-			}
-
-			try
-			{
-				if (!this.file.createNewFile())
-				{
-					throw new IOException();
-				}
-			} catch (IOException e)
-			{
-				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + this.file.getName(), e);
-			}
-		}
-
-		try
-		{
-			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
-		} catch (IOException e)
-		{
-			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + this.file.getName(), e);
-		}
+		reload();
 	}
 
 	@Override
@@ -156,6 +131,37 @@ public class BukkitYAMLStorage implements YAMLStorage
 		} catch (IOException e)
 		{
 			plugin.getLogger().severe("Unable to save to file: " + name + ".yml");
+		}
+	}
+
+	@Override
+	public void reload()
+	{
+		if (!this.file.exists())
+		{
+			if (!this.file.getParentFile().exists() && !this.file.getParentFile().mkdirs())
+			{
+				plugin.getLogger().severe("Unable to create parent file: " + this.file.getParentFile().getName());
+			}
+
+			try
+			{
+				if (!this.file.createNewFile())
+				{
+					throw new IOException();
+				}
+			} catch (IOException e)
+			{
+				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + this.file.getName(), e);
+			}
+		}
+
+		try
+		{
+			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(this.file);
+		} catch (IOException e)
+		{
+			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + this.file.getName(), e);
 		}
 	}
 

@@ -45,6 +45,11 @@ public interface YAMLStorage
 	void save();
 
 	/**
+	 * Discard any unsaved changes and load file.
+	 */
+	void reload();
+
+	/**
 	 * Get the corresponding file.
 	 *
 	 * @return The file the storage is saved and loaded from.

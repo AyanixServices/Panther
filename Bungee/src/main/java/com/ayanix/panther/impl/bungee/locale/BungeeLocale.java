@@ -56,8 +56,6 @@ public class BungeeLocale extends BungeeYAMLStorage implements Locale
 	public BungeeLocale(Plugin plugin, String name)
 	{
 		super(plugin, name);
-
-		this.messages = new ArrayList<>();
 	}
 
 	@Override
@@ -132,6 +130,22 @@ public class BungeeLocale extends BungeeYAMLStorage implements Locale
 		}
 
 		return new BungeeMessage(key, Collections.singletonList(key));
+	}
+
+	@Override
+	public void reload()
+	{
+		super.reload();
+
+		if (this.messages != null)
+		{
+			this.messages.clear();
+		} else
+		{
+			this.messages = new ArrayList<>();
+		}
+
+		load();
 	}
 
 	@Override

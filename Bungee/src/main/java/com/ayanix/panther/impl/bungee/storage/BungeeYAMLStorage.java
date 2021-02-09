@@ -47,6 +47,7 @@ public class BungeeYAMLStorage implements YAMLStorage
 {
 
 	private String        name;
+	private String        fullName;
 	private File          file;
 	private Configuration configuration;
 	private Plugin        plugin;
@@ -71,36 +72,11 @@ public class BungeeYAMLStorage implements YAMLStorage
 
 		this.plugin = plugin;
 		this.name = name;
-		String fullName = name + ".yml";
+		this.fullName = name + ".yml";
 
 		this.file = new File(plugin.getDataFolder(), fullName);
 
-		if (!file.exists())
-		{
-			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
-			{
-				plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
-			}
-
-			try
-			{
-				if (!file.createNewFile())
-				{
-					throw new IOException();
-				}
-			} catch (IOException e)
-			{
-				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + fullName, e);
-			}
-		}
-
-		try
-		{
-			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-		} catch (IOException e)
-		{
-			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + fullName, e);
-		}
+		reload();
 	}
 
 	@Override
@@ -153,6 +129,37 @@ public class BungeeYAMLStorage implements YAMLStorage
 		} catch (IOException e)
 		{
 			plugin.getLogger().severe("Unable to save to file: " + name + ".yml");
+		}
+	}
+
+	@Override
+	public void reload()
+	{
+		if (!file.exists())
+		{
+			if (!file.getParentFile().exists() && !file.getParentFile().mkdirs())
+			{
+				plugin.getLogger().severe("Unable to create parent file: " + file.getParentFile().getName());
+			}
+
+			try
+			{
+				if (!file.createNewFile())
+				{
+					throw new IOException();
+				}
+			} catch (IOException e)
+			{
+				plugin.getLogger().log(Level.SEVERE, "Unable to create file: " + fullName, e);
+			}
+		}
+
+		try
+		{
+			this.configuration = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+		} catch (IOException e)
+		{
+			plugin.getLogger().log(Level.SEVERE, "Unable to load file " + fullName, e);
 		}
 	}
 

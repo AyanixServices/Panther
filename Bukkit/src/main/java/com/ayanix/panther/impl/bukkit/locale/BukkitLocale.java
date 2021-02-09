@@ -45,7 +45,7 @@ import java.util.List;
 public class BukkitLocale extends BukkitYAMLStorage implements Locale
 {
 
-	private final List<BukkitMessage> messages;
+	private List<BukkitMessage> messages;
 
 	/**
 	 * Initiate a Locale instance.
@@ -56,8 +56,6 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 	public BukkitLocale(final Plugin plugin, final String name)
 	{
 		super(plugin, name);
-
-		this.messages = new ArrayList<>();
 	}
 
 	@Override
@@ -113,6 +111,22 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 		}
 
 		messages.add(message);
+	}
+
+	@Override
+	public void reload()
+	{
+		super.reload();
+
+		if (this.messages != null)
+		{
+			this.messages.clear();
+		} else
+		{
+			this.messages = new ArrayList<>();
+		}
+
+		load();
 	}
 
 	@Override
