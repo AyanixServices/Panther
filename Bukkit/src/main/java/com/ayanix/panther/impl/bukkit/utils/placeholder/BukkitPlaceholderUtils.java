@@ -49,6 +49,7 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 	private final  JavaPlugin                     plugin;
 	private final  Map<String, BukkitPlaceholder> placeholders;
 	private        BukkitPlaceholderAPIHook       placeholderAPIHook;
+	private        BukkitMVdWPlaceholderAPIHook   mvdwPlaceholderAPIHook;
 
 	public BukkitPlaceholderUtils(JavaPlugin plugin)
 	{
@@ -128,14 +129,12 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 
 		if (dependencyChecks.isEnabled("MVdWPlaceholderAPI"))
 		{
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(plugin, plugin.getName().toLowerCase() + "_" + placeholder, event -> {
-				if (bukkitPlaceholder.isPlayerOnly() && event.getPlayer() == null)
-				{
-					return null;
-				}
+			if (mvdwPlaceholderAPIHook == null)
+			{
+				handleMVdWPlaceholderAPI();
+			}
 
-				return bukkitPlaceholder.getRunnable().run(event.getPlayer());
-			});
+			mvdwPlaceholderAPIHook.registerPlaceholder(plugin, placeholder, bukkitPlaceholder, silent);
 
 			bukkitPlaceholder.setRegistered(IBukkitPlaceholder.PlaceholderType.MVDW_PLACEHOLDER_API, true);
 		}
@@ -153,6 +152,16 @@ public class BukkitPlaceholderUtils implements IBukkitPlaceholderUtils
 		// This was moved to its own class to remove NoClass errors.
 		placeholderAPIHook = new BukkitPlaceholderAPIHook(plugin, this);
 		placeholderAPIHook.handlePlaceholderAPI();
+	}
+
+	private void handleMVdWPlaceholderAPI()
+	{
+		if (!new BukkitDependencyChecks(plugin).isEnabled("MVdWPlaceholderAPI"))
+		{
+			return;
+		}
+
+		mvdwPlaceholderAPIHook = new BukkitMVdWPlaceholderAPIHook(plugin, this);
 	}
 
 	@Override
