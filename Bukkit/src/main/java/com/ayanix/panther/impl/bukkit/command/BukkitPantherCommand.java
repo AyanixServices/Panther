@@ -155,7 +155,7 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 
 					for (int x = 0; x < parts.length; x++)
 					{
-						if (!parts[x].equalsIgnoreCase(args[x]))
+						if (args.length < parts.length || !parts[x].equalsIgnoreCase(args[x]))
 						{
 							continue outer;
 						}
@@ -209,6 +209,7 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 				try
 				{
 					method.invoke(this, commandSender, newArgs);
+					break;
 				} catch (IllegalAccessException | InvocationTargetException e)
 				{
 					Bukkit.getLogger().log(Level.SEVERE, "Exception thrown executing command", e);
