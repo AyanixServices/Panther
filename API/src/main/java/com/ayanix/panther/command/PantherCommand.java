@@ -63,8 +63,11 @@ public interface PantherCommand
 	boolean isPlayerOnly();
 
 	/**
+	 * Deprecated as we no longer use getClazz().
+	 *
 	 * @return Identifying class of command.
 	 */
+	@Deprecated
 	Class<?> getClazz();
 
 	/**

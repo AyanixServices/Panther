@@ -54,7 +54,7 @@ public abstract class BungeePantherCommand extends Command implements PantherCom
 
 		if (args.length != 0)
 		{
-			for (Method method : getClazz().getDeclaredMethods())
+			for (Method method : getClass().getDeclaredMethods())
 			{
 				if (!method.isAnnotationPresent(PantherSubCommand.class))
 				{

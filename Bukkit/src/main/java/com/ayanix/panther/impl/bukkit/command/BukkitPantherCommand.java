@@ -66,14 +66,9 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 
 	private void orderSubcommands()
 	{
-		if (getClazz() == null)
-		{
-			return;
-		}
-
 		Map<String, Method> subCommands = new LinkedHashMap<>();
 
-		for (Method method : getClazz().getDeclaredMethods())
+		for (Method method : getClass().getDeclaredMethods())
 		{
 			if (!method.isAnnotationPresent(PantherSubCommand.class))
 			{
