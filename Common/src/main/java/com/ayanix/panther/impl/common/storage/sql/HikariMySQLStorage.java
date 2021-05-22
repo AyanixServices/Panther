@@ -56,7 +56,8 @@ public class HikariMySQLStorage implements SQLStorage
 	                   String database,
 	                   String table,
 	                   Quirks quirks,
-	                   ThreadFactory factory)
+	                   ThreadFactory factory,
+	                   int maxPoolSize)
 	{
 		if (host == null ||
 				username == null ||
@@ -81,6 +82,7 @@ public class HikariMySQLStorage implements SQLStorage
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");
 		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+		config.setMaximumPoolSize(maxPoolSize);
 
 		if (factory != null)
 		{
@@ -140,6 +142,7 @@ public class HikariMySQLStorage implements SQLStorage
 		private String        table;
 		private Quirks        quirks;
 		private ThreadFactory factory;
+		private int           maxPoolSize;
 
 		public HikariSQLStorageBuilder()
 		{
@@ -151,6 +154,7 @@ public class HikariMySQLStorage implements SQLStorage
 			this.table = "minecraft";
 			this.quirks = null;
 			this.factory = null;
+			this.maxPoolSize = 10;
 		}
 
 		public HikariSQLStorageBuilder host(String host)
@@ -209,6 +213,13 @@ public class HikariMySQLStorage implements SQLStorage
 			return this;
 		}
 
+		public HikariSQLStorageBuilder maxPoolSize(int maxPoolSize)
+		{
+			this.maxPoolSize = maxPoolSize;
+
+			return this;
+		}
+
 		public HikariMySQLStorage build()
 		{
 			if (password == null)
@@ -216,7 +227,7 @@ public class HikariMySQLStorage implements SQLStorage
 				throw new IllegalArgumentException("Password is not defined");
 			}
 
-			return new HikariMySQLStorage(host, port, username, password, database, table, quirks, factory);
+			return new HikariMySQLStorage(host, port, username, password, database, table, quirks, factory, maxPoolSize);
 		}
 
 	}
