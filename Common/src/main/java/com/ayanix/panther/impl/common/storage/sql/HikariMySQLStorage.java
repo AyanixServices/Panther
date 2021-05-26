@@ -36,6 +36,8 @@ import org.sql2o.quirks.Quirks;
 import org.sql2o.quirks.QuirksDetector;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadFactory;
 
 /**
@@ -57,7 +59,8 @@ public class HikariMySQLStorage implements SQLStorage
 	                   String table,
 	                   Quirks quirks,
 	                   ThreadFactory factory,
-	                   int maxPoolSize)
+	                   int maxPoolSize,
+	                   Map<String, String> dataSourcesProperties)
 	{
 		if (host == null ||
 				username == null ||
@@ -82,6 +85,12 @@ public class HikariMySQLStorage implements SQLStorage
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");
 		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+		for(String propertyName : dataSourcesProperties.keySet())
+		{
+			config.addDataSourceProperty(propertyName, dataSourcesProperties.get(propertyName));
+		}
+
 		config.setMaximumPoolSize(maxPoolSize);
 
 		if (factory != null)
@@ -134,15 +143,16 @@ public class HikariMySQLStorage implements SQLStorage
 	public static class HikariSQLStorageBuilder
 	{
 
-		private String        host;
-		private int           port;
-		private String        username;
-		private String        password;
-		private String        database;
-		private String        table;
-		private Quirks        quirks;
-		private ThreadFactory factory;
-		private int           maxPoolSize;
+		private String              host;
+		private int                 port;
+		private String              username;
+		private String              password;
+		private String              database;
+		private String              table;
+		private Quirks              quirks;
+		private ThreadFactory       factory;
+		private int                 maxPoolSize;
+		private Map<String, String> dataSourceProperties;
 
 		public HikariSQLStorageBuilder()
 		{
@@ -155,6 +165,7 @@ public class HikariMySQLStorage implements SQLStorage
 			this.quirks = null;
 			this.factory = null;
 			this.maxPoolSize = 10;
+			this.dataSourceProperties = new HashMap<>();
 		}
 
 		public HikariSQLStorageBuilder host(String host)
@@ -220,6 +231,13 @@ public class HikariMySQLStorage implements SQLStorage
 			return this;
 		}
 
+		public HikariSQLStorageBuilder addDataSourceProperty(String property, String value)
+		{
+			this.dataSourceProperties.put(property, value);
+
+			return this;
+		}
+
 		public HikariMySQLStorage build()
 		{
 			if (password == null)
@@ -227,7 +245,7 @@ public class HikariMySQLStorage implements SQLStorage
 				throw new IllegalArgumentException("Password is not defined");
 			}
 
-			return new HikariMySQLStorage(host, port, username, password, database, table, quirks, factory, maxPoolSize);
+			return new HikariMySQLStorage(host, port, username, password, database, table, quirks, factory, maxPoolSize, dataSourceProperties);
 		}
 
 	}
