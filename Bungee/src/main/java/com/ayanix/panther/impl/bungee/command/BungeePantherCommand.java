@@ -29,6 +29,17 @@ public abstract class BungeePantherCommand extends Command implements PantherCom
 		super(name);
 	}
 
+	/**
+	 * Deprecated as we no longer use getClazz().
+	 * This has been moved to BungeePantherCommand to stop older plugins from breaking when compiling.
+	 *
+	 * @return Identifying class of command.
+	 */
+	@Deprecated
+	public Class<?> getClazz() {
+		return getClass();
+	}
+
 	@Override
 	public void execute(CommandSender commandSender, String[] args)
 	{

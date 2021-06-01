@@ -64,6 +64,17 @@ public abstract class BukkitPantherCommand extends Command implements PantherCom
 		orderSubcommands();
 	}
 
+	/**
+	 * Deprecated as we no longer use getClazz().
+	 * This has been moved to BukkitPantherCommand to stop older plugins from breaking when compiling.
+	 *
+	 * @return Identifying class of command.
+	 */
+	@Deprecated
+	public Class<?> getClazz() {
+		return getClass();
+	}
+
 	private void orderSubcommands()
 	{
 		Map<String, Method> subCommands = new LinkedHashMap<>();
