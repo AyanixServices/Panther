@@ -421,7 +421,8 @@ public class BukkitItemUtils implements IBukkitItemUtils
 				case "effect":
 					for (PotionEffectType pType : PotionEffectType.values())
 					{
-						if (pType.getName().equalsIgnoreCase(parts[1]))
+						// 1.8 will contain null pTypes
+						if (pType != null && pType.getName().equalsIgnoreCase(parts[1]))
 						{
 							type = pType;
 							break;
