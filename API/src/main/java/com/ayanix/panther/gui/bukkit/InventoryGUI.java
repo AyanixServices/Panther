@@ -32,6 +32,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -117,5 +118,33 @@ public interface InventoryGUI
 	 * @return An optional containing the GUIItem in the slot, or an empty optional.
 	 */
 	Optional<GUIItem> getItem(int slot);
+
+	/**
+	 * Fetch the ItemStack in the specified slot.
+	 *
+	 * @param slot The slot containing the ItemStack (starting from 0)
+	 * @return An optional containing the ItemStack in the slot, or an empty optional if null or air.
+	 */
+	Optional<ItemStack> getItemStack(int slot);
+
+	/**
+	 * Set a slot as draggable to put an item in.
+	 *
+	 * @param slot The slot, starting from 0.
+	 */
+	void setDraggable(int slot);
+
+	/**
+	 * Set a slot as draggable to put an item in.
+	 *
+	 * @param slot The slot, starting from 0.
+	 * @param onDrag The event to fire when an item is placed in this slot.
+	 */
+	void setDraggable(int slot, GUIDragEvent onDrag);
+
+	/**
+	 * @return Whether or not the slot is marked as drraggale.
+	 */
+	boolean isDraggable(int slot);
 
 }

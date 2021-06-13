@@ -28,6 +28,7 @@
  */
 package com.ayanix.panther.impl.bukkit.gui;
 
+import com.ayanix.panther.gui.bukkit.GUIDragEvent;
 import com.ayanix.panther.gui.bukkit.GUIItem;
 import com.ayanix.panther.gui.bukkit.InventoryGUI;
 import org.bukkit.Bukkit;
@@ -37,7 +38,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -46,6 +47,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -55,14 +57,15 @@ import java.util.Optional;
 public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 {
 
-	protected HashMap<Integer, GUIItem> items;
-	protected Plugin                    plugin;
-	protected Player                    player;
-	private   Inventory                 inventory;
-	private   String                    name;
-	private   int                       slots;
-	private   boolean                   closed;
-	private   int                       taskId;
+	protected HashMap<Integer, GUIItem>  items;
+	protected Plugin                     plugin;
+	protected Player                     player;
+	private   Inventory                  inventory;
+	private   String                     name;
+	private   int                        slots;
+	private   boolean                    closed;
+	private   int                        taskId;
+	private   Map<Integer, GUIDragEvent> draggable;
 
 	/**
 	 * Initiate a ChestGUI instance.
@@ -85,6 +88,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		this.player = player;
 
 		this.items = new HashMap<>();
+		this.draggable = new HashMap<>();
 
 		this.closed = true;
 
@@ -129,14 +133,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			insert(slot, new ItemStack(Material.AIR));
 		}
 
-		insert(slot, new BukkitGUIItem(item)
-		{
-			@Override
-			public void run(Player player, ClickType type)
-			{
-				// Do nothing
-			}
-		});
+		insert(slot, new FillerGUIItem(item));
 	}
 
 	@Override
@@ -178,6 +175,12 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	public void refresh(int slot)
 	{
 		getItem(slot).ifPresent(item -> {
+			if (draggable.containsKey(slot))
+			{
+				// don't re-set draggable items incase of dupes
+				return;
+			}
+
 			inventory.setItem(slot, item.getItemStack());
 		});
 	}
@@ -186,6 +189,12 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	public Optional<GUIItem> getItem(int slot)
 	{
 		return Optional.ofNullable(items.get(slot));
+	}
+
+	@Override
+	public Optional<ItemStack> getItemStack(int slot)
+	{
+		return Optional.ofNullable(inventory.getItem(slot) != null && inventory.getItem(slot).getType() != Material.AIR ? inventory.getItem(slot) : null);
 	}
 
 	@Override
@@ -255,18 +264,62 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 
 		if (event.getWhoClicked().getName().equals(player.getName()))
 		{
-			if (unformattedViewName.equalsIgnoreCase(unformattedName) &&
+			boolean cancel = draggable.isEmpty();
+
+			if (event.getAction() == InventoryAction.HOTBAR_SWAP)
+			{
+				cancel = true;
+			} else if (unformattedViewName.equalsIgnoreCase(unformattedName) &&
 					event.getView().getTopInventory().equals(event.getClickedInventory()))
 			{
 				int slot = event.getSlot();
 
-				if (items.containsKey(slot))
+				if (items.containsKey(slot) && !(items.get(slot) instanceof FillerGUIItem))
 				{
 					items.get(slot).run(player, event.getClick());
+
+					cancel = true;
+				} else if (draggable.containsKey(slot))
+				{
+					GUIDragEvent guiDragEvent = draggable.get(slot);
+
+					boolean cursorExists      = event.getCursor() != null && event.getCursor().getType() != Material.AIR;
+					boolean currentItemExists = event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR;
+
+					if (cursorExists && currentItemExists && event.getCurrentItem().isSimilar(event.getCursor()))
+					{
+						ItemStack result = event.getCursor().clone();
+						result.setAmount(Math.max(result.getMaxStackSize(), event.getCursor().getAmount() + event.getCurrentItem().getAmount()));
+
+						cancel = !guiDragEvent.onUpdate(player, result);
+					} else
+					{
+						if (cursorExists)
+						{
+							cancel = !guiDragEvent.onInsert(player, event.getCursor());
+						}
+
+						if (currentItemExists)
+						{
+							cancel = !guiDragEvent.onRemove(player, event.getCurrentItem());
+						}
+					}
+				} else
+				{
+					cancel = true;
+				}
+			} else
+			{
+				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY)
+				{
+					cancel = true;
 				}
 			}
 
-			event.setCancelled(true);
+			if (cancel)
+			{
+				event.setCancelled(true);
+			}
 
 			Bukkit.getScheduler().runTaskLater(plugin, () -> player.updateInventory(), 1L);
 		}
@@ -312,6 +365,46 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	public boolean isClosed()
 	{
 		return closed;
+	}
+
+	@Override
+	public void setDraggable(int slot)
+	{
+		setDraggable(slot, new BukkitGUIDragEvent()
+		{
+			@Override
+			public boolean onInsert(Player player, ItemStack itemStack)
+			{
+				/* do nothing */
+				return true;
+			}
+
+			@Override
+			public boolean onRemove(Player player, ItemStack itemStack)
+			{
+				/* do nothing */
+				return true;
+			}
+
+			@Override
+			public boolean onUpdate(Player player, ItemStack itemStack)
+			{
+				/* do nothing */
+				return true;
+			}
+		});
+	}
+
+	@Override
+	public void setDraggable(int slot, GUIDragEvent onDrag)
+	{
+		draggable.put(slot, onDrag);
+	}
+
+	@Override
+	public boolean isDraggable(int slot)
+	{
+		return draggable.containsKey(slot);
 	}
 
 }
