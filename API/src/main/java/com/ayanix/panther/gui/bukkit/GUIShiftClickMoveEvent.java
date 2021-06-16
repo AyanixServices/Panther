@@ -26,17 +26,26 @@
  *             `  '.
  *             `.___;
  */
-package com.ayanix.panther.impl.bukkit.gui;
+package com.ayanix.panther.gui.bukkit;
 
-import com.ayanix.panther.gui.bukkit.GUIDragEvent;
-import com.ayanix.panther.gui.bukkit.GUIItem;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Panther - Developed by Lewes D. B.
  * All rights reserved 2017.
  */
-public abstract class BukkitGUIDragEvent implements GUIDragEvent
+public interface GUIShiftClickMoveEvent
 {
+
+	/**
+	 * Method ran when item is shift clicked in the player's inventory.
+	 *
+	 * @param player    Player who clicked the item.
+	 * @param itemStack The item the player shift clicked on.
+	 * @param slot      The slot in the player's inventory.
+	 * @return If movement should be allowed to go ahead.
+	 */
+	boolean onClick(Player player, ItemStack itemStack, int slot);
 
 }

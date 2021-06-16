@@ -32,7 +32,6 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -137,7 +136,7 @@ public interface InventoryGUI
 	/**
 	 * Set a slot as draggable to put an item in.
 	 *
-	 * @param slot The slot, starting from 0.
+	 * @param slot   The slot, starting from 0.
 	 * @param onDrag The event to fire when an item is placed in this slot.
 	 */
 	void setDraggable(int slot, GUIDragEvent onDrag);
@@ -146,5 +145,12 @@ public interface InventoryGUI
 	 * @return Whether or not the slot is marked as drraggale.
 	 */
 	boolean isDraggable(int slot);
+
+	/**
+	 * Sets event to return when player shift-clicks from their own inventory.
+	 *
+	 * @param event The event to run.
+	 */
+	void setOnShiftClick(GUIShiftClickMoveEvent event);
 
 }

@@ -30,6 +30,7 @@ package com.ayanix.panther.impl.bukkit.gui;
 
 import com.ayanix.panther.gui.bukkit.GUIDragEvent;
 import com.ayanix.panther.gui.bukkit.GUIItem;
+import com.ayanix.panther.gui.bukkit.GUIShiftClickMoveEvent;
 import com.ayanix.panther.gui.bukkit.InventoryGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -66,6 +67,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	private   boolean                    closed;
 	private   int                        taskId;
 	private   Map<Integer, GUIDragEvent> draggable;
+	protected GUIShiftClickMoveEvent     guiShiftClickMoveEvent;
 
 	/**
 	 * Initiate a ChestGUI instance.
@@ -281,27 +283,66 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 					cancel = true;
 				} else if (draggable.containsKey(slot))
 				{
-					GUIDragEvent guiDragEvent = draggable.get(slot);
-
-					boolean cursorExists      = event.getCursor() != null && event.getCursor().getType() != Material.AIR;
-					boolean currentItemExists = event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR;
-
-					if (cursorExists && currentItemExists && event.getCurrentItem().isSimilar(event.getCursor()))
+					if (event.getClick().isShiftClick())
 					{
-						ItemStack result = event.getCursor().clone();
-						result.setAmount(Math.max(result.getMaxStackSize(), event.getCursor().getAmount() + event.getCurrentItem().getAmount()));
-
-						cancel = !guiDragEvent.onUpdate(player, result);
+						cancel = true;
 					} else
 					{
-						if (cursorExists)
-						{
-							cancel = !guiDragEvent.onInsert(player, event.getCursor());
-						}
+						GUIDragEvent guiDragEvent = draggable.get(slot);
 
-						if (currentItemExists)
+						boolean cursorExists      = event.getCursor() != null && event.getCursor().getType() != Material.AIR;
+						boolean currentItemExists = event.getCurrentItem() != null && event.getCurrentItem().getType() != Material.AIR;
+
+						if (cursorExists && currentItemExists && event.getCurrentItem().isSimilar(event.getCursor()))
 						{
-							cancel = !guiDragEvent.onRemove(player, event.getCurrentItem());
+							ItemStack result = event.getCursor().clone();
+
+							if(event.getCurrentItem().getAmount() == event.getCurrentItem().getMaxStackSize()) {
+								cancel = true;
+							} else
+							{
+								if (event.getClick().isLeftClick())
+								{
+									result.setAmount(Math.max(result.getMaxStackSize(), event.getCursor().getAmount() + event.getCurrentItem().getAmount()));
+								} else if (event.getClick().isRightClick())
+								{
+									result.setAmount(Math.max(result.getMaxStackSize(), event.getCurrentItem().getAmount() + 1));
+								}
+
+								cancel = !guiDragEvent.onUpdate(player, result);
+							}
+						} else if (event.getClick().isLeftClick())
+						{
+							if (cursorExists)
+							{
+								cancel = !guiDragEvent.onInsert(player, event.getCursor());
+							}
+
+							if (currentItemExists)
+							{
+								cancel = !guiDragEvent.onRemove(player, event.getCurrentItem());
+							}
+						} else if(event.getClick().isRightClick()) {
+							if (cursorExists)
+							{
+								cancel = !guiDragEvent.onInsert(player, event.getCursor());
+							}
+
+							if (currentItemExists)
+							{
+								if (event.getCurrentItem().getAmount() > 1)
+								{
+									ItemStack result = event.getCurrentItem().clone();
+									result.setAmount(result.getAmount() / 2);
+
+									cancel = !guiDragEvent.onUpdate(player, result);
+								} else
+								{
+									cancel = !guiDragEvent.onRemove(player, event.getCurrentItem());
+								}
+							}
+						} else {
+							cancel = true;
 						}
 					}
 				} else
@@ -312,7 +353,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 			{
 				if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY)
 				{
-					cancel = true;
+					cancel = guiShiftClickMoveEvent == null || !guiShiftClickMoveEvent.onClick(player, event.getCurrentItem(), event.getSlot());
 				}
 			}
 
@@ -370,7 +411,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	@Override
 	public void setDraggable(int slot)
 	{
-		setDraggable(slot, new BukkitGUIDragEvent()
+		setDraggable(slot, new GUIDragEvent()
 		{
 			@Override
 			public boolean onInsert(Player player, ItemStack itemStack)
@@ -405,6 +446,12 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	public boolean isDraggable(int slot)
 	{
 		return draggable.containsKey(slot);
+	}
+
+	@Override
+	public void setOnShiftClick(GUIShiftClickMoveEvent event)
+	{
+		this.guiShiftClickMoveEvent = event;
 	}
 
 }
