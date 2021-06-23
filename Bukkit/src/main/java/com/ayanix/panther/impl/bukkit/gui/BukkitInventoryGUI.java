@@ -255,11 +255,18 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	}
 
 	@EventHandler
-	public void onInventoryDragon(InventoryDragEvent event)
+	public void onInventoryDrag(InventoryDragEvent event)
 	{
-		if (!draggable.isEmpty())
+		if (event.getWhoClicked().getName().equals(player.getName()) && !draggable.isEmpty())
 		{
-			event.setCancelled(true);
+			String unformattedName     = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', name));
+			String unformattedViewName = ChatColor.stripColor(event.getView().getTitle());
+
+			if (unformattedViewName.equalsIgnoreCase(unformattedName) &&
+					event.getView().getTopInventory().equals(event.getInventory()))
+			{
+				event.setCancelled(true);
+			}
 		}
 	}
 
