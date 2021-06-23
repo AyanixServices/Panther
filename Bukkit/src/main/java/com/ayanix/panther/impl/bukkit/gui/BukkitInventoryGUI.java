@@ -42,6 +42,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -254,6 +255,15 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	}
 
 	@EventHandler
+	public void onInventoryDragon(InventoryDragEvent event)
+	{
+		if (!draggable.isEmpty())
+		{
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event)
 	{
 		if (event.getClickedInventory() == null)
@@ -268,7 +278,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 		{
 			boolean cancel = draggable.isEmpty();
 
-			if (event.getAction() == InventoryAction.HOTBAR_SWAP)
+			if (event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.COLLECT_TO_CURSOR)
 			{
 				cancel = true;
 			} else if (unformattedViewName.equalsIgnoreCase(unformattedName) &&
@@ -303,10 +313,10 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 							{
 								if (event.getClick().isLeftClick())
 								{
-									result.setAmount(Math.max(result.getMaxStackSize(), event.getCursor().getAmount() + event.getCurrentItem().getAmount()));
+									result.setAmount(Math.min(result.getMaxStackSize(), event.getCursor().getAmount() + event.getCurrentItem().getAmount()));
 								} else if (event.getClick().isRightClick())
 								{
-									result.setAmount(Math.max(result.getMaxStackSize(), event.getCurrentItem().getAmount() + 1));
+									result.setAmount(Math.min(result.getMaxStackSize(), event.getCurrentItem().getAmount() + 1));
 								}
 
 								cancel = !guiDragEvent.onUpdate(player, result);
@@ -325,7 +335,10 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 						} else if(event.getClick().isRightClick()) {
 							if (cursorExists)
 							{
-								cancel = !guiDragEvent.onInsert(player, event.getCursor());
+								ItemStack result = event.getCursor().clone();
+								result.setAmount(1);
+
+								cancel = !guiDragEvent.onInsert(player, result);
 							}
 
 							if (currentItemExists)
