@@ -155,6 +155,13 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 	}
 
 	@Override
+	public void remove(int slot)
+	{
+		items.remove(slot);
+		inventory.setItem(slot, null);
+	}
+
+	@Override
 	public void clear()
 	{
 		this.items.clear();

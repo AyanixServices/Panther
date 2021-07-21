@@ -81,6 +81,13 @@ public interface InventoryGUI
 	void insert(int slot, ItemStack item);
 
 	/**
+	 * Removes an item from the GUI.
+	 *
+	 * @param slot The corresponding slot, starting from 0.
+	 */
+	void remove(int slot);
+
+	/**
 	 * Remove all items from the GUI.
 	 */
 	void clear();
