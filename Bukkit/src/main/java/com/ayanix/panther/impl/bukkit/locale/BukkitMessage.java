@@ -28,12 +28,13 @@
  */
 package com.ayanix.panther.impl.bukkit.locale;
 
+import com.ayanix.panther.impl.bukkit.utils.BukkitColourUtils;
 import com.ayanix.panther.locale.Message;
 import com.comphenix.packetwrapper.WrapperPlayServerTitle;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -42,6 +43,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Panther - Developed by Lewes D. B.
@@ -118,7 +121,7 @@ public class BukkitMessage implements Message
 
 		for (final String message : values)
 		{
-			newValues.add(ChatColor.translateAlternateColorCodes('&', message));
+			newValues.add(BukkitColourUtils.colourise(message));
 		}
 
 		return newValues;

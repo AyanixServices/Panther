@@ -32,6 +32,7 @@ import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_12_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_13_BukkitGlowEnchantment;
 import com.ayanix.panther.impl.bukkit.enchantment.compat.v1_8_BukkitGlowEnchantment;
+import com.ayanix.panther.impl.bukkit.utils.BukkitColourUtils;
 import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_12_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_13_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_8_BukkitItemUtilsCompat;
@@ -246,8 +247,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			try
 			{
 				String displayName = item.getItemMeta().getDisplayName();
-				displayName = displayName.replace(ChatColor.COLOR_CHAR, '&')
-						.replace(" ", "_");
+				displayName = displayName.replace(ChatColor.COLOR_CHAR, '&').replace(" ", "_");
 				displayName = stripResetFromBeginning(displayName);
 
 				itemString.append(" name:").append(displayName);
@@ -395,13 +395,13 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			switch (parts[0].toLowerCase())
 			{
 				case "name":
-					name = (includeResetChars ? ChatColor.RESET : "") + ChatColor.translateAlternateColorCodes('&', parts[1]);
+					name = (includeResetChars ? ChatColor.RESET : "") + BukkitColourUtils.colourise(parts[1]);
 					name = name.replaceAll("_", " ");
 
 					continue;
 
 				case "lore":
-					String loreString = (includeResetChars ? ChatColor.RESET : "") + ChatColor.translateAlternateColorCodes('&', parts[1]);
+					String loreString = (includeResetChars ? ChatColor.RESET : "") + BukkitColourUtils.colourise(parts[1]);
 					loreString = loreString.replaceAll("_", " ");
 					lore.add(loreString);
 
