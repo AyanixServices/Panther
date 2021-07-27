@@ -342,7 +342,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 								cancel = !guiDragEvent.onInsert(player, event.getCursor());
 							}
 
-							if (currentItemExists)
+							if (currentItemExists && !cancel)
 							{
 								cancel = !guiDragEvent.onRemove(player, event.getCurrentItem());
 							}
@@ -355,7 +355,7 @@ public abstract class BukkitInventoryGUI implements InventoryGUI, Listener
 								cancel = !guiDragEvent.onInsert(player, result);
 							}
 
-							if (currentItemExists)
+							if (currentItemExists && !cancel)
 							{
 								if (event.getCurrentItem().getAmount() > 1)
 								{
