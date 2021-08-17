@@ -32,6 +32,8 @@ import com.ayanix.panther.utils.DependencyChecks;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -104,6 +106,120 @@ public class BungeeDependencyChecks implements DependencyChecks
 	public boolean isEnabled(final String plugin)
 	{
 		return ProxyServer.getInstance().getPluginManager().getPlugin(plugin) != null;
+	}
+
+	public boolean isVersionAtLeast(final String plugin, final String version)
+	{
+		final Plugin dependency = ProxyServer.getInstance().getPluginManager().getPlugin(plugin);
+
+		if (dependency == null)
+			return false;
+
+		List<Integer> desiredVersionValues = getVersionValues(version);
+
+		String        pluginVersion = dependency.getDescription().getVersion();
+		List<Integer> versionValues = getVersionValues(pluginVersion);
+
+		for (int i = 0; i < desiredVersionValues.size(); i++)
+		{
+			int desiredNum = desiredVersionValues.get(i);
+			int realNum    = versionValues.size() > i ? versionValues.get(i) : 0;
+
+			if (desiredNum > realNum)
+				return false;
+			else if (desiredNum < realNum)
+				return true;
+		}
+
+		return true;
+	}
+
+	public boolean isVersionNoHigherThan(final String plugin, final String version)
+	{
+		final Plugin dependency = ProxyServer.getInstance().getPluginManager().getPlugin(plugin);
+
+		if (dependency == null)
+			return false;
+
+		List<Integer> desiredVersionValues = getVersionValues(version);
+
+		String        pluginVersion = dependency.getDescription().getVersion();
+		List<Integer> versionValues = getVersionValues(pluginVersion);
+
+		for (int i = 0; i < desiredVersionValues.size(); i++)
+		{
+			int desiredNum = desiredVersionValues.get(i);
+			int realNum    = versionValues.size() > i ? versionValues.get(i) : 0;
+
+			if (desiredNum < realNum)
+				return false;
+			else if (desiredNum > realNum)
+				return true;
+		}
+
+		return true;
+	}
+
+	public boolean isVersionHigherThan(final String plugin, final String version)
+	{
+		final Plugin dependency = ProxyServer.getInstance().getPluginManager().getPlugin(plugin);
+
+		if (dependency == null)
+			return false;
+
+		String pluginVersion = dependency.getDescription().getVersion();
+
+		// Faster to do this check first before parsing and comparing each value individually
+		if (version.equals(pluginVersion)) return false;
+
+		List<Integer> desiredVersionValues = getVersionValues(version);
+
+		List<Integer> versionValues = getVersionValues(pluginVersion);
+
+		for (int i = 0; i < Math.max(desiredVersionValues.size(), versionValues.size()); i++)
+		{
+			int desiredNum = desiredVersionValues.size() > i ? desiredVersionValues.get(i) : 0;
+			int realNum    = versionValues.size() > i ? versionValues.get(i) : 0;
+
+			if (desiredNum > realNum)
+				return false;
+			else if (desiredNum < realNum)
+				return true;
+		}
+
+		// If it reaches this point it means that all values were equal (version is the same)
+		return false;
+	}
+
+	public boolean isVersionLowerThan(final String plugin, final String version)
+	{
+		final Plugin dependency = ProxyServer.getInstance().getPluginManager().getPlugin(plugin);
+
+		if (dependency == null)
+			return false;
+
+		String pluginVersion = dependency.getDescription().getVersion();
+
+		// Faster to do this check first before parsing and comparing each value individually
+		if (version.equals(pluginVersion)) return false;
+
+		List<Integer> desiredVersionValues = getVersionValues(version);
+
+		List<Integer> versionValues = getVersionValues(pluginVersion);
+
+		for (int i = 0; i < Math.max(desiredVersionValues.size(), versionValues.size()); i++)
+		{
+			int desiredNum = desiredVersionValues.size() > i ? desiredVersionValues.get(i) : 0;
+			int realNum    = versionValues.size() > i ? versionValues.get(i) : 0;
+
+			if (desiredNum < realNum)
+				return false;
+			else if (desiredNum > realNum)
+				return true;
+		}
+
+		// If it reaches this point it means that all values were equal (version is the same)
+		return false;
 	}
 
 }
