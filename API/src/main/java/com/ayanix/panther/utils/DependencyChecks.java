@@ -28,6 +28,11 @@
  */
 package com.ayanix.panther.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -120,5 +125,67 @@ public interface DependencyChecks
 	 * @return If plugin is enabled.
 	 */
 	boolean isEnabled(String plugin);
+
+	default List<Integer> getVersionValues(String version)
+	{
+		List<Integer> versionValues = new ArrayList<>();
+
+		while (!version.isEmpty())
+		{
+			try
+			{
+				int index = version.indexOf(".");
+
+				versionValues.add(Integer.parseInt(version.substring(0, index == -1 ? version.length() : index)));
+
+				if (index != -1)
+					version = version.substring(index + 1);
+				else
+					return versionValues;
+
+			} catch (IllegalArgumentException e)
+			{
+				return versionValues;
+			}
+		}
+
+		return versionValues;
+	}
+
+	/**
+	 * Checks whether plugin is enabled and if it's version is less than or equal to a specific version.
+	 *
+	 * @param plugin Name of plugin.
+	 * @param version Version to compare.
+	 * @return If plugin is enabled and it's version is <= to a specific version.
+	 */
+	boolean isVersionNoHigherThan(final String plugin, final String version);
+
+	/**
+	 * Checks whether plugin is enabled and if it's version is greater than or equal to a specific version.
+	 *
+	 * @param plugin Name of plugin.
+	 * @param version Version to compare.
+	 * @return If plugin is enabled and it's version is >= a specific version.
+	 */
+	boolean isVersionAtLeast(final String plugin, final String version);
+
+	/**
+	 * Checks whether plugin is enabled and if it's version is greater than a specific version.
+	 *
+	 * @param plugin Name of plugin.
+	 * @param version Version to compare.
+	 * @return If plugin is enabled and it's version is > a specific version.
+	 */
+	boolean isVersionHigherThan(final String plugin, final String version);
+
+	/**
+	 * Checks whether plugin is enabled and if it's version is less than a specific version.
+	 *
+	 * @param plugin Name of plugin.
+	 * @param version Version to compare.
+	 * @return If plugin is enabled and it's version is < a specific version.
+	 */
+	boolean isVersionLowerThan(final String plugin, final String version);
 
 }

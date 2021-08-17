@@ -111,32 +111,6 @@ public class BukkitDependencyChecks implements DependencyChecks
 		return dependency != null && dependency.getDescription().getVersion().startsWith(version);
 	}
 
-	private List<Integer> getVersionValues(String version)
-	{
-		List<Integer> versionValues = new ArrayList<>();
-
-		while (!version.isEmpty())
-		{
-			try
-			{
-				int index = version.indexOf(".");
-
-				versionValues.add(Integer.parseInt(version.substring(0, index == -1 ? version.length() : index)));
-
-				if (index != -1)
-					version = version.substring(index + 1);
-				else
-					return versionValues;
-
-			} catch (IllegalArgumentException e)
-			{
-				return versionValues;
-			}
-		}
-
-		return versionValues;
-	}
-
 	public boolean isVersionAtLeast(final String plugin, final String version)
 	{
 		final Plugin dependency = Bukkit.getPluginManager().getPlugin(plugin);
