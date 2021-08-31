@@ -157,7 +157,7 @@ public interface DependencyChecks
 	 *
 	 * @param plugin Name of plugin.
 	 * @param version Version to compare.
-	 * @return If plugin is enabled and it's version is <= to a specific version.
+	 * @return If plugin is enabled and it's version is less than or equal to a specific version.
 	 */
 	boolean isVersionNoHigherThan(final String plugin, final String version);
 
@@ -166,7 +166,7 @@ public interface DependencyChecks
 	 *
 	 * @param plugin Name of plugin.
 	 * @param version Version to compare.
-	 * @return If plugin is enabled and it's version is >= a specific version.
+	 * @return If plugin is enabled and it's version is greater than or equal to a specific version.
 	 */
 	boolean isVersionAtLeast(final String plugin, final String version);
 
@@ -175,7 +175,7 @@ public interface DependencyChecks
 	 *
 	 * @param plugin Name of plugin.
 	 * @param version Version to compare.
-	 * @return If plugin is enabled and it's version is > a specific version.
+	 * @return If plugin is enabled and it's version is greater than a specific version.
 	 */
 	boolean isVersionHigherThan(final String plugin, final String version);
 
@@ -184,7 +184,7 @@ public interface DependencyChecks
 	 *
 	 * @param plugin Name of plugin.
 	 * @param version Version to compare.
-	 * @return If plugin is enabled and it's version is < a specific version.
+	 * @return If plugin is enabled and it's version is lower than a specific version.
 	 */
 	boolean isVersionLowerThan(final String plugin, final String version);
 
