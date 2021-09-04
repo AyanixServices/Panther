@@ -74,7 +74,11 @@ public class MathsUtils implements IMathsUtils
 	{
 		try
 		{
-			Double.parseDouble(string);
+			double value = Double.parseDouble(string);
+
+			if (Double.isNaN(value) || !Double.isFinite(value)) {
+				return false;
+			}
 		} catch (Exception e)
 		{
 			return false;

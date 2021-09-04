@@ -22,6 +22,10 @@ public class TokenEnchantCurrency extends BukkitCurrency
 	@Override
 	public boolean withdraw(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		TokenEnchantAPI.getInstance().removeTokens(Bukkit.getOfflinePlayer(uuid), amount);
 
 		return true;
@@ -30,6 +34,10 @@ public class TokenEnchantCurrency extends BukkitCurrency
 	@Override
 	public boolean deposit(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		TokenEnchantAPI.getInstance().addTokens(Bukkit.getOfflinePlayer(uuid), amount);
 
 		return true;
@@ -38,6 +46,10 @@ public class TokenEnchantCurrency extends BukkitCurrency
 	@Override
 	public boolean set(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		TokenEnchantAPI.getInstance().setTokens(Bukkit.getOfflinePlayer(uuid), amount);
 
 		return true;

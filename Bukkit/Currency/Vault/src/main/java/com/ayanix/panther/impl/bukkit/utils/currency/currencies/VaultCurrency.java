@@ -56,18 +56,30 @@ public class VaultCurrency extends BukkitCurrency
 	@Override
 	public boolean withdraw(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		return economy.withdrawPlayer(Bukkit.getOfflinePlayer(uuid), amount).transactionSuccess();
 	}
 
 	@Override
 	public boolean deposit(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		return economy.depositPlayer(Bukkit.getOfflinePlayer(uuid), amount).transactionSuccess();
 	}
 
 	@Override
 	public boolean set(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
 
 		return economy.withdrawPlayer(offlinePlayer, getBalance(uuid)).transactionSuccess() && economy.depositPlayer(offlinePlayer, amount).transactionSuccess();

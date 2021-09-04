@@ -16,6 +16,10 @@ public class PlayerPointsCurrency extends BukkitCurrency
 	@Override
 	public boolean withdraw(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		return getPlayerPoints().getAPI().take(uuid, (int) amount);
 	}
 
@@ -33,12 +37,20 @@ public class PlayerPointsCurrency extends BukkitCurrency
 	@Override
 	public boolean deposit(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		return getPlayerPoints().getAPI().give(uuid, (int) amount);
 	}
 
 	@Override
 	public boolean set(UUID uuid, double amount)
 	{
+		if (!Double.isFinite(amount)) {
+			return false;
+		}
+
 		return getPlayerPoints().getAPI().set(uuid, (int) amount);
 	}
 
