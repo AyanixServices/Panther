@@ -18,7 +18,9 @@ public enum BukkitVersion implements IBukkitVersion
 	v1_13("1.13", 6),
 	v1_14("1.14", 7),
 	v1_15("1.15", 8),
-	v1_16("1.16", 9);
+	v1_16("1.16", 9),
+	v1_17("1.17", 10),
+	v1_18("1.18", 10);
 
 	private final String prefix;
 	private final int    weight;
