@@ -28,9 +28,13 @@
  */
 package com.ayanix.panther.impl.bukkit.locale;
 
+import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
 import com.ayanix.panther.impl.bukkit.utils.BukkitColourUtils;
+import com.ayanix.panther.impl.bukkit.utils.packets.WrapperPlayServerSetSubtitleText;
+import com.ayanix.panther.impl.bukkit.utils.packets.WrapperPlayServerSetTitleText;
+import com.ayanix.panther.impl.bukkit.utils.packets.WrapperPlayServerSetTitleTimes;
+import com.ayanix.panther.impl.bukkit.utils.packets.WrapperPlayServerTitle;
 import com.ayanix.panther.locale.Message;
-import com.comphenix.packetwrapper.WrapperPlayServerTitle;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
 import net.md_5.bungee.api.ChatColor;
@@ -214,10 +218,16 @@ public class BukkitMessage implements Message
 
 		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
 
-		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
-		title.setAction(EnumWrappers.TitleAction.TITLE);
-		title.setTitle(WrappedChatComponent.fromText(message.get(0)));
-		title.sendPacket((Player) sender);
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+			WrapperPlayServerSetTitleText title = new WrapperPlayServerSetTitleText();
+			title.setTitle(WrappedChatComponent.fromText(message.get(0)));
+			title.sendPacket((Player) sender);
+		} else {
+			WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+			title.setAction(EnumWrappers.TitleAction.TITLE);
+			title.setTitle(WrappedChatComponent.fromText(message.get(0)));
+			title.sendPacket((Player) sender);
+		}
 
 		if (message.size() > 1)
 		{
@@ -232,12 +242,20 @@ public class BukkitMessage implements Message
 
 	private void sendTitleTiming(Player player, int fadeIn, int fadeOut, int stay)
 	{
-		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
-		title.setAction(EnumWrappers.TitleAction.TIMES);
-		title.setFadeIn(fadeIn);
-		title.setFadeOut(fadeOut);
-		title.setStay(stay);
-		title.sendPacket(player);
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+			WrapperPlayServerSetTitleTimes title = new WrapperPlayServerSetTitleTimes();
+			title.setFadeIn(fadeIn);
+			title.setFadeOut(fadeOut);
+			title.setStay(stay);
+			title.sendPacket(player);
+		} else {
+			WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+			title.setAction(EnumWrappers.TitleAction.TIMES);
+			title.setFadeIn(fadeIn);
+			title.setFadeOut(fadeOut);
+			title.setStay(stay);
+			title.sendPacket(player);
+		}
 	}
 
 	private void sendSubtitle(Object sender, int fadeIn, int fadeOut, int stay, boolean useSecondMessage)
@@ -261,10 +279,16 @@ public class BukkitMessage implements Message
 
 		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
 
-		WrapperPlayServerTitle title = new WrapperPlayServerTitle();
-		title.setAction(EnumWrappers.TitleAction.SUBTITLE);
-		title.setTitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
-		title.sendPacket((Player) sender);
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+			WrapperPlayServerSetSubtitleText title = new WrapperPlayServerSetSubtitleText();
+			title.setSubtitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
+			title.sendPacket((Player) sender);
+		} else {
+			WrapperPlayServerTitle title = new WrapperPlayServerTitle();
+			title.setAction(EnumWrappers.TitleAction.SUBTITLE);
+			title.setTitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
+			title.sendPacket((Player) sender);
+		}
 	}
 
 	@Override
