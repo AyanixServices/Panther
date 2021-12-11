@@ -218,7 +218,7 @@ public class BukkitMessage implements Message
 
 		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
 
-		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_17)) {
 			WrapperPlayServerSetTitleText title = new WrapperPlayServerSetTitleText();
 			title.setTitle(WrappedChatComponent.fromText(message.get(0)));
 			title.sendPacket((Player) sender);
@@ -242,7 +242,7 @@ public class BukkitMessage implements Message
 
 	private void sendTitleTiming(Player player, int fadeIn, int fadeOut, int stay)
 	{
-		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_17)) {
 			WrapperPlayServerSetTitleTimes title = new WrapperPlayServerSetTitleTimes();
 			title.setFadeIn(fadeIn);
 			title.setFadeOut(fadeOut);
@@ -279,7 +279,7 @@ public class BukkitMessage implements Message
 
 		sendTitleTiming((Player) sender, fadeIn, fadeOut, stay);
 
-		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_16)) {
+		if(BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_17)) {
 			WrapperPlayServerSetSubtitleText title = new WrapperPlayServerSetSubtitleText();
 			title.setSubtitle(WrappedChatComponent.fromText(message.get(useSecondMessage ? 1 : 0)));
 			title.sendPacket((Player) sender);
