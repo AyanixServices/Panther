@@ -63,4 +63,12 @@ public class BukkitCurrencyUtils
 				.findFirst();
 	}
 
+	/**
+	 * @return Set of loaded currencies.
+	 */
+	public Set<BukkitCurrency> getLoadedCurrencies()
+	{
+		return currencies;
+	}
+
 }
