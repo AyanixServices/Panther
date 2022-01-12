@@ -37,6 +37,7 @@ import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_12_BukkitItemUtilsCom
 import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_13_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.bukkit.utils.item.compat.v1_8_BukkitItemUtilsCompat;
 import com.ayanix.panther.impl.common.utils.RandomUtils;
+import com.ayanix.panther.impl.common.utils.ReflectionUtils;
 import com.ayanix.panther.utils.bukkit.item.BukkitItemUtilsCompat;
 import com.ayanix.panther.utils.bukkit.item.IBukkitItemUtils;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -81,6 +82,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 	private        BukkitItemUtilsCompat  compat;
 	private        ExecutorService        executorService;
 	private        boolean                includeResetChars;
+	private        boolean                modelDataSupport;
 
 	/**
 	 * Initiate a BukkitItemUtils instance.
@@ -155,6 +157,8 @@ public class BukkitItemUtils implements IBukkitItemUtils
 				compat = new v1_13_BukkitItemUtilsCompat();
 				break;
 		}
+
+		checkReflections();
 	}
 
 	/**
@@ -182,6 +186,11 @@ public class BukkitItemUtils implements IBukkitItemUtils
 		{
 			// already registered
 		}
+	}
+
+	private void checkReflections()
+	{
+		modelDataSupport = ReflectionUtils.doesMethodExist(ItemMeta.class.getName(), "setCustomModelData", Integer.class);
 	}
 
 	/**
@@ -564,7 +573,7 @@ public class BukkitItemUtils implements IBukkitItemUtils
 			itemMeta.setLore(lore);
 		}
 
-		if (customModelData != -1 && BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_14))
+		if (customModelData != -1 && modelDataSupport)
 		{
 			itemMeta.setCustomModelData(customModelData);
 		}

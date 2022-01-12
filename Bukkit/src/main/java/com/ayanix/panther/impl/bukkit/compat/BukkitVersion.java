@@ -1,6 +1,7 @@
 package com.ayanix.panther.impl.bukkit.compat;
 
 import com.ayanix.panther.compat.IBukkitVersion;
+import com.ayanix.panther.impl.common.utils.ReflectionUtils;
 import org.bukkit.Bukkit;
 
 /**
@@ -22,8 +23,8 @@ public enum BukkitVersion implements IBukkitVersion
 	v1_17("1.17", 10),
 	v1_18("1.18", 10);
 
-	private final String prefix;
-	private final int    weight;
+	private final String  prefix;
+	private final int     weight;
 
 	BukkitVersion(String prefix, int weight)
 	{

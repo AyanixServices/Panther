@@ -1,6 +1,7 @@
 package com.ayanix.panther.impl.bukkit.utils;
 
 import com.ayanix.panther.impl.bukkit.compat.BukkitVersion;
+import com.ayanix.panther.impl.common.utils.ReflectionUtils;
 import net.md_5.bungee.api.ChatColor;
 
 import java.util.regex.Matcher;
@@ -13,9 +14,16 @@ import java.util.regex.Pattern;
 public class BukkitColourUtils
 {
 
+	private static final boolean supportsHex;
+
+	static
+	{
+		supportsHex = ReflectionUtils.doesClassExist("net.minecraft.server.v1_8_R3.ChatHexColor") || BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13);
+	}
+
 	public static String colourise(String message)
 	{
-		if (!BukkitVersion.isRunningMinimumVersion(BukkitVersion.v1_13))
+		if (!supportsHex)
 		{
 			return ChatColor.translateAlternateColorCodes('&', message);
 		}
