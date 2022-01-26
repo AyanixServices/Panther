@@ -80,13 +80,7 @@ public class BukkitDefaultStorage implements DefaultStorage
 
 				if (section != null)
 				{
-					for (String innerKey : section.getKeys(false))
-					{
-						String totalKey = key + "." + innerKey;
-
-						defaultValues.put(totalKey, configuration.get(totalKey));
-					}
-
+					loadDefaultValues(key, section);
 					continue;
 				}
 
@@ -97,6 +91,20 @@ public class BukkitDefaultStorage implements DefaultStorage
 			plugin.getLogger().log(Level.SEVERE, "Unable to load default storage " + name + ".yml", e);
 		} catch (NullPointerException e) {
 			plugin.getLogger().log(Level.WARNING, "Unable to load default storage " + name + ".yml due to possible reload.");
+		}
+	}
+
+	private void loadDefaultValues(String totalKey, ConfigurationSection section)
+	{
+		for (String innerKey : section.getKeys(false))
+		{
+			if (section.isConfigurationSection(innerKey))
+			{
+				loadDefaultValues(totalKey + "." + innerKey, section.getConfigurationSection(innerKey));
+			} else
+			{
+				defaultValues.put(totalKey + "." + innerKey, section.get(innerKey));
+			}
 		}
 	}
 

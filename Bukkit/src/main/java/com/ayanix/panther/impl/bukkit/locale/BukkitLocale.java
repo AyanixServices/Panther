@@ -32,6 +32,7 @@ import com.ayanix.panther.impl.bukkit.storage.BukkitYAMLStorage;
 import com.ayanix.panther.locale.Locale;
 import com.ayanix.panther.storage.DefaultStorage;
 import com.ayanix.panther.storage.configuration.Configuration;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -72,11 +73,24 @@ public class BukkitLocale extends BukkitYAMLStorage implements Locale
 
 				if (section != null)
 				{
-					for (final String innerKey : section.getKeys())
-					{
-						loadMessage(key + "." + innerKey);
-					}
+					loadMessages(key, section);
 				}
+			}
+		}
+	}
+
+	private void loadMessages(String path, Configuration section)
+	{
+		for (final String innerKey : section.getKeys())
+		{
+			String totalPath = path + "." + innerKey;
+
+			if (section.isSection(innerKey))
+			{
+				loadMessages(totalPath, section.getSection(innerKey));
+			} else if (getConfig().isList(totalPath) || getConfig().isString(totalPath))
+			{
+				loadMessage(totalPath);
 			}
 		}
 	}
